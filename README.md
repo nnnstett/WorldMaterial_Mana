@@ -1,4 +1,4 @@
-# WorldMaterial_mana
+# World Material "Mana"
 
 ## はじめに
 
