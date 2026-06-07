@@ -27,12 +27,22 @@ class TestReferences(unittest.TestCase):
         )
         self.assertEqual(check_references(doc), [])
 
-    def test_range_expression_ok(self):
+    def test_range_expression_flagged(self):
+        # 範囲・列挙の例外は廃止。特定命題を指す場合は両端をリンクで書く。
         doc = parse_document(
             "world/core/theorems.md",
             "T1-T6 は本ファイルで完結し、T7-T9 は命題のみ記す。\n",
         )
-        self.assertEqual(check_references(doc), [])
+        self.assertIn("references.bare-code", rule_ids(check_references(doc)))
+
+    def test_enumeration_flagged(self):
+        # 「T1, T5, T7」のような特定命題の列挙も対象。ID 採番例示の必要があるなら meta スコープで書く。
+        doc = parse_document(
+            "world/core/theorems.md",
+            "対象は T1, T5, T7 である。\n",
+        )
+        ids = rule_ids(check_references(doc))
+        self.assertEqual(ids.count("references.bare-code"), 3)
 
     def test_bare_code_in_prose_flagged(self):
         doc = parse_document("world/core/theorems.md", "T2 により瘴気が生じる。\n")
