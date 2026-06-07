@@ -1,0 +1,39 @@
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: チェッカー自体のユニットテスト
+        run: python -m unittest discover -s scripts -t scripts -p 'test_*.py'
+
+  doc-check:
+    runs-on: ubuntu-latest
+    # 移行中（Phase 2-4）は既存債務で error が残るため、informational として継続。
+    # Phase 6 完了後にこの行を外してゲート化する。
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: ドキュメント整合性チェック
+        run: python scripts/check.py
+      - name: トポロジーをアーティファクト化
+        if: always()
+        run: |
+          python scripts/check.py --emit-topology build/topology.json --dot build/topology.dot || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: doc-topology
+          path: build/
