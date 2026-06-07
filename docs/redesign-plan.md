@@ -344,6 +344,9 @@ design-notes.md と glossary.md それぞれの内部書式は当該ファイル
   - [ ] 応用ファイルの「前提」「関連」リストの選択が論理的に妥当である
   - [ ] 命題の論理的な導出関係に循環参照や矛盾がない
   - [ ] 観測事実の言及が公理・定理本文で 1〜2 文に収まっている（自動判定は近似のため目視確認）
+- [ ] `make check` の出力が **0 error / 0 warning** であること（warning は意図的な `<!-- check:length-exempt -->` 付きのもののみ許容）
+  - Phase 1 完了時点のベースライン: **241 error / 4 warning**。Phase 2-4 のリネーム・分割・コア化で漸減する
+- [ ] `.github/workflows/check.yml` の `doc-check` ジョブから `continue-on-error: true` を削除し、CI ゲート化する
 
 ### Phase 7: アーカイブ
 
