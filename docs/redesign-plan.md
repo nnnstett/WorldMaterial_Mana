@@ -325,9 +325,9 @@ WorldMaterial_Mana/
 
 ### Phase 4: ハブドキュメントの更新
 
-- [ ] `README.md` を更新（目次・分類体系の説明）
-- [ ] `world/README.md` を更新（公理一覧 E/I、定理一覧、未解明一覧、導出マップ、推奨読み順）
-- [ ] `world/images/導出構造.drawio.svg` を新規作成
+- [x] `README.md` を更新（目次・分類体系の説明）
+- [x] `world/README.md` を更新（公理一覧 E/I、定理一覧、未解明一覧、導出マップ、推奨読み順）
+- [x] `world/images/導出構造.drawio.svg` を新規作成（E/I/T/Q 色分け、各定理から「重要な帰結」が分岐）
 
 ### Phase 5: 著者の選択と概念索引の整備
 

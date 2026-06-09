@@ -95,7 +95,7 @@ WorldMaterial_Mana/
     ├── core/
     │   ├── axioms.md            # E1-E6 + I1-I4
     │   ├── theorems.md          # T1-T9（重要な帰結は各 T 内の節）
-    │   └── open-questions.md    # Q1-Q6
+    │   └── open-questions.md    # Q1-Q8
     ├── magic.md
     ├── spellcraft.md
     ├── psionics.md
