@@ -331,11 +331,12 @@ WorldMaterial_Mana/
 
 ### Phase 5: 著者の選択と概念索引の整備
 
-- [ ] `docs/design-notes.md` に各命題の「著者の選択」を移植・追記
-  - 旧ドキュメントに散在していた「本作品での選択」記述を移管
-- [ ] `glossary.md` を更新
+- [x] `docs/design-notes.md` に各命題の「著者の選択」を移植・追記
+  - 旧ドキュメントに散在していた「本作品での選択」記述を移管（E1/E2/E4/E6, T5, 文化的モチーフ, 応用層: ダンジョン5分類・種族命名）
+- [x] `glossary.md` を更新
   - 全エントリの出典リンクを新パスに更新
-  - 新規概念（術式の定義、各定理内の重要な帰結、Q1〜Q6）を追加
+  - 新規概念（術式の定義、各定理内の重要な帰結、Q1〜Q8）を追加
+  - 全 ID（E/I/T/Q）を登録、同調の成立条件を「波長＋関係性」に是正（§6.3）
 
 design-notes.md と glossary.md それぞれの内部書式は当該ファイルの運用に従う（本書では規定しない）。
 
@@ -349,6 +350,7 @@ design-notes.md と glossary.md それぞれの内部書式は当該ファイル
 - [ ] `make check` の出力が **0 error / 0 warning** であること（warning は意図的な `<!-- check:length-exempt -->` 付きのもののみ許容）
   - Phase 1 完了時点のベースライン: **241 error / 4 warning**。Phase 2-4 のリネーム・分割・コア化で漸減する
 - [ ] `.github/workflows/check.yml` の `doc-check` ジョブから `continue-on-error: true` を削除し、CI ゲート化する
+- [ ] **メタ・制作情報の混入を機械チェック化**（architecture.md §4.9 / world-doc-reviewer 観点 C7 の lint 昇格）: `world/` 本文・`glossary.md` に制作・運用・設計のメタ情報（`scripts/`・`make check`・CI、`architecture.md`・`writing-rules.md`・`redesign-plan.md` 等のメタ文書名）への言及がないかを `scripts/check.py` で検出する。例外として README からの `design-notes.md`・`architecture.md` 誘導リンクは許容（design-notes.md §0）。コードブロック・引用内は対象外
 
 ### Phase 7: アーカイブ
 
@@ -422,6 +424,14 @@ Phase 3 成果物への規約アンカー型・まっさら読者型レビュー
 - [ ] 定理内節への参照表記（`[T4 マナ還元#優先結合則]` 形式）・表現統一の lint 化を検討。Phase 3 では手動で統一済み
 
 > 備考: glossary のリンク総崩れ（reader F2/F3 致命）と design-notes 網羅性（reviewer F7）は §6.3 / Phase 5 で対応予定。psionics の章構成は Phase 3 レビューで §9.3 必須節（同調との関係・人代における超能力）を追加済み。
+
+### 6.7 Phase 5 レビュー（`/review-world-doc`）由来のバックログ
+
+Phase 5 成果物（glossary 全面再編・design-notes 移植）へのレビューで挙がり、後続へ持ち越す事項。glossary／design-notes 自体の整合修正（感応の出典整合・瘴気の中立性・対称性の接続・I3 留保・E6/T5 差別化）は Phase 5 で反映済み。
+
+- [ ] **「感応」の正本決定**（reviewer F1 由来。core⇄応用の矛盾）: core（[I4 作用則]／[T9 超能力]: 感応＝受信）と `psionics.md`（感応＝接続して作用／知覚拡張＝受信）が食い違う。どちらを正とするか著者判断のうえ core か psionics を修正する。glossary は決定に追従する（暫定で出典 `psionics.md` の語義に整合済み）
+- [ ] **glossary の用語辞典としての使い勝手**（reader F1/F2/F3/F5 由来。専用回で対応）: (a) カテゴリ見出し（公理 E/I・定理 T・未解明 Q）に平易な一言を添える、(b) 基礎語（マナ／真界／精神エネルギー／瘴気）に専門語を避けた素朴な言い換えを併記、(c) 引く動線の追加（冒頭にジャンル早見、または魔法・魔術・超能力の比較表）。**E/I/T/Q 順の並べ替えは設計意図に関わるため、索引の "追加" で対応し並べ替えはしない**
+- [ ] **architecture の同期**（reviewer F5/F6 由来。Phase 7 で実施）: §8 に Q7・Q8 の設計節を追補、§5 E4 に「design-notes に切り出す事項（現界を最大個体とみなす選択）」の注記を追加（§6.4 と関連）
 
 ---
 
