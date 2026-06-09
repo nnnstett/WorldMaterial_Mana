@@ -1,4 +1,5 @@
-*前提: [魔法](../world/世界の法則.md#t5-魔法現化真化)、[魔術](../world/世界の法則.md#t6-魔術)、[精神エネルギーの波長](../world/世界の法則.md#精神エネルギーの波長) — [導出構造マップ](../world/README.md)*
+*前提: [T7 魔法](core/theorems.md#t7-魔法), [T8 魔術](core/theorems.md#t8-魔術), [術式の定義](spellcraft.md#術式の定義), [Q1 波長操作](core/open-questions.md#q1-波長を人為的に真界寄りにする方法)*
+*関連: [timeline.md](timeline.md), [races.md](races.md), [artifacts.md](artifacts.md), [導出構造マップ](README.md)*
 
 # 魔法・魔術の歴史
 
