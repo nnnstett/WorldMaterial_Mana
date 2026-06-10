@@ -41,13 +41,13 @@ def classify(path: str) -> str:
 RULES_BY_SCOPE: Dict[str, List[str]] = {
     "core": [
         "links", "references", "ids", "sections",
-        "forbidden", "paths", "volume", "todos",
+        "forbidden", "paths", "volume", "todos", "meta_info",
     ],
     "applied": [
         "links", "references", "sections",
-        "forbidden", "paths", "volume", "todos",
+        "forbidden", "paths", "volume", "todos", "meta_info",
     ],
-    "glossary": ["links", "forbidden", "paths"],
+    "glossary": ["links", "forbidden", "paths", "meta_info"],
     # メタ文書（docs/）は設計上、禁止語・旧パス・コードのみ参照・将来ファイルへの
     # 例示リンクを意図的に含むため、チェック対象外とする
     "meta": [],

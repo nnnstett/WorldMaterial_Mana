@@ -20,6 +20,7 @@ from .checks.paths import check_paths
 from .checks.volume import check_volume
 from .checks.todos import check_todos
 from .checks.glossary import check_glossary_coverage
+from .checks.meta_info import check_meta_info
 
 
 def load_documents(repo_root: str, rel_paths: List[str]) -> List[Document]:
@@ -53,6 +54,8 @@ def run(documents: List[Document], config: Config, existing_files=None) -> List[
             findings += check_volume(doc, config)
         if "todos" in rules:
             findings += check_todos(doc)
+        if "meta_info" in rules:
+            findings += check_meta_info(doc)
 
     # glossary カバレッジ（cross-document）
     glossary = next((d for d in documents if classify(d.path) == "glossary"), None)

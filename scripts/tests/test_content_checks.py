@@ -6,6 +6,7 @@ from doc_check.checks.references import check_references
 from doc_check.checks.ids import check_ids
 from doc_check.checks.forbidden import check_forbidden
 from doc_check.checks.paths import check_paths
+from doc_check.checks.meta_info import check_meta_info
 
 
 def rule_ids(findings):
@@ -106,6 +107,66 @@ class TestPaths(unittest.TestCase):
     def test_dungeons_new_path_ok(self):
         doc = parse_document("world/magic.md", "[ダンジョン](dungeons.md)\n")
         self.assertEqual(check_paths(doc), [])
+
+
+class TestMetaInfo(unittest.TestCase):
+    def test_meta_doc_name_flagged(self):
+        doc = parse_document(
+            "world/magic.md",
+            "詳細は [設計指針](../docs/architecture.md) を参照。\n",
+        )
+        self.assertIn("meta-info.doc", rule_ids(check_meta_info(doc)))
+
+    def test_writing_rules_flagged(self):
+        doc = parse_document("world/magic.md", "writing-rules.md に従う。\n")
+        self.assertIn("meta-info.doc", rule_ids(check_meta_info(doc)))
+
+    def test_ops_scripts_flagged(self):
+        doc = parse_document("world/magic.md", "scripts/check.py で検証する。\n")
+        ids = rule_ids(check_meta_info(doc))
+        self.assertIn("meta-info.ops", ids)
+
+    def test_ops_make_check_flagged(self):
+        doc = parse_document("glossary.md", "make check を実行する。\n")
+        self.assertIn("meta-info.ops", rule_ids(check_meta_info(doc)))
+
+    def test_readme_design_notes_link_ok(self):
+        # README ハブからの design-notes 誘導リンクは許容
+        doc = parse_document(
+            "world/README.md",
+            "改変ポイントは [design-notes](../docs/design-notes.md) を参照。\n",
+        )
+        self.assertEqual(check_meta_info(doc), [])
+
+    def test_readme_architecture_link_ok(self):
+        doc = parse_document(
+            "world/README.md",
+            "設計指針は [architecture](../docs/architecture.md) を参照。\n",
+        )
+        self.assertEqual(check_meta_info(doc), [])
+
+    def test_readme_writing_rules_still_flagged(self):
+        # README 例外は design-notes / architecture のみ。他メタ文書・ツール語は検出
+        doc = parse_document(
+            "world/README.md",
+            "[規約](../docs/writing-rules.md) と scripts/check.py。\n",
+        )
+        ids = rule_ids(check_meta_info(doc))
+        self.assertIn("meta-info.doc", ids)
+        self.assertIn("meta-info.ops", ids)
+
+    def test_general_term_not_flagged(self):
+        # 一般語「整合性チェック」は誤検出しない
+        doc = parse_document("glossary.md", "全体の整合性チェックを助ける索引。\n")
+        self.assertEqual(check_meta_info(doc), [])
+
+    def test_code_fence_ignored(self):
+        doc = parse_document("world/magic.md", "```\nmake check\n```\n")
+        self.assertEqual(check_meta_info(doc), [])
+
+    def test_quote_ignored(self):
+        doc = parse_document("world/magic.md", "> scripts/check.py の引用。\n")
+        self.assertEqual(check_meta_info(doc), [])
 
 
 if __name__ == "__main__":

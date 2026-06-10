@@ -18,9 +18,6 @@ jobs:
 
   doc-check:
     runs-on: ubuntu-latest
-    # 移行中（Phase 2-4）は既存債務で error が残るため、informational として継続。
-    # Phase 6 完了後にこの行を外してゲート化する。
-    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

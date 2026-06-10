@@ -342,15 +342,15 @@ design-notes.md と glossary.md それぞれの内部書式は当該ファイル
 
 ### Phase 6: 整合性チェック
 
-- [ ] `scripts/check.py` を実行し、検出された違反を全て解消する（Phase 1 で実装したチェック項目を参照）
-- [ ] スクリプトでは検出しにくい意味的な確認:
-  - [ ] 応用ファイルの「前提」「関連」リストの選択が論理的に妥当である
-  - [ ] 命題の論理的な導出関係に循環参照や矛盾がない
-  - [ ] 観測事実の言及が公理・定理本文で 1〜2 文に収まっている（自動判定は近似のため目視確認）
-- [ ] `make check` の出力が **0 error / 0 warning** であること（warning は意図的な `<!-- check:length-exempt -->` 付きのもののみ許容）
+- [x] `scripts/check.py` を実行し、検出された違反を全て解消する（Phase 1 で実装したチェック項目を参照）
+- [x] スクリプトでは検出しにくい意味的な確認（`/review-world-doc` で規約型・まっさら読者型の2系統レビューを実施）:
+  - [x] 応用ファイルの「前提」「関連」リストの選択が論理的に妥当である（8ファイルとも概ね妥当。前提リスト精緻化の余地は §6.6 へ記録）
+  - [x] 命題の論理的な導出関係に循環参照や矛盾がない（コア導出グラフに循環・宙吊り・矛盾なし。唯一の文書間不整合は architecture §7 T4 導出元の stale で本フェーズで是正）
+  - [x] 観測事実の言及が公理・定理本文で 1〜2 文に収まっている（自動判定は近似のため目視確認。§4.6 準拠）
+- [x] `make check` の出力が **0 error / 0 warning** であること（warning は意図的な `<!-- check:length-exempt -->` 付きのもののみ許容）
   - Phase 1 完了時点のベースライン: **241 error / 4 warning**。Phase 2-4 のリネーム・分割・コア化で漸減する
-- [ ] `.github/workflows/check.yml` の `doc-check` ジョブから `continue-on-error: true` を削除し、CI ゲート化する
-- [ ] **メタ・制作情報の混入を機械チェック化**（architecture.md §4.9 / world-doc-reviewer 観点 C7 の lint 昇格）: `world/` 本文・`glossary.md` に制作・運用・設計のメタ情報（`scripts/`・`make check`・CI、`architecture.md`・`writing-rules.md`・`redesign-plan.md` 等のメタ文書名）への言及がないかを `scripts/check.py` で検出する。例外として README からの `design-notes.md`・`architecture.md` 誘導リンクは許容（design-notes.md §0）。コードブロック・引用内は対象外
+- [x] `.github/workflows/check.yml` の `doc-check` ジョブから `continue-on-error: true` を削除し、CI ゲート化する
+- [x] **メタ・制作情報の混入を機械チェック化**（architecture.md §4.9 / world-doc-reviewer 観点 C7 の lint 昇格）: `world/` 本文・`glossary.md` に制作・運用・設計のメタ情報（`scripts/`・`make check`・CI、`architecture.md`・`writing-rules.md`・`redesign-plan.md` 等のメタ文書名）への言及がないかを `scripts/check.py` で検出する（`meta-info.doc` / `meta-info.ops`）。例外として README からの `design-notes.md`・`architecture.md` 誘導リンクは許容（design-notes.md §0）。コードブロック・引用内は対象外
 
 ### Phase 7: アーカイブ
 
@@ -396,6 +396,7 @@ B3〜B5 とは無関係の既存箇所への読みやすさ指摘。まとめて
 - [x] **B3** T4 マナ還元の導出元を `I3+I2` に是正＋証明スケッチ（PR #26）
 - [x] **B4** I3 から観測事実（毒性・残留）を除去、毒性を機能阻害として T5 に暫定記述（PR #26）
 - [x] **B5** 集合無意識の宛先機構を [Q8] として新設（PR #26）
+- [ ] **B6（Phase 6 レビュー由来・要判断）** T6 同調の導出元 `[I2 共鳴則]` の妥当性。証明・詳細（経路は I4 作用則＋E5＋E6）で I2 が寄与していないように見える。波長依存（接続条件＝波長の近さ）を I2 で担保する意図なら詳細に一文補い、寄与しないなら導出元から外す。T9 超能力が同じ I4 応用で導出元を I4 のみとしている点との非対称も併せて判断する
 
 > 備考: ブレスト/計画/実装は再開可能なチームで進める運用だが、CLI 環境では `SendMessage` が使えず会話再開ができない。当面は毎ターン文脈を渡して代替する。
 
@@ -419,9 +420,14 @@ Phase 3 成果物への規約アンカー型・まっさら読者型レビュー
 - [ ] **魂の大きさ固定の応用への明示**（reader F20）: `magic.md`「魔法の規模」に、魂の大きさは先天的で訓練では変わらない旨（成長可否）を補足
 - [ ] **人代における魔法のトーン統一**（reviewer F6＋reader）: `magic.md`「使えないのと同義」と `races.md`「原理上は可能」の強弱を「原理上可能だが人代の条件下では実効ゼロに近い」へ揃える
 
+**前提リスト精緻化**（Phase 6 reader F10 由来。規約型は8ファイルとも妥当と判定、reader のみの様式判断）
+
+- [ ] `magic.md` 本文で主役級に使う [T4 マナ還元]・[T5 存在強度]、`psionics.md`「同調との関係」で中核に使う [T6 同調] が「関連」止まりで「前提」に無い。本文の論証の土台として使う命題は「前提」へ、補足参照は「関連」へ、の基準で各冒頭リストを見直すか検討する
+
 **機械チェック昇格候補**（reviewer F8 由来）
 
 - [ ] 定理内節への参照表記（`[T4 マナ還元#優先結合則]` 形式）・表現統一の lint 化を検討。Phase 3 では手動で統一済み
+- [ ] **ドキュメント間の導出元一致 lint**（Phase 6 reviewer F1 由来）: `architecture.md §7` の各 T 導出元と `theorems.md` の導出元の一致をチェック。今回 T4 の不一致（arch: I3+T2 / 本文: I3+I2）は意味レビューでしか拾えなかった。※ §6.4 で architecture §5〜§8 は Phase 7 削除予定のため、削除されれば本 lint は不要になる
 
 > 備考: glossary のリンク総崩れ（reader F2/F3 致命）と design-notes 網羅性（reviewer F7）は §6.3 / Phase 5 で対応予定。psionics の章構成は Phase 3 レビューで §9.3 必須節（同調との関係・人代における超能力）を追加済み。
 

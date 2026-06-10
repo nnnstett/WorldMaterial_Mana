@@ -48,9 +48,9 @@ scripts/
 
 | スコープ | 例 | 適用ルール |
 |---|---|---|
-| core | `world/core/axioms.md`, `theorems.md`, `open-questions.md` | links, references, ids, sections, forbidden, paths, volume, todos |
-| applied | `world/magic.md`, `world/dungeons.md` 等 | links, references, sections, forbidden, paths, volume, todos |
-| glossary | `glossary.md` | links, forbidden, paths |
+| core | `world/core/axioms.md`, `theorems.md`, `open-questions.md` | links, references, ids, sections, forbidden, paths, volume, todos, meta_info |
+| applied | `world/magic.md`, `world/dungeons.md` 等 | links, references, sections, forbidden, paths, volume, todos, meta_info |
+| glossary | `glossary.md` | links, forbidden, paths, meta_info |
 | meta | `docs/architecture.md`, `docs/redesign-plan.md`, `docs/design-notes.md` | **適用外**（禁止語・旧パス・コードのみ参照の NG 例を意図的に含むため） |
 | other | `README.md` 等 | links |
 
@@ -83,6 +83,10 @@ scripts/
   - 「体系」「系統」等の複合語との区別が難しいため、「系」単体は対象外
   - ダンジョン分類の「C-1, C-2」もハイフン区別で除外
 - **paths.old-path** (error): 旧パス（`世界の法則.md`, `魔法.md`, `character/`, `history/` 等）への参照
+- **meta-info.doc** (error): 本文・glossary にメタ文書名（`architecture.md`, `writing-rules.md`, `redesign-plan.md`, `design-notes.md`）への言及（architecture.md §4.9 / 観点 C7）
+  - **例外**: README（ハブ）からの `design-notes.md`・`architecture.md` 誘導リンクは許容。README でも他メタ文書名は対象
+- **meta-info.ops** (error): 本文・glossary に制作・運用情報（`scripts/`, `check.py`, `make check`/`make test`, `continue-on-error`, `lefthook`, `.github`）への言及
+  - 一般語「整合性チェック」「CI」等は誤検出回避のため対象外。引用（`>`）・コードブロック内も対象外
 
 ### 長さ・分量上限（暴走防止）
 
@@ -145,7 +149,7 @@ make topology
 
 - **Makefile**: `make test` / `make check` / `make topology`
 - **lefthook**: `lefthook.yml`（プロジェクトルート）。`lefthook install` でフック有効化
-- **GitHub Actions**: `.github/workflows/check.yml`。doc-check は移行完了まで `continue-on-error: true` で informational
+- **GitHub Actions**: `.github/workflows/check.yml`。doc-check は CI ゲート（error で PR を失敗させる）
 
 ## チェッカー自体の開発
 
