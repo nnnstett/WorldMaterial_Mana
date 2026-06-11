@@ -143,9 +143,9 @@ OK: 本文で [T1 エネルギー保存則] と書き、ファイル末尾に
 /dungeon.md     character/   history/
 ```
 
-新パスは `world/` 配下・英字名（例: `magic.md`, `spellcraft.md`, `dungeon.md`,
+新パスは `world/` 配下・英字名（例: `magic.md`, `spellcraft.md`, `dungeons.md`,
 `psionics.md`, `races.md`, `artifacts.md`）。最終形は
-[`redesign-plan.md`](redesign-plan.md) を参照。
+[`architecture.md` §3 ディレクトリ構成](architecture.md#3-ディレクトリ構成) を参照。
 
 ## 9. 分量上限
 
