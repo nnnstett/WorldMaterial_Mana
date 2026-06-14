@@ -80,6 +80,16 @@ class TestForbidden(unittest.TestCase):
         doc = parse_document("world/core/theorems.md", "かつて C2 と呼ばれた。\n")
         self.assertIn("forbidden.code", rule_ids(check_forbidden(doc)))
 
+    def test_wavelength_word_flagged(self):
+        # 旧用語「波長」は真度・位相に分離して廃止
+        doc = parse_document("world/core/axioms.md", "精神エネルギーの波長が深い。\n")
+        self.assertIn("forbidden.term", rule_ids(check_forbidden(doc)))
+
+    def test_wavelength_inline_code_not_flagged(self):
+        # glossary の旧称注記などはインラインコードで書く
+        doc = parse_document("glossary.md", "旧称は `波長`（廃止）。\n")
+        self.assertEqual(check_forbidden(doc), [])
+
     def test_taikei_not_flagged(self):
         # 「体系」「分類体系」の 系 は誤検出しない
         doc = parse_document("world/core/theorems.md", "分類体系を維持する。\n")

@@ -92,7 +92,7 @@ WorldMaterial_Mana/
     ├── core/
     │   ├── axioms.md            # E1-E6 + I1-I4
     │   ├── theorems.md          # T1-T9（重要な帰結は各 T 内の節）
-    │   └── open-questions.md    # Q1-Q8
+    │   └── open-questions.md    # Q1-Q9
     ├── magic.md
     ├── spellcraft.md
     ├── psionics.md
@@ -134,7 +134,7 @@ WorldMaterial_Mana/
 ```markdown
 *前提: [T7 魔法](core/theorems.md#t7-魔法), [E6 精神エネルギー](core/axioms.md#e6-精神エネルギー)*
 *関連: [T5 存在強度#ビッグバン由来物質の還元不可能性](core/theorems.md#重要な帰結-ビッグバン由来物質の還元不可能性),
-       [Q1 波長操作](core/open-questions.md#q1-波長を人為的に真界寄りにする方法)*
+       [Q1 真度操作](core/open-questions.md#q1-真度を人為的に深くする方法)*
 ```
 
 ### 4.3 ID 付与・廃止・分割
@@ -192,10 +192,10 @@ WorldMaterial_Mana/
 
 | 観測事実の種類 | 置き場所 | 例 |
 |---|---|---|
-| 公理・定理の本性に近い性質 | 当該公理・定理の本文に 1〜2 文 | 原初返り（[E6 精神エネルギー] の波長分布の偏りとして） |
+| 公理・定理の本性に近い性質 | 当該公理・定理の本文に 1〜2 文 | 原初返り（[E6 精神エネルギー] の真度分布の偏りとして） |
 | 特定ドメインに紐づく現象 | 該当応用ファイル | ダンジョン内での瘴気蓄積（dungeons.md）、ケース C 道具の出現（artifacts.md） |
 | 大規模で独立した現象群 | 専用の応用ファイル | 種子から発芽した各種族の特性（races.md） |
-| メカニズム不明部分 | Q として登録 | 原初返りの発生メカニズム → [Q1 波長操作] |
+| メカニズム不明部分 | Q として登録 | 原初返りの発生メカニズム → [Q1 真度操作] |
 
 運用ルール:
 
@@ -305,4 +305,4 @@ WorldMaterial_Mana/
 [E4 個体]: ../world/core/axioms.md#e4-個体
 [E6 精神エネルギー]: ../world/core/axioms.md#e6-精神エネルギー
 [T1 エネルギー保存則]: ../world/core/theorems.md#t1-エネルギー保存則
-[Q1 波長操作]: ../world/core/open-questions.md#q1-波長を人為的に真界寄りにする方法
+[Q1 真度操作]: ../world/core/open-questions.md#q1-真度を人為的に深くする方法
