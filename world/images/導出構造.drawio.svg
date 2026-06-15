@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="1060" height="900" viewBox="-0.5 -0.5 1060 900">
+  <defs>
+    <marker id="arrow-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#aaaaaa"/>
+    </marker>
+    <marker id="arrow-dark" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#777777"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7cb342"/>
+    </marker>
+  </defs>
+  <g>
+    <!-- Background -->
+    <rect x="0" y="0" width="1060" height="900" fill="#ffffff" stroke="none"/>
+
+    <!-- Title -->
+    <text x="530" y="32" fill="#333333" font-family="sans-serif" font-size="18" font-weight="bold" text-anchor="middle">公理 → 定理 の導出構造</text>
+    <text x="530" y="52" fill="#888888" font-family="sans-serif" font-size="11" text-anchor="middle">E 存在公理 ／ I 相互作用公理 ／ T 定理 ／ Q 未解明領域</text>
+
+    <!-- Column headers -->
+    <text x="105" y="80" fill="#1565c0" font-family="sans-serif" font-size="13" font-weight="bold" text-anchor="middle">存在公理（E）</text>
+    <text x="315" y="80" fill="#4527a0" font-family="sans-serif" font-size="13" font-weight="bold" text-anchor="middle">相互作用公理（I）</text>
+    <text x="565" y="80" fill="#2e7d32" font-family="sans-serif" font-size="13" font-weight="bold" text-anchor="middle">定理（T）</text>
+    <text x="875" y="80" fill="#558b2f" font-family="sans-serif" font-size="13" font-weight="bold" text-anchor="middle">重要な帰結（節）</text>
+
+    <!-- Vertical dividers -->
+    <line x1="215" y1="90" x2="215" y2="715" stroke="#e0e0e0" stroke-width="1" stroke-dasharray="4 4"/>
+    <line x1="425" y1="90" x2="425" y2="715" stroke="#e0e0e0" stroke-width="1" stroke-dasharray="4 4"/>
+    <line x1="712" y1="90" x2="712" y2="715" stroke="#e0e0e0" stroke-width="1" stroke-dasharray="4 4"/>
+
+    <!-- === Arrows: Axiom -> Theorem (light gray) === -->
+    <path d="M 390 140 L 460 108" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
+    <path d="M 390 320 L 460 122" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
+    <path d="M 180 335 L 460 175" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
+    <path d="M 180 390 L 460 183" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
+    <path d="M 390 140 L 460 180" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
+    <path d="M 390 230 L 460 190" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
+    <path d="M 390 140 L 460 265" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
+    <path d="M 390 320 L 460 335" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
+    <path d="M 390 230 L 460 345" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
+    <path d="M 180 390 L 460 408" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
+    <path d="M 390 320 L 460 418" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
+    <path d="M 180 335 L 460 483" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
+    <path d="M 180 390 L 460 490" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
+    <path d="M 390 230 L 460 497" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
+    <path d="M 390 410 L 460 503" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
+    <path d="M 390 410 L 460 695" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
+
+    <!-- === Arrows: Theorem -> Theorem (T2 feeds T5, T7, T8) === -->
+    <path d="M 460 195 L 450 195 L 450 415 L 460 415" fill="none" stroke="#777777" stroke-width="1.3" marker-end="url(#arrow-dark)"/>
+    <path d="M 460 200 L 442 200 L 442 565 L 460 565" fill="none" stroke="#777777" stroke-width="1.3" marker-end="url(#arrow-dark)"/>
+    <path d="M 460 205 L 434 205 L 434 630 L 460 630" fill="none" stroke="#777777" stroke-width="1.3" marker-end="url(#arrow-dark)"/>
+
+    <!-- === Arrows: Theorem -> 重要な帰結 (green, highlighted) === -->
+    <path d="M 670 180 L 730 180" fill="none" stroke="#7cb342" stroke-width="1.4" marker-end="url(#arrow-green)"/>
+    <path d="M 670 265 L 730 265" fill="none" stroke="#7cb342" stroke-width="1.4" marker-end="url(#arrow-green)"/>
+    <path d="M 670 340 L 730 340" fill="none" stroke="#7cb342" stroke-width="1.4" marker-end="url(#arrow-green)"/>
+    <path d="M 670 415 L 730 415" fill="none" stroke="#7cb342" stroke-width="1.4" marker-end="url(#arrow-green)"/>
+
+    <!-- === Existence axiom nodes (E, blue) === -->
+    <rect x="30" y="95" width="150" height="40" rx="6" fill="#e3f2fd" stroke="#1976d2" stroke-width="1.5"/>
+    <text x="105" y="119" fill="#1565c0" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">[E1] 現界</text>
+    <rect x="30" y="150" width="150" height="40" rx="6" fill="#e3f2fd" stroke="#1976d2" stroke-width="1.5"/>
+    <text x="105" y="174" fill="#1565c0" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">[E2] 真界</text>
+    <rect x="30" y="205" width="150" height="40" rx="6" fill="#e3f2fd" stroke="#1976d2" stroke-width="1.5"/>
+    <text x="105" y="229" fill="#1565c0" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">[E3] マナ</text>
+    <rect x="30" y="260" width="150" height="40" rx="6" fill="#e3f2fd" stroke="#1976d2" stroke-width="1.5"/>
+    <text x="105" y="284" fill="#1565c0" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">[E4] 個体</text>
+    <rect x="30" y="315" width="150" height="40" rx="6" fill="#e3f2fd" stroke="#1976d2" stroke-width="1.5"/>
+    <text x="105" y="339" fill="#1565c0" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">[E5] 魂</text>
+    <rect x="30" y="370" width="150" height="40" rx="6" fill="#e3f2fd" stroke="#1976d2" stroke-width="1.5"/>
+    <text x="105" y="394" fill="#1565c0" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">[E6] 精神エネルギー</text>
+
+    <!-- === Interaction axiom nodes (I, indigo) === -->
+    <rect x="240" y="120" width="150" height="40" rx="6" fill="#ede7f6" stroke="#5e35b1" stroke-width="1.5"/>
+    <text x="315" y="144" fill="#4527a0" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">[I1] 変換則</text>
+    <rect x="240" y="210" width="150" height="40" rx="6" fill="#ede7f6" stroke="#5e35b1" stroke-width="1.5"/>
+    <text x="315" y="234" fill="#4527a0" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">[I2] 共鳴則</text>
+    <rect x="240" y="300" width="150" height="40" rx="6" fill="#ede7f6" stroke="#5e35b1" stroke-width="1.5"/>
+    <text x="315" y="324" fill="#4527a0" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">[I3] 副産則</text>
+    <rect x="240" y="390" width="150" height="40" rx="6" fill="#ede7f6" stroke="#5e35b1" stroke-width="1.5"/>
+    <text x="315" y="414" fill="#4527a0" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">[I4] 作用則</text>
+
+    <!-- === Theorem nodes (T, green) === -->
+    <rect x="460" y="95" width="210" height="40" rx="6" fill="#e8f5e9" stroke="#388e3c" stroke-width="1.5"/>
+    <text x="565" y="119" fill="#2e7d32" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">[T1] エネルギー保存則</text>
+    <rect x="460" y="165" width="210" height="40" rx="6" fill="#e8f5e9" stroke="#388e3c" stroke-width="1.5"/>
+    <text x="565" y="189" fill="#2e7d32" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">[T2] 共鳴現化</text>
+    <rect x="460" y="245" width="210" height="40" rx="6" fill="#e8f5e9" stroke="#388e3c" stroke-width="1.5"/>
+    <text x="565" y="269" fill="#2e7d32" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">[T3] 自然現化</text>
+    <rect x="460" y="320" width="210" height="40" rx="6" fill="#e8f5e9" stroke="#388e3c" stroke-width="1.5"/>
+    <text x="565" y="344" fill="#2e7d32" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">[T4] マナ還元</text>
+    <rect x="460" y="395" width="210" height="40" rx="6" fill="#e8f5e9" stroke="#388e3c" stroke-width="1.5"/>
+    <text x="565" y="419" fill="#2e7d32" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">[T5] 存在強度</text>
+    <rect x="460" y="470" width="210" height="40" rx="6" fill="#e8f5e9" stroke="#388e3c" stroke-width="1.5"/>
+    <text x="565" y="494" fill="#2e7d32" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">[T6] 同調</text>
+    <rect x="460" y="545" width="210" height="40" rx="6" fill="#e8f5e9" stroke="#388e3c" stroke-width="1.5"/>
+    <text x="565" y="569" fill="#2e7d32" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">[T7] 魔法</text>
+    <rect x="460" y="610" width="210" height="40" rx="6" fill="#e8f5e9" stroke="#388e3c" stroke-width="1.5"/>
+    <text x="565" y="634" fill="#2e7d32" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">[T8] 魔術</text>
+    <rect x="460" y="675" width="210" height="40" rx="6" fill="#e8f5e9" stroke="#388e3c" stroke-width="1.5"/>
+    <text x="565" y="699" fill="#2e7d32" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">[T9] 超能力</text>
+
+    <!-- === Key-consequence nodes (節, light green, dashed) === -->
+    <rect x="730" y="163" width="290" height="34" rx="6" fill="#f1f8e9" stroke="#7cb342" stroke-width="1.3" stroke-dasharray="4 3"/>
+    <text x="875" y="184" fill="#558b2f" font-family="sans-serif" font-size="11" text-anchor="middle">特殊事例: ビッグバン</text>
+    <rect x="730" y="248" width="290" height="34" rx="6" fill="#f1f8e9" stroke="#7cb342" stroke-width="1.3" stroke-dasharray="4 3"/>
+    <text x="875" y="269" fill="#558b2f" font-family="sans-serif" font-size="11" text-anchor="middle">危険性</text>
+    <rect x="730" y="323" width="290" height="34" rx="6" fill="#f1f8e9" stroke="#7cb342" stroke-width="1.3" stroke-dasharray="4 3"/>
+    <text x="875" y="344" fill="#558b2f" font-family="sans-serif" font-size="11" text-anchor="middle">優先結合則</text>
+    <rect x="730" y="398" width="290" height="34" rx="6" fill="#f1f8e9" stroke="#7cb342" stroke-width="1.3" stroke-dasharray="4 3"/>
+    <text x="875" y="419" fill="#558b2f" font-family="sans-serif" font-size="11" text-anchor="middle">ビッグバン由来物質の還元不可能性</text>
+
+    <!-- T7/T8 derivation label -->
+    <text x="455" y="552" fill="#999999" font-family="sans-serif" font-size="9" text-anchor="end">T2</text>
+    <text x="455" y="617" fill="#999999" font-family="sans-serif" font-size="9" text-anchor="end">T2</text>
+    <text x="455" y="422" fill="#999999" font-family="sans-serif" font-size="9" text-anchor="end">T2</text>
+
+    <!-- Note line -->
+    <text x="530" y="745" fill="#777777" font-family="sans-serif" font-size="11" text-anchor="middle">未解明領域（Q）は各公理・定理の「関連」として体系全体に結びつく、意図的に確保された空白である。</text>
+
+    <!-- === Open-question chips (Q, amber) === -->
+    <g font-family="sans-serif" text-anchor="middle">
+      <rect x="32" y="772" width="107" height="48" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="1.3"/>
+      <text x="86" y="792" fill="#f57f17" font-size="11" font-weight="bold">[Q1]</text>
+      <text x="86" y="808" fill="#8d6e00" font-size="8.5">真度操作</text>
+      <rect x="145" y="772" width="107" height="48" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="1.3"/>
+      <text x="199" y="792" fill="#f57f17" font-size="11" font-weight="bold">[Q2]</text>
+      <text x="199" y="808" fill="#8d6e00" font-size="8.5">意思を持つ道具</text>
+      <rect x="258" y="772" width="107" height="48" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="1.3"/>
+      <text x="312" y="792" fill="#f57f17" font-size="11" font-weight="bold">[Q3]</text>
+      <text x="312" y="808" fill="#8d6e00" font-size="8.5">真界の内部構造</text>
+      <rect x="371" y="772" width="107" height="48" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="1.3"/>
+      <text x="425" y="792" fill="#f57f17" font-size="11" font-weight="bold">[Q4]</text>
+      <text x="425" y="808" fill="#8d6e00" font-size="8.5">死後の魂</text>
+      <rect x="484" y="772" width="107" height="48" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="1.3"/>
+      <text x="538" y="792" fill="#f57f17" font-size="11" font-weight="bold">[Q5]</text>
+      <text x="538" y="808" fill="#8d6e00" font-size="8.5">並行世界</text>
+      <rect x="597" y="772" width="107" height="48" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="1.3"/>
+      <text x="651" y="792" fill="#f57f17" font-size="11" font-weight="bold">[Q6]</text>
+      <text x="651" y="808" fill="#8d6e00" font-size="8.5">マナ濃淡変動</text>
+      <rect x="710" y="772" width="107" height="48" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="1.3"/>
+      <text x="764" y="792" fill="#f57f17" font-size="11" font-weight="bold">[Q7]</text>
+      <text x="764" y="808" fill="#8d6e00" font-size="8.5">宇宙生成の先行性</text>
+      <rect x="823" y="772" width="107" height="48" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="1.3"/>
+      <text x="877" y="792" fill="#f57f17" font-size="11" font-weight="bold">[Q8]</text>
+      <text x="877" y="808" fill="#8d6e00" font-size="8.5">集合無意識</text>
+      <rect x="936" y="772" width="107" height="48" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="1.3"/>
+      <text x="990" y="792" fill="#f57f17" font-size="11" font-weight="bold">[Q9]</text>
+      <text x="990" y="808" fill="#8d6e00" font-size="8.5">複数孔の魂</text>
+    </g>
+
+    <!-- Legend -->
+    <rect x="32" y="852" width="16" height="16" rx="3" fill="#e3f2fd" stroke="#1976d2" stroke-width="1"/>
+    <text x="54" y="865" fill="#333333" font-family="sans-serif" font-size="11">公理 E（存在）</text>
+    <rect x="170" y="852" width="16" height="16" rx="3" fill="#ede7f6" stroke="#5e35b1" stroke-width="1"/>
+    <text x="192" y="865" fill="#333333" font-family="sans-serif" font-size="11">公理 I（相互作用）</text>
+    <rect x="330" y="852" width="16" height="16" rx="3" fill="#e8f5e9" stroke="#388e3c" stroke-width="1"/>
+    <text x="352" y="865" fill="#333333" font-family="sans-serif" font-size="11">定理 T</text>
+    <rect x="430" y="852" width="16" height="16" rx="3" fill="#f1f8e9" stroke="#7cb342" stroke-width="1" stroke-dasharray="3 2"/>
+    <text x="452" y="865" fill="#333333" font-family="sans-serif" font-size="11">重要な帰結（節）</text>
+    <rect x="580" y="852" width="16" height="16" rx="3" fill="#fff8e1" stroke="#f9a825" stroke-width="1"/>
+    <text x="602" y="865" fill="#333333" font-family="sans-serif" font-size="11">未解明領域 Q</text>
+  </g>
+</svg>

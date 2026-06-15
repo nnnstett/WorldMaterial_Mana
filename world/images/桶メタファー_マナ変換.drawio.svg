@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="760" height="560" viewBox="-0.5 -0.5 760 560">
+  <defs>
+    <marker id="kk-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#555555"/>
+    </marker>
+    <marker id="kk-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1976d2"/>
+    </marker>
+    <marker id="kk-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#c62828"/>
+    </marker>
+    <pattern id="water-wave" patternUnits="userSpaceOnUse" width="40" height="10">
+      <path d="M 0 5 Q 10 0 20 5 T 40 5" stroke="#64b5f6" stroke-width="1" fill="none" opacity="0.6"/>
+    </pattern>
+  </defs>
+  <g>
+    <!-- Background (現界) -->
+    <rect x="0" y="0" width="760" height="560" fill="#fafafa" stroke="none"/>
+
+    <!-- Title -->
+    <text x="380" y="30" fill="#333333" font-family="sans-serif" font-size="18" font-weight="bold" text-anchor="middle">桶のメタファー — マナの変換</text>
+    <text x="380" y="50" fill="#666666" font-family="sans-serif" font-size="12" text-anchor="middle">真界 = 桶 / マナ = 水 / 現界 = 桶の外側 / 魂 = 壁の穴</text>
+
+    <!-- 現界ラベル -->
+    <text x="40" y="85" fill="#888888" font-family="sans-serif" font-size="13" font-weight="bold">現界</text>
+
+    <!-- === 桶 本体（断面図・半透明） === -->
+    <!-- 桶の左壁 -->
+    <line x1="230" y1="100" x2="210" y2="470" stroke="#6d4c41" stroke-width="6" stroke-linecap="round"/>
+    <!-- 桶の右壁 -->
+    <line x1="530" y1="100" x2="550" y2="470" stroke="#6d4c41" stroke-width="6" stroke-linecap="round"/>
+    <!-- 桶の底 -->
+    <line x1="210" y1="470" x2="550" y2="470" stroke="#6d4c41" stroke-width="6" stroke-linecap="round"/>
+
+    <!-- 桶の上端（越流ライン） -->
+    <line x1="220" y1="100" x2="540" y2="100" stroke="#6d4c41" stroke-width="3" stroke-dasharray="4 3" opacity="0.6"/>
+
+    <!-- === 水（マナ） === -->
+    <path d="M 220 115 Q 280 108 340 115 T 460 115 T 540 115 L 548 465 L 212 465 Z"
+          fill="#bbdefb" opacity="0.7" stroke="none"/>
+    <!-- 水面の揺らぎ（マナの濃淡表現） -->
+    <path d="M 220 115 Q 260 105 300 115 T 380 115 T 460 115 T 540 115"
+          stroke="#1976d2" stroke-width="1.5" fill="none" opacity="0.8"/>
+    <path d="M 218 150 Q 270 145 320 153 T 420 150 T 542 152"
+          stroke="#1976d2" stroke-width="1" fill="none" opacity="0.4"/>
+    <path d="M 216 200 Q 290 195 350 202 T 450 198 T 544 200"
+          stroke="#1976d2" stroke-width="1" fill="none" opacity="0.3"/>
+
+    <!-- 真界ラベル -->
+    <text x="380" y="250" fill="#1565c0" font-family="sans-serif" font-size="18" font-weight="bold" text-anchor="middle">真界（マナ）</text>
+    <text x="380" y="270" fill="#1976d2" font-family="sans-serif" font-size="11" text-anchor="middle">水位の揺らぎ＝マナの濃淡</text>
+
+    <!-- === 魂（壁の穴） === -->
+    <!-- 左壁の穴 1 -->
+    <circle cx="219" cy="320" r="10" fill="#fff3e0" stroke="#e65100" stroke-width="2"/>
+    <text x="195" y="325" fill="#e65100" font-family="sans-serif" font-size="11" text-anchor="end" font-weight="bold">魂</text>
+
+    <!-- 右壁の穴 1 -->
+    <circle cx="541" cy="290" r="10" fill="#fff3e0" stroke="#e65100" stroke-width="2"/>
+    <text x="565" y="295" fill="#e65100" font-family="sans-serif" font-size="11" font-weight="bold">魂</text>
+
+    <!-- 右壁の穴 2 -->
+    <circle cx="547" cy="400" r="8" fill="#fff3e0" stroke="#e65100" stroke-width="2"/>
+    <text x="570" y="404" fill="#e65100" font-family="sans-serif" font-size="11" font-weight="bold">魂</text>
+
+    <!-- === 穴から流れ出す水（現化） === -->
+    <!-- 左側の流れ -->
+    <path d="M 219 320 Q 170 335 130 360 Q 110 375 95 395"
+          stroke="#42a5f5" stroke-width="4" fill="none" opacity="0.8"/>
+    <!-- 左側の変換先 -->
+    <circle cx="90" cy="405" r="16" fill="#ffecb3" stroke="#ff8f00" stroke-width="2"/>
+    <text x="90" y="410" fill="#e65100" font-family="sans-serif" font-size="11" text-anchor="middle" font-weight="bold">火</text>
+    <text x="90" y="440" fill="#666666" font-family="sans-serif" font-size="10" text-anchor="middle">物理エネルギー</text>
+
+    <!-- 右側の流れ 1 -->
+    <path d="M 541 290 Q 600 280 640 290 Q 670 295 685 305"
+          stroke="#42a5f5" stroke-width="4" fill="none" opacity="0.8"/>
+    <rect x="670" y="300" width="40" height="30" rx="3" fill="#d7ccc8" stroke="#5d4037" stroke-width="2"/>
+    <text x="690" y="320" fill="#3e2723" font-family="sans-serif" font-size="10" text-anchor="middle" font-weight="bold">物質</text>
+
+    <!-- 右側の流れ 2 -->
+    <path d="M 547 400 Q 600 410 640 420 Q 660 425 680 430"
+          stroke="#42a5f5" stroke-width="3" fill="none" opacity="0.8"/>
+    <rect x="665" y="425" width="50" height="22" rx="3" fill="#e1f5fe" stroke="#0277bd" stroke-width="1.5"/>
+    <text x="690" y="441" fill="#0277bd" font-family="sans-serif" font-size="10" text-anchor="middle" font-weight="bold">水（物質）</text>
+
+    <!-- === 瘴気（副産物・黒い粒） === -->
+    <circle cx="135" cy="385" r="3" fill="#212121"/>
+    <circle cx="148" cy="395" r="2.5" fill="#212121"/>
+    <circle cx="125" cy="400" r="2" fill="#212121"/>
+    <text x="155" y="378" fill="#212121" font-family="sans-serif" font-size="10">瘴気</text>
+
+    <circle cx="655" cy="310" r="3" fill="#212121"/>
+    <circle cx="648" cy="325" r="2.5" fill="#212121"/>
+    <circle cx="662" cy="320" r="2" fill="#212121"/>
+
+    <circle cx="653" cy="435" r="2.5" fill="#212121"/>
+    <circle cx="645" cy="445" r="2" fill="#212121"/>
+
+    <!-- === 自然現化（桶の上端からの越流） === -->
+    <!-- 越流の水しぶき -->
+    <path d="M 350 100 Q 345 85 335 75 Q 325 70 315 80" stroke="#42a5f5" stroke-width="3" fill="none" opacity="0.8"/>
+    <path d="M 355 100 Q 360 85 365 75" stroke="#42a5f5" stroke-width="2" fill="none" opacity="0.6"/>
+    <path d="M 330 85 L 340 100" stroke="#42a5f5" stroke-width="2" fill="none" opacity="0.6"/>
+    <text x="310" y="70" fill="#c62828" font-family="sans-serif" font-size="11" text-anchor="end" font-weight="bold">自然現化</text>
+    <text x="310" y="84" fill="#666666" font-family="sans-serif" font-size="9" text-anchor="end">（媒介なし）</text>
+    <!-- 越流の瘴気粒 -->
+    <circle cx="325" cy="75" r="2.5" fill="#212121"/>
+    <circle cx="340" cy="68" r="2" fill="#212121"/>
+
+    <!-- === 個体群（桶の外側） === -->
+    <!-- 個体1（左下） -->
+    <ellipse cx="90" cy="490" rx="35" ry="22" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="1.5"/>
+    <text x="90" y="494" fill="#4a148c" font-family="sans-serif" font-size="11" text-anchor="middle" font-weight="bold">個体A</text>
+    <!-- 個体A → 魂（左壁） -->
+    <line x1="120" y1="478" x2="210" y2="330" stroke="#8e24aa" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#kk-arrow)" opacity="0.7"/>
+    <text x="155" y="420" fill="#6a1b9a" font-family="sans-serif" font-size="9">精神エネルギー</text>
+
+    <!-- 個体2（右下） -->
+    <ellipse cx="670" cy="490" rx="35" ry="22" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="1.5"/>
+    <text x="670" y="494" fill="#4a148c" font-family="sans-serif" font-size="11" text-anchor="middle" font-weight="bold">個体B</text>
+    <!-- 個体B → 魂（右壁下） -->
+    <line x1="635" y1="478" x2="550" y2="410" stroke="#8e24aa" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#kk-arrow)" opacity="0.7"/>
+
+    <!-- 個体3（右上） -->
+    <ellipse cx="670" cy="220" rx="35" ry="22" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="1.5"/>
+    <text x="670" y="224" fill="#4a148c" font-family="sans-serif" font-size="11" text-anchor="middle" font-weight="bold">個体C</text>
+    <!-- 個体C → 魂（右壁上） -->
+    <line x1="635" y1="235" x2="550" y2="285" stroke="#8e24aa" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#kk-arrow)" opacity="0.7"/>
+
+    <!-- === 凡例 === -->
+    <rect x="30" y="520" width="700" height="30" rx="4" fill="#ffffff" stroke="#bdbdbd" stroke-width="1"/>
+    <circle cx="50" cy="535" r="6" fill="#fff3e0" stroke="#e65100" stroke-width="1.5"/>
+    <text x="62" y="539" fill="#333333" font-family="sans-serif" font-size="10">魂（壁の穴）</text>
+    <circle cx="160" cy="535" r="3" fill="#212121"/>
+    <text x="172" y="539" fill="#333333" font-family="sans-serif" font-size="10">瘴気（副産物）</text>
+    <line x1="270" y1="535" x2="295" y2="535" stroke="#42a5f5" stroke-width="3"/>
+    <text x="302" y="539" fill="#333333" font-family="sans-serif" font-size="10">現化（水の流出）</text>
+    <line x1="400" y1="535" x2="425" y2="535" stroke="#8e24aa" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <text x="432" y="539" fill="#333333" font-family="sans-serif" font-size="10">精神エネルギーによる共鳴</text>
+    <ellipse cx="600" cy="535" rx="12" ry="7" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="1"/>
+    <text x="618" y="539" fill="#333333" font-family="sans-serif" font-size="10">個体</text>
+  </g>
+</svg>

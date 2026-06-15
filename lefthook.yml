@@ -1,0 +1,19 @@
+# lefthook 設定。導入: `lefthook install`（要 lefthook バイナリ）。
+# 手動実行は Makefile（make test / make check）を参照。
+
+pre-commit:
+  parallel: true
+  commands:
+    # チェッカー自体のユニットテスト（ゼロ依存・高速・常にグリーン）
+    unit-tests:
+      run: python3 -m unittest discover -s scripts -t scripts -p 'test_*.py'
+
+pre-push:
+  commands:
+    unit-tests:
+      run: python3 -m unittest discover -s scripts -t scripts -p 'test_*.py'
+    # ドキュメント整合性チェック。
+    # 移行（redesign-plan Phase 2-4）が完了するまでは既存債務で失敗するため、
+    # 当面は手動 / CI（informational）で運用する。完了後にコメントを外してゲート化する。
+    # doc-check:
+    #   run: python3 scripts/check.py
