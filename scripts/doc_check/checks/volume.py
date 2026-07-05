@@ -54,10 +54,10 @@ def check_volume(doc: Document, config: Config) -> List[Finding]:
     suppressed = _exempt_lines(doc)
     findings: List[Finding] = []
 
-    def emit(rule, line, msg):
+    def emit(rule, line, msg, severity=Severity.ERROR):
         if line in suppressed:
             return
-        findings.append(Finding(rule, Severity.ERROR, doc.path, line, msg))
+        findings.append(Finding(rule, severity, doc.path, line, msg))
 
     # 見出し階層の深さ
     for h in doc.headings:
@@ -104,7 +104,18 @@ def check_volume(doc: Document, config: Config) -> List[Finding]:
 
         text = mask_links(mask_inline_code("\n".join(body)), doc.ref_defs)
         chars = len(re.sub(r"\s", "", text))
-        if chars > th["entry_max_chars"]:
+        prefix = h.id_code[0] if h.id_code else ""
+        if prefix in ("E", "I"):
+            # 公理群の字数は命題分割ではなくグルーピング見直しのシグナル。
+            # 警告水準を超えたら概念の切り出しを検討し、上限で強制する
+            if chars > th["axiom_entry_max_chars"]:
+                emit("volume.entry-length", h.line,
+                     f"公理群が長すぎる（{chars} 字 > {th['axiom_entry_max_chars']}、リンク除く）。概念の切り出しを行う")
+            elif chars > th["entry_max_chars"]:
+                emit("volume.axiom-entry-heavy", h.line,
+                     f"公理群が重い（{chars} 字 > {th['entry_max_chars']}、リンク除く）。グルーピング見直しのシグナル",
+                     Severity.WARNING)
+        elif chars > th["entry_max_chars"]:
             emit("volume.entry-length", h.line,
                  f"エントリが長すぎる（{chars} 字 > {th['entry_max_chars']}、リンク除く）")
 

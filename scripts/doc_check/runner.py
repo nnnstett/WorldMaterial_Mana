@@ -15,6 +15,7 @@ from .checks.links import check_links
 from .checks.references import check_references
 from .checks.ids import check_ids
 from .checks.sections import check_sections
+from .checks.roles import check_roles
 from .checks.forbidden import check_forbidden
 from .checks.paths import check_paths
 from .checks.volume import check_volume
@@ -46,6 +47,8 @@ def run(documents: List[Document], config: Config, existing_files=None) -> List[
             findings += check_ids(doc)
         if "sections" in rules:
             findings += check_sections(doc)
+        if "roles" in rules:
+            findings += check_roles(doc)
         if "forbidden" in rules:
             findings += check_forbidden(doc)
         if "paths" in rules:

@@ -40,7 +40,7 @@ def classify(path: str) -> str:
 # 各スコープで有効なルール ID
 RULES_BY_SCOPE: Dict[str, List[str]] = {
     "core": [
-        "links", "references", "ids", "sections",
+        "links", "references", "ids", "sections", "roles",
         "forbidden", "paths", "volume", "todos", "meta_info",
     ],
     "applied": [
