@@ -2,6 +2,8 @@
 
 - 公理群（E/I）: 公理・関連（命題・詳細・導出元は置けない）
 - 定理（T）: 命題・導出元・関連（「公理」リストは置けない）
+- 行使形態の定義（`## 行使形態の定義` 節下の T）: 定義・定義対象・関連
+  （命題・導出元・証明スケッチ・「公理」リストは置けない）
 - 未解明領域（Q）: 背景・現在判明・空白の意図・関連
 - 応用ファイル: 冒頭の「前提」行
 """
@@ -13,11 +15,15 @@ from ..model import Document
 from ..report import Finding, Severity
 from ..config import classify
 
+# 定理ファイル内でこの H2 節に属する T エントリは「行使形態の定義」様式となる
+DEFINITION_H2 = "行使形態の定義"
+
 # 接頭辞 → (ラベル表示名, 本文中で探す部分文字列)
 _REQUIRED = {
     "E": [("公理", "**公理**"), ("関連", "**関連**")],
     "I": [("公理", "**公理**"), ("関連", "**関連**")],
     "T": [("命題", "**命題**"), ("導出元", "**導出元**"), ("関連", "**関連**")],
+    "T-definition": [("定義", "**定義**"), ("定義対象", "**定義対象**"), ("関連", "**関連**")],
     "Q": [
         ("背景", "**背景**"),
         ("現在判明していること", "判明"),
@@ -31,7 +37,24 @@ _FORBIDDEN = {
     "E": [("命題", "**命題**"), ("詳細", "**詳細**"), ("導出元", "**導出元**")],
     "I": [("命題", "**命題**"), ("詳細", "**詳細**"), ("導出元", "**導出元**")],
     "T": [("公理", "**公理**")],
+    "T-definition": [
+        ("公理", "**公理**"),
+        ("命題", "**命題**"),
+        ("導出元", "**導出元**"),
+        ("証明スケッチ", "**証明スケッチ**"),
+    ],
 }
+
+
+def h2_context(doc: Document, line: int) -> str:
+    """指定行の直前にある H2 見出しのテキストを返す（無ければ空文字列）。"""
+    ctx = ""
+    for hh in doc.headings:
+        if hh.line > line:
+            break
+        if hh.level == 2:
+            ctx = hh.text
+    return ctx
 
 
 def _body_lines(doc: Document, index: int) -> List[str]:
@@ -54,6 +77,8 @@ def check_sections(doc: Document) -> List[Finding]:
         if not h.id_code:
             continue
         prefix = h.id_code[0]
+        if prefix == "T" and DEFINITION_H2 in h2_context(doc, h.line):
+            prefix = "T-definition"
         required = _REQUIRED.get(prefix)
         if not required:
             continue

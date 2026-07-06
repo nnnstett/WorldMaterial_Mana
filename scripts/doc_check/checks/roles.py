@@ -2,7 +2,13 @@
 
 - 公理群（E/I）: 公理 → 定義 → 観測事実 → 目安 → 補足 → 空白 → 関連 の固定順。
   規約外のセクション名は置けない
-- 定理（T）: 命題 → 導出元 → 証明スケッチ → 詳細 → 観測事実 → 空白 → 関連
+- 定理（T）: 命題 → 導出元 → 証明スケッチ → 詳細 → 定義 → 観測事実 → 目安 →
+  補足 → 空白 → 関連
+- 行使形態の定義（`## 行使形態の定義` 節下の T）: 定義 → 定義対象 → 詳細 →
+  観測事実 → 目安 → 補足 → 空白 → 関連
+- 固定順はスコープ（エントリ直下・節）ごとに適用する。エントリ内の下位見出し
+  （節。例: 定理内の「重要な帰結」節）で順序はリセットされ、節の中でも同じ
+  固定順に従う
 - 空白セクションの箇条は未解明領域（Q）へのリンクを必ず伴う
 
 セクションは行頭の太字ラベル（`**名前**:` や `**名前**（…）:`）を指す。
@@ -15,6 +21,7 @@ from typing import List
 
 from ..model import Document
 from ..report import Finding, Severity
+from .sections import DEFINITION_H2, h2_context
 
 # 行頭の太字セクション名（（や : の手前まで）。リスト項目は先頭が - / 数字のため一致しない
 _SECTION = re.compile(r"^\*\*([^*（(:]+)\*\*")
@@ -22,7 +29,10 @@ _LIST_ITEM = re.compile(r"^\s*(?:[-*+]|\d+\.)\s+\S")
 
 _ORDER = {
     "axiom": ["公理", "定義", "観測事実", "目安", "補足", "空白", "関連"],
-    "theorem": ["命題", "導出元", "証明スケッチ", "詳細", "観測事実", "空白", "関連"],
+    "theorem": ["命題", "導出元", "証明スケッチ", "詳細", "定義", "観測事実",
+                "目安", "補足", "空白", "関連"],
+    "definition": ["定義", "定義対象", "詳細", "観測事実", "目安", "補足",
+                   "空白", "関連"],
 }
 
 
@@ -49,15 +59,28 @@ def check_roles(doc: Document) -> List[Finding]:
         if prefix in ("E", "I"):
             order = _ORDER["axiom"]
         elif prefix == "T":
-            order = _ORDER["theorem"]
+            if DEFINITION_H2 in h2_context(doc, h.line):
+                order = _ORDER["definition"]
+            else:
+                order = _ORDER["theorem"]
         else:
             continue
+
+        # エントリ内の下位見出し（節）の行。ここで固定順のスコープが切り替わる
+        sub_heading_lines = {
+            nxt.line for nxt in doc.headings
+            if start < nxt.line <= end and nxt.level > h.level
+        }
 
         prev_idx = -1
         in_blank = False
         for i in range(start, end):
             raw = doc.lines[i]
             if doc.line_is_code[i]:
+                continue
+            if (i + 1) in sub_heading_lines:
+                prev_idx = -1
+                in_blank = False
                 continue
             m = _SECTION.match(raw)
             if m:

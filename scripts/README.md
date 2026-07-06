@@ -69,10 +69,15 @@ scripts/
 ### 構造
 
 - **sections.missing** (error): 必須セクション欠落
-  - 公理 E/I: 命題・関連
+  - 公理 E/I: 公理・関連
   - 定理 T: 命題・導出元・関連
+  - 行使形態の定義（`## 行使形態の定義` 節下の T）: 定義・定義対象・関連
   - 未解明 Q: 背景・現在判明していること・空白の意図・関連
+- **sections.forbidden** (error): 種別に置けないセクション（公理 E/I に命題・詳細・導出元、定理 T に「公理」リスト、行使形態の定義に公理・命題・導出元・証明スケッチ）
 - **sections.missing-premise** (error): 応用ファイル冒頭に `*前提:` リスト無し
+- **roles.unknown-section** (error): 規約外の役割セクション名
+- **roles.section-order** (error): 役割セクションの固定順違反。固定順はスコープ（エントリ直下・節の中）ごとに適用され、エントリ内の下位見出し（節）でリセットされる
+- **roles.blank-missing-q** (error): 空白セクションの箇条に Q へのリンクが無い
 - **ids.duplicate** (error): 同一ファイル内で E/I/T/Q ID が重複
 - **glossary.missing** (error): core で定義された ID が `glossary.md` に未登録
 
@@ -92,7 +97,7 @@ scripts/
 
 閾値は [`doc_check/thresholds.json`](doc_check/thresholds.json)。原則 error。
 
-- **volume.proposition** (error): 命題セクション本文が `proposition_max_sentences` 文を超える
+- **volume.proposition** (error): 命題セクション本文（行使形態の定義では **定義** 主部）が `proposition_max_sentences` 文を超える
 - **volume.heading-depth** (error): 見出しが `heading_max_depth` より深い
 - **volume.list-items** (error): 連続するリスト項目が `list_max_items` を超える
 - **volume.file-length** (error): 応用ファイルが `applied_file_max_lines` を超える

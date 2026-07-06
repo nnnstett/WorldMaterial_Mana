@@ -173,6 +173,90 @@ class TestRoles(unittest.TestCase):
         doc = parse_document("world/core/axioms.md", md)
         self.assertEqual(check_roles(doc), [])
 
+    def test_theorem_roles_and_section_scope_ok(self):
+        # 定理の役割セクション（定義・補足）と、節内の役割セクション
+        # （観測事実・目安・空白）。固定順は節ごとにリセットされる
+        md = (
+            "### [T4] マナ還元\n\n"
+            "**命題**: 還元は意図的にも起こせる。\n\n"
+            "**導出元**: [I3 副産則](axioms.md#i3-副産則)\n\n"
+            "**詳細**:\n- 導出される内容。\n\n"
+            "**定義**:\n- **還元力**: 高められた実効的な結合力。\n\n"
+            "**補足**:\n- 理解を助ける説明。\n\n"
+            "#### 活性と不活性\n\n"
+            "- 導出される内容。\n\n"
+            "**観測事実**:\n- 観測される事項。\n\n"
+            "**目安**:\n- 数十年〜数百年のオーダー。\n\n"
+            "**空白**:\n- 未確認である（→ [Q13 不活性瘴気の再活性化](open-questions.md#q13)）\n\n"
+            "**関連**: → [I3 副産則](axioms.md#i3-副産則)\n"
+        )
+        doc = parse_document("world/core/theorems.md", md)
+        self.assertEqual(check_roles(doc), [])
+
+    def test_definition_style_entry_ok(self):
+        # 「行使形態の定義」節下の T は定義様式（定義・定義対象・関連）
+        md = (
+            "## 行使形態の定義\n\n"
+            "### [T7] 魔法\n\n"
+            "**定義**: 自身の精神エネルギーで行使する場合、これを「魔法」と呼ぶ。\n\n"
+            "**定義対象**: [T2 共鳴現化](#t2-共鳴現化) の行使のうち自身の精神エネルギーによるもの\n\n"
+            "**詳細**:\n- 効率は破格である。\n\n"
+            "**関連**: → [T2 共鳴現化](#t2-共鳴現化)\n"
+        )
+        doc = parse_document("world/core/theorems.md", md)
+        self.assertEqual(check_roles(doc), [])
+        self.assertEqual(check_sections(doc), [])
+
+    def test_definition_style_forbids_proposition_and_sketch(self):
+        md = (
+            "## 行使形態の定義\n\n"
+            "### [T7] 魔法\n\n"
+            "**定義**: これを「魔法」と呼ぶ。\n\n"
+            "**定義対象**: [T2 共鳴現化](#t2-共鳴現化) の行使\n\n"
+            "**命題**: 置けないセクション。\n\n"
+            "**関連**: → [T2 共鳴現化](#t2-共鳴現化)\n"
+        )
+        doc = parse_document("world/core/theorems.md", md)
+        self.assertIn("sections.forbidden", rule_ids(check_sections(doc)))
+        self.assertIn("roles.unknown-section", rule_ids(check_roles(doc)))
+
+    def test_theorem_outside_definition_h2_still_requires_proposition(self):
+        md = (
+            "## 導出される法則\n\n"
+            "### [T1] エネルギー保存則\n\n"
+            "**定義**: 定理側に命題が無いケース。\n\n"
+            "**関連**: → [I1 変換則](axioms.md#i1-変換則)\n"
+        )
+        doc = parse_document("world/core/theorems.md", md)
+        ids = rule_ids(check_sections(doc))
+        self.assertIn("sections.missing", ids)
+
+    def test_definition_main_part_sentence_limit(self):
+        # 行使形態の定義の主部（**定義**）にも文数上限がかかる
+        md = (
+            "## 行使形態の定義\n\n"
+            "### [T7] 魔法\n\n"
+            "**定義**: 一文目。二文目。三文目。\n\n"
+            "**定義対象**: [T2 共鳴現化](#t2-共鳴現化) の行使\n\n"
+            "**関連**: → [T2 共鳴現化](#t2-共鳴現化)\n"
+        )
+        doc = parse_document("world/core/theorems.md", md)
+        self.assertIn("volume.proposition", rule_ids(check_volume(doc, Config())))
+
+    def test_theorem_section_order_reset_only_at_heading(self):
+        # 節をまたがず同一スコープ内で順序が逆行したらエラー
+        md = (
+            "### [T4] マナ還元\n\n"
+            "**命題**: 還元は意図的にも起こせる。\n\n"
+            "**導出元**: [I3 副産則](axioms.md#i3-副産則)\n\n"
+            "#### 活性と不活性\n\n"
+            "**空白**:\n- 未確認である（→ [Q13 不活性瘴気の再活性化](open-questions.md#q13)）\n\n"
+            "**観測事実**:\n- 観測される事項。\n\n"
+            "**関連**: → [I3 副産則](axioms.md#i3-副産則)\n"
+        )
+        doc = parse_document("world/core/theorems.md", md)
+        self.assertIn("roles.section-order", rule_ids(check_roles(doc)))
+
 
 class TestTodos(unittest.TestCase):
     def test_todo_in_body_flagged(self):

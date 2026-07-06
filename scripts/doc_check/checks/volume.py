@@ -11,6 +11,7 @@ from typing import List, Set
 from ..model import Document, mask_inline_code, mask_links
 from ..report import Finding, Severity
 from ..config import Config, classify
+from .sections import DEFINITION_H2, h2_context
 
 _LIST_ITEM = re.compile(r"^\s*([-*+]|\d+\.)\s+\S")
 _EXEMPT = "check:length-exempt"
@@ -93,18 +94,22 @@ def check_volume(doc: Document, config: Config) -> List[Finding]:
     # 命題ごと（文数・エントリ文字数）
     for h, start, end in _entry_spans(doc):
         body = doc.lines[start:end]
+        prefix = h.id_code[0] if h.id_code else ""
+        # 行使形態の定義（H2 節キーで判別）は主部が **定義**
+        main_label, label_name = _PROP, "命題"
+        if prefix == "T" and DEFINITION_H2 in h2_context(doc, h.line):
+            main_label, label_name = "**定義**", "定義"
         for offset, raw in enumerate(body):
-            if _PROP in raw:
-                after = raw.split(_PROP, 1)[1].lstrip("：: ")
+            if main_label in raw:
+                after = raw.split(main_label, 1)[1].lstrip("：: ")
                 sentences = [s for s in after.split("。") if s.strip()]
                 if len(sentences) > th["proposition_max_sentences"]:
                     emit("volume.proposition", start + offset,
-                         f"命題が {len(sentences)} 文（上限 {th['proposition_max_sentences']} 文）")
+                         f"{label_name}が {len(sentences)} 文（上限 {th['proposition_max_sentences']} 文）")
                 break
 
         text = mask_links(mask_inline_code("\n".join(body)), doc.ref_defs)
         chars = len(re.sub(r"\s", "", text))
-        prefix = h.id_code[0] if h.id_code else ""
         if prefix in ("E", "I"):
             # 公理群の字数は命題分割ではなくグルーピング見直しのシグナル。
             # 警告水準を超えたら概念の切り出しを検討し、上限で強制する
