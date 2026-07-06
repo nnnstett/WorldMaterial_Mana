@@ -95,7 +95,7 @@ WorldMaterial_Mana/
 └── world/
     ├── README.md                # 導出マップ・推奨読み順のハブ
     ├── core/
-    │   ├── axioms.md            # E1-E6 + I1-I4
+    │   ├── axioms.md            # E1-E6 + I1-I5
     │   ├── theorems.md          # T1-T9（重要な帰結は各 T 内の節）
     │   └── open-questions.md    # Q1-Q9
     ├── magic.md
