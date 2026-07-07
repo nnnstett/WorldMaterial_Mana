@@ -122,3 +122,98 @@ class TestLinkChecks(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestItemAnchors(unittest.TestCase):
+    """公理項目の名前付きアンカー（<a id="..."></a>）のサポート。"""
+
+    def test_html_anchor_collected(self):
+        _, parsed = build({
+            "world/core/axioms.md": '4. <a id="e5-大きさ"></a>魂は固有の大きさを持つ\n',
+        })
+        self.assertIn("e5-大きさ", parsed[0].html_anchors)
+        self.assertEqual(parsed[0].html_anchors["e5-大きさ"], 1)
+
+    def test_link_to_item_anchor_resolves(self):
+        topo, parsed = build({
+            "world/core/axioms.md": '## [E5] 魂\n\n4. <a id="e5-大きさ"></a>魂は固有の大きさを持つ\n',
+            "world/core/theorems.md": "[E5 魂#大きさ](axioms.md#e5-大きさ)\n",
+        })
+        findings = check_links(parsed[1], topo)
+        self.assertEqual(findings, [])
+
+    def test_link_to_missing_item_anchor_errors(self):
+        topo, parsed = build({
+            "world/core/axioms.md": "## [E5] 魂\n",
+            "world/core/theorems.md": "[E5 魂#大きさ](axioms.md#e5-大きさ)\n",
+        })
+        findings = check_links(parsed[1], topo)
+        self.assertTrue(any(f.rule_id == "links.missing-anchor" for f in findings))
+
+    def test_item_anchor_id_mismatch(self):
+        topo, parsed = build({
+            "world/core/axioms.md": '## [E6] 精神エネルギー\n\n1. <a id="e6-発生"></a>発生する\n',
+            "world/core/theorems.md": "[E5 魂#発生](axioms.md#e6-発生)\n",
+        })
+        findings = check_links(parsed[1], topo)
+        self.assertTrue(any(f.rule_id == "links.id-mismatch" for f in findings))
+
+    def test_anchor_in_code_fence_ignored(self):
+        _, parsed = build({
+            "a.md": '```\n<a id="e1-例"></a>\n```\n',
+        })
+        self.assertNotIn("e1-例", parsed[0].html_anchors)
+
+
+class TestAnchorRobustness(unittest.TestCase):
+    """アンカーの一意性・命名規則・所属群の検査。"""
+
+    def test_duplicate_anchor_detected(self):
+        topo, parsed = build({
+            "world/core/axioms.md": '## [E5] 魂\n\n1. 一つ目 <a id="e5-孔"></a>\n2. 二つ目 <a id="e5-孔"></a>\n',
+        })
+        findings = check_links(parsed[0], topo)
+        self.assertTrue(any(f.rule_id == "links.duplicate-anchor" for f in findings))
+
+    def test_anchor_heading_collision_detected(self):
+        topo, parsed = build({
+            "world/core/axioms.md": '## [E5] 魂\n\n1. 項目 <a id="e5-魂"></a>\n',
+        })
+        findings = check_links(parsed[0], topo)
+        self.assertTrue(any(f.rule_id == "links.duplicate-anchor" for f in findings))
+
+    def test_anchor_owner_mismatch(self):
+        topo, parsed = build({
+            "world/core/axioms.md": '## [E6] 精神エネルギー\n\n1. 項目 <a id="e5-大きさ"></a>\n',
+        })
+        findings = check_links(parsed[0], topo)
+        self.assertTrue(any(f.rule_id == "links.anchor-owner-mismatch" for f in findings))
+
+    def test_anchor_owner_match_ok(self):
+        topo, parsed = build({
+            "world/core/axioms.md": '## [E5] 魂\n\n1. 項目 <a id="e5-大きさ"></a>\n',
+        })
+        findings = check_links(parsed[0], topo)
+        self.assertEqual(findings, [])
+
+    def test_non_item_anchor_in_core_flagged(self):
+        topo, parsed = build({
+            "world/core/axioms.md": '## [E5] 魂\n\n1. 項目 <a id="foo"></a>\n',
+        })
+        findings = check_links(parsed[0], topo)
+        self.assertTrue(any(f.rule_id == "links.anchor-format" for f in findings))
+
+    def test_non_item_anchor_outside_core_ok(self):
+        topo, parsed = build({
+            "world/magic.md": '## 魔法\n\n本文 <a id="foo"></a>\n',
+        })
+        findings = check_links(parsed[0], topo)
+        self.assertEqual(findings, [])
+
+    def test_headingless_section_link_no_false_fire(self):
+        # [T4#還元判定] のような ID 無し見出しへのリンクは項目アンカー照合を発火させない
+        topo, parsed = build({
+            "world/core/theorems.md": '## [T4] マナ還元\n\n#### 還元判定\n\n[T4#還元判定](#還元判定)\n',
+        })
+        findings = check_links(parsed[0], topo)
+        self.assertEqual(findings, [])

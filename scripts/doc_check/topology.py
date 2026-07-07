@@ -25,7 +25,7 @@ class Topology:
         # ファイル → {アンカー: Heading}
         self._heading_by_anchor: Dict[str, Dict[str, Heading]] = {}
         for d in documents:
-            self.anchors[d.path] = {h.anchor for h in d.headings}
+            self.anchors[d.path] = {h.anchor for h in d.headings} | set(d.html_anchors)
             self._heading_by_anchor[d.path] = {h.anchor: h for h in d.headings}
 
     def resolve(self, source_path: str, target_file: str) -> str:

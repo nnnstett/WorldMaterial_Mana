@@ -109,6 +109,8 @@ def check_volume(doc: Document, config: Config) -> List[Finding]:
                 break
 
         text = mask_links(mask_inline_code("\n".join(body)), doc.ref_defs)
+        # 名前付きアンカー等の HTML タグは読者に見えないため字数に数えない
+        text = re.sub(r"<[^>]+>", "", text)
         chars = len(re.sub(r"\s", "", text))
         if prefix in ("E", "I"):
             # 公理群の字数は命題分割ではなくグルーピング見直しのシグナル。
