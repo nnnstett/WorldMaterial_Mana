@@ -1,4 +1,4 @@
-*前提: [T2 共鳴現化](core/theorems.md#t2-共鳴現化), [T5 存在強度](core/theorems.md#t5-存在強度), [I3 副産則](core/axioms.md#i3-副産則), [T4 マナ還元](core/theorems.md#t4-マナ還元)*
+*前提: [E2 真界](core/axioms.md#e2-真界), [T2 共鳴現化](core/theorems.md#t2-共鳴現化), [T5 存在強度](core/theorems.md#t5-存在強度), [I3 副産則](core/axioms.md#i3-副産則), [T4 マナ還元](core/theorems.md#t4-マナ還元)*
 *関連: [artifacts.md](artifacts.md), [races.md](races.md), [magic.md](magic.md), [spellcraft.md](spellcraft.md), [magic-history.md](magic-history.md), [導出構造マップ](README.md)*
 
 # ダンジョン
@@ -22,7 +22,7 @@
 - 特定の方向性の魔法的作用が強く現れる（場が遺物や暴走の方向性に引きずられ、その方向の現化が優勢になる）
 - マナとの共鳴が促進または阻害される（その場所での魔法・魔術の効率が変動する）
 - 瘴気の残留量・分布が通常と異なる
-- 対応する真界領域のマナの濃淡に干渉し、通常の自然変動（数千〜数万年単位）を超える偏りを生じさせている場合もある
+- 対応する真界領域のマナの濃淡に干渉し、通常の自然変動（数千〜数万年単位）を超える偏りを生じさせている場合もある（濃度はそこで引き出せるマナの量と効率に響く。→ [E3 マナ](core/axioms.md#e3-マナ)）
 
 一般に「マナが濃い場所」と表現される現象は、上記のいずれか、または複合によるもの。
 
