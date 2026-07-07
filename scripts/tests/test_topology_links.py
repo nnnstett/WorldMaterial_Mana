@@ -137,7 +137,7 @@ class TestItemAnchors(unittest.TestCase):
     def test_link_to_item_anchor_resolves(self):
         topo, parsed = build({
             "world/core/axioms.md": '## [E5] 魂\n\n4. 魂は固有の大きさを持つ <a id="e5-大きさ"></a>\n',
-            "world/core/theorems.md": "## [T2] 共鳴現化\n\n**証明スケッチ**:\n- [E5 魂#大きさ](axioms.md#e5-大きさ) により上限が決まる\n",
+            "world/core/theorems.md": "## [T2] 共鳴現化\n\n**導出元**: [E5 魂](axioms.md#e5-魂)\n\n**証明スケッチ**:\n- [E5 魂#大きさ](axioms.md#e5-大きさ) により上限が決まる\n",
         })
         findings = check_links(parsed[1], topo)
         self.assertEqual(findings, [])
@@ -229,7 +229,8 @@ class TestItemAnchorScope(unittest.TestCase):
         topo, parsed = build({
             "world/core/axioms.md": _AXIOMS_E5,
             "world/core/theorems.md":
-                "## [T2] 共鳴現化\n\n**証明スケッチ**:\n"
+                "## [T2] 共鳴現化\n\n**導出元**: [E5 魂](axioms.md#e5-魂)\n\n"
+                "**証明スケッチ**:\n"
                 "- [E5 魂#大きさ](axioms.md#e5-大きさ) により上限が決まる\n",
         })
         self.assertEqual(check_links(parsed[1], topo), [])
@@ -266,7 +267,8 @@ class TestItemAnchorScope(unittest.TestCase):
         topo, parsed = build({
             "world/core/axioms.md": _AXIOMS_E5,
             "world/core/theorems.md":
-                "## [T2] 共鳴現化\n\n**証明スケッチ**:\n"
+                "## [T2] 共鳴現化\n\n**導出元**: [E5 魂](axioms.md#e5-魂)\n\n"
+                "**証明スケッチ**:\n"
                 "- [E5 魂#大きさ] により上限が決まる\n\n"
                 "[E5 魂#大きさ]: axioms.md#e5-大きさ\n",
         })
@@ -333,3 +335,70 @@ class TestAnchorPlacement(unittest.TestCase):
             "world/magic.md": '## 魔法\n\n1. <a id="e5-大きさ"></a> 本文\n',
         })
         self.assertEqual(check_links(parsed[0], topo), [])
+
+
+_AXIOMS_E5_I1 = (
+    _AXIOMS_E5 +
+    "\n## [I1] 変換則\n\n**公理**:\n1. 変換は量を保つ\n"
+)
+
+
+class TestItemAnchorDerivation(unittest.TestCase):
+    """証明スケッチの項目アンカー参照は導出元の群に含まれる（links.item-anchor-derivation）。"""
+
+    def test_referenced_group_in_derivation_ok(self):
+        topo, parsed = build({
+            "world/core/axioms.md": _AXIOMS_E5_I1,
+            "world/core/theorems.md":
+                "## [T2] 共鳴現化\n\n**導出元**: [E5 魂](axioms.md#e5-魂)\n\n"
+                "**証明スケッチ**:\n- [E5 魂#大きさ](axioms.md#e5-大きさ) により上限が決まる\n",
+        })
+        self.assertEqual(check_links(parsed[1], topo), [])
+
+    def test_referenced_group_missing_from_derivation_warns(self):
+        topo, parsed = build({
+            "world/core/axioms.md": _AXIOMS_E5_I1,
+            "world/core/theorems.md":
+                "## [T2] 共鳴現化\n\n**導出元**: [I1 変換則](axioms.md#i1-変換則)\n\n"
+                "**証明スケッチ**:\n- [E5 魂#大きさ](axioms.md#e5-大きさ) により上限が決まる\n",
+        })
+        findings = check_links(parsed[1], topo)
+        hits = [f for f in findings if f.rule_id == "links.item-anchor-derivation"]
+        self.assertEqual(len(hits), 1)
+        self.assertEqual(hits[0].severity, Severity.WARNING)
+
+    def test_group_link_not_counted(self):
+        # 群単位リンク（見出しアンカー）は導出元包含の検査対象にしない
+        topo, parsed = build({
+            "world/core/axioms.md": _AXIOMS_E5_I1,
+            "world/core/theorems.md":
+                "## [T2] 共鳴現化\n\n**導出元**: [I1 変換則](axioms.md#i1-変換則)\n\n"
+                "**証明スケッチ**:\n- [E5 魂](axioms.md#e5-魂) を参照\n",
+        })
+        findings = check_links(parsed[1], topo)
+        self.assertFalse(
+            any(f.rule_id == "links.item-anchor-derivation" for f in findings))
+
+    def test_shortcut_derivation_ok(self):
+        # 本番形式: 導出元が shortcut reference（末尾に参照定義）でも群を認識する
+        topo, parsed = build({
+            "world/core/axioms.md": _AXIOMS_E5_I1,
+            "world/core/theorems.md":
+                "## [T2] 共鳴現化\n\n**導出元**: [E5 魂] + [I1 変換則]\n\n"
+                "**証明スケッチ**:\n- [E5 魂#大きさ] により上限が決まる\n\n"
+                "[E5 魂]: axioms.md#e5-魂\n"
+                "[I1 変換則]: axioms.md#i1-変換則\n"
+                "[E5 魂#大きさ]: axioms.md#e5-大きさ\n",
+        })
+        self.assertEqual(check_links(parsed[1], topo), [])
+
+    def test_multiline_derivation_ok(self):
+        # 導出元セクションが複数行に折り返しても群を認識する
+        topo, parsed = build({
+            "world/core/axioms.md": _AXIOMS_E5_I1,
+            "world/core/theorems.md":
+                "## [T2] 共鳴現化\n\n**導出元**: [I1 変換則](axioms.md#i1-変換則) +\n"
+                "[E5 魂](axioms.md#e5-魂)\n\n"
+                "**証明スケッチ**:\n- [E5 魂#大きさ](axioms.md#e5-大きさ) により上限が決まる\n",
+        })
+        self.assertEqual(check_links(parsed[1], topo), [])

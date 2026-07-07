@@ -45,7 +45,8 @@ def mapped_ids():
         if not line.lstrip().startswith("|"):
             continue
         cells = [c.strip() for c in line.strip().strip("|").split("|")]
-        if len(cells) >= 3 and cells[1] == "機械":
+        # 保証列は「機械」または「機械（warning）」等の注記付き
+        if len(cells) >= 3 and cells[1].startswith("機械"):
             ids |= set(_MAPPED_ID.findall(cells[2]))
     return ids
 

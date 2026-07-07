@@ -441,6 +441,8 @@ WorldMaterial_Mana/
 
 規約の各規則を誰が守るか（機械チェック／人手レビュー）の対応。機械チェックの実装は `scripts/` にあり、本表と実装の一致はチェッカーのテストが検査する。「機械」の規則は機械チェックの結果を確認し、レビューで重複指摘しない（機械チェックが実行されていない場合は実行を求める）。
 
+重大度の意味: **error** は規約違反であり修正必須（CI を失敗させる）。**warning** は近似的な検査による判断喚起のシグナルであり CI を止めない。誤検出または意図的な残置と判断した場合は、その判断を PR・レビューに記録する（機械警告の抑制コメントは設けない）。
+
 | 規約条項 | 保証 | チェック ID |
 |---|---|---|
 | リンク先ファイル・アンカーの実在（writing-rules §3.1） | 機械 | `links.missing-file` `links.missing-anchor` |
@@ -458,8 +460,10 @@ WorldMaterial_Mana/
 | 分量上限（writing-rules §9） | 機械 | `volume.proposition` `volume.heading-depth` `volume.list-items` `volume.file-length` `volume.entry-length` `volume.axiom-entry-heavy` |
 | ToDo の集約（writing-rules §10） | 機械 | `todos.scattered` |
 | メタ・制作情報の不混入（§4.9） | 機械 | `meta-info.doc` `meta-info.ops` |
-| 証明スケッチの引用群が導出元に含まれる（§4.1） | レビュー（機械化候補） | — |
-| glossary の出典が管掌元へ向く（writing-rules §6） | レビュー（機械化候補） | — |
+| 証明スケッチの項目アンカー参照が導出元の群に含まれる（§4.1。定義参照の例外は機械判定不可） | 機械（warning） | `links.item-anchor-derivation` |
+| glossary の見出し語が出典リンク先の本文に現れる（writing-rules §6。分解した断片も許す緩い近似） | 機械（warning） | `glossary.source-term-missing` |
+| 証明スケッチの引用が導出元だけか（§4.1。項目アンカーの所属群は機械が検査する——ここでは群単位リンクを含む意味上の前提漏れを見る） | レビュー | — |
+| glossary の出典が管掌元（正）へ向いているか（writing-rules §6。語の実在は機械が検査する——ここでは向き先の妥当性を見る） | レビュー | — |
 | 正の所在・重複の妥当性（§4.11）、スラッグ命名・リード文省略の妥当性、引用と動線の使い分け（§4.4）、番号のみの命題参照（§4.4。ID を伴わない「公理 3」等は機械が拾えない） | レビュー | — |
 
 ---
