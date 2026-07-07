@@ -4,7 +4,7 @@ World Material "Mana" のドキュメント群を機械的に検証する CLI �
 
 - **ゼロ依存**: Python 3.11 stdlib のみ。`pip install` 不要
 - **テスト**: `unittest`（stdlib）で TDD
-- **対象スコープ**: `docs/architecture.md` の §4 記述規約および `docs/redesign-plan.md` Phase 1 仕様
+- **対象スコープ**: `docs/architecture.md`（§4 記述規約）と `docs/writing-rules.md` が定める規約のうち、機械判定可能な条項（対応は [architecture.md §5.5 保証マップ](../docs/architecture.md#55-保証マップ)）
 - **設計**: 全ドキュメントを 1 つのトポロジーグラフとして扱い、その上でリンク・参照・分量を検証
 
 ## 使い方
@@ -48,66 +48,21 @@ scripts/
 
 | スコープ | 例 | 適用ルール |
 |---|---|---|
-| core | `world/core/axioms.md`, `theorems.md`, `open-questions.md` | links, references, ids, sections, forbidden, paths, volume, todos, meta_info |
+| core | `world/core/axioms.md`, `theorems.md`, `open-questions.md` | links, references, ids, sections, roles, forbidden, paths, volume, todos, meta_info |
 | applied | `world/magic.md`, `world/dungeons.md` 等 | links, references, sections, forbidden, paths, volume, todos, meta_info |
 | glossary | `glossary.md` | links, forbidden, paths, meta_info |
-| meta | `docs/architecture.md`, `docs/redesign-plan.md`, `docs/design-notes.md` | **適用外**（禁止語・旧パス・コードのみ参照の NG 例を意図的に含むため） |
+| meta | `docs/architecture.md`, `docs/writing-rules.md`, `docs/design-notes.md` | links のみ（規約文書間の相互参照の実在検査。内容系は NG 例を意図的に含むため適用外） |
 | other | `README.md` 等 | links |
 
 ## チェック一覧
 
-### 形式
+チェック ID と、それが保証する規約条項の対応は
+[architecture.md §5.5 保証マップ](../docs/architecture.md#55-保証マップ) が正である
+（本 README には再掲しない）。保証マップと実装の一致は
+`tests/test_assurance_map.py` が検査し、片方だけの追加・削除は `make test` で落ちる。
 
-- **links.missing-file** (error): 参照先ファイルが存在しない
-- **links.missing-anchor** (error): 参照先ファイルに該当アンカー（見出し）が無い
-- **links.id-mismatch** (error): リンクテキストの ID コードと参照先見出しの ID コードが不一致。`### [E1] 現界` のような ID 付き見出しへのリンクのみ照合し、ID 無し見出し（重要な帰結節など）への参照はスキップ
-- **references.bare-code** (error): 散文中の「T1 により」「E4 が」のようなコードのみ参照
-- **references.bare-bracket** (error): `[T1]` のようなセクション名を含まない括弧付き参照
-  - 範囲・列挙の例外は **無し**。特定命題を指すときは両端または各要素をリンクで書く
-  - 引用（`>`）・コードブロック・インラインコード内のみ対象外
-
-### 構造
-
-- **sections.missing** (error): 必須セクション欠落
-  - 公理 E/I: 公理・関連
-  - 定理 T: 命題・導出元・関連
-  - 行使形態の定義（`## 行使形態の定義` 節下の T）: 定義・定義対象・関連
-  - 未解明 Q: 背景・現在判明していること・空白の意図・関連
-- **sections.forbidden** (error): 種別に置けないセクション（公理 E/I に命題・詳細・導出元、定理 T に「公理」リスト、行使形態の定義に公理・命題・導出元・証明スケッチ）
-- **sections.missing-premise** (error): 応用ファイル冒頭に `*前提:` リスト無し
-- **roles.unknown-section** (error): 規約外の役割セクション名
-- **roles.section-order** (error): 役割セクションの固定順違反。固定順はスコープ（エントリ直下・節の中）ごとに適用され、エントリ内の下位見出し（節）でリセットされる
-- **roles.blank-missing-q** (error): 空白セクションの箇条に Q へのリンクが無い
-- **ids.duplicate** (error): 同一ファイル内で E/I/T/Q ID が重複
-- **glossary.missing** (error): core で定義された ID が `glossary.md` に未登録
-
-### 内容
-
-- **forbidden.term** (error): 廃止用語「補題」が本文に出現
-- **forbidden.code** (error): 廃止接頭辞 `L#` / `C#` が本文に出現
-  - 「体系」「系統」等の複合語との区別が難しいため、「系」単体は対象外
-  - ダンジョン分類の「C-1, C-2」もハイフン区別で除外
-- **paths.old-path** (error): 旧パス（`世界の法則.md`, `魔法.md`, `character/`, `history/` 等）への参照
-- **meta-info.doc** (error): 本文・glossary にメタ文書名（`architecture.md`, `writing-rules.md`, `redesign-plan.md`, `design-notes.md`）への言及（architecture.md §4.9 / 観点 C7）
-  - **例外**: README（ハブ）からの `design-notes.md`・`architecture.md` 誘導リンクは許容。README でも他メタ文書名は対象
-- **meta-info.ops** (error): 本文・glossary に制作・運用情報（`scripts/`, `check.py`, `make check`/`make test`, `continue-on-error`, `lefthook`, `.github`）への言及
-  - 一般語「整合性チェック」「CI」等は誤検出回避のため対象外。引用（`>`）・コードブロック内も対象外
-
-### 長さ・分量上限（暴走防止）
-
-閾値は [`doc_check/thresholds.json`](doc_check/thresholds.json)。原則 error。
-
-- **volume.proposition** (error): 命題セクション本文（行使形態の定義では **定義** 主部）が `proposition_max_sentences` 文を超える
-- **volume.heading-depth** (error): 見出しが `heading_max_depth` より深い
-- **volume.list-items** (error): 連続するリスト項目が `list_max_items` を超える
-- **volume.file-length** (error): 応用ファイルが `applied_file_max_lines` を超える
-- **volume.entry-length** (error): 1 命題エントリが `entry_max_chars` を超える
-  - **Markdown リンクの URL とリンクテキスト全体は文字数カウントから除外**（リンク先見出し名が長くても誤検出しない）
-- 段落の文数 / 詳細セクション行数: 上記項目で実質カバー（必要に応じて追加実装）
-
-### その他
-
-- **todos.scattered** (warning): TODO / FIXME / `- [ ]` がファイル末尾の `## ToDo` 節以外に出現
+各チェックの検出仕様の細部（誤検出回避の除外規則など）は、
+`doc_check/checks/` の各モジュール docstring に実装と隣接して記す。
 
 ## 例外コメント
 
@@ -164,4 +119,4 @@ TDD で進める。
 make test   # 常にグリーンであるべき
 ```
 
-新しいチェックを追加する場合: テストを先に書く → `doc_check/checks/foo.py` を実装 → `runner.py` に配線 → `RULES_BY_SCOPE` を更新。
+新しいチェックを追加する場合: テストを先に書く → `doc_check/checks/foo.py` を実装 → `runner.py` に配線 → `RULES_BY_SCOPE` を更新 → 保証マップ（`docs/architecture.md` §5.5）に行を追加（`tests/test_assurance_map.py` が同期を検査する）。

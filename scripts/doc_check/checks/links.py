@@ -2,7 +2,13 @@
 
 - missing-file: 参照先ファイルが存在しない
 - missing-anchor: 参照先ファイルにアンカー（見出し）が存在しない
-- id-mismatch: リンクテキストの ID コードと、参照先見出しの ID コードが食い違う
+- id-mismatch: リンクテキストの ID コードと、参照先見出し／項目アンカーの ID が食い違う
+- duplicate-anchor: 名前付きアンカーの重複・見出しアンカーとの衝突
+- anchor-format / anchor-owner-mismatch: 項目アンカーの命名規則・所属群一致
+- anchor-placement: 項目アンカーが公理項目（番号付きリスト）の行末にあるか
+- item-anchor-scope: 項目アンカーへの参照が定理（T）の証明スケッチ内に限られているか
+
+各チェックが保証する規約条項は docs/architecture.md §5.5 保証マップを参照。
 """
 from __future__ import annotations
 
@@ -16,6 +22,11 @@ from ..report import Finding, Severity
 _LEADING_ID = re.compile(r"^([EITQ]\d+)")
 # 項目アンカー（HTML アンカー）の ID 接頭辞（例: "e5-大きさ" → "e5"）
 _ANCHOR_ID = re.compile(r"^([eitq]\d+)-")
+# 行頭の太字セクションラベル（例: **証明スケッチ**:）。リスト項目内の太字は一致しない
+_SECTION_LABEL = re.compile(r"^\*\*([^*（(:]+)\*\*")
+# 番号付きリスト項目（公理項目）
+_NUMBERED_ITEM = re.compile(r"^\s*\d+\.\s+\S")
+_PROOF_SECTION = "証明スケッチ"
 
 
 def _nearest_id_heading(doc: Document, line: int):
@@ -29,8 +40,26 @@ def _nearest_id_heading(doc: Document, line: int):
     return owner
 
 
+def _section_labels_by_line(doc: Document):
+    """各行が属する行頭太字セクション名を 行番号 → 名前 で返す（見出しでリセット）。"""
+    heading_lines = {h.line for h in doc.headings}
+    labels = {}
+    current = None
+    for idx, raw in enumerate(doc.lines):
+        line_no = idx + 1
+        if line_no in heading_lines:
+            current = None
+        elif not doc.line_is_code[idx]:
+            m = _SECTION_LABEL.match(raw)
+            if m:
+                current = m.group(1)
+        labels[line_no] = current
+    return labels
+
+
 def check_links(doc: Document, topo: Topology) -> List[Finding]:
     findings: List[Finding] = []
+    section_labels = None  # 項目アンカー参照の検査時に遅延構築
 
     # 名前付きアンカー自体の検査（一意性・見出し衝突・命名規則・所属群）
     seen = {}
@@ -57,6 +86,15 @@ def check_links(doc: Document, topo: Topology) -> List[Finding]:
                     f"項目アンカー（{name}）の ID 接頭辞と、所属する見出し"
                     f"（[{owner.id_code}]）が不一致",
                 ))
+            if doc.path.startswith("world/core/"):
+                raw = doc.lines[line - 1]
+                at_line_end = re.search(
+                    r'<a\s+id="' + re.escape(name) + r'"\s*>\s*</a>\s*$', raw)
+                if not (_NUMBERED_ITEM.match(raw) and at_line_end):
+                    findings.append(Finding(
+                        "links.anchor-placement", Severity.ERROR, doc.path, line,
+                        f"項目アンカー（{name}）は公理項目（番号付きリスト）の行末に置く",
+                    ))
         elif doc.path.startswith("world/core/"):
             findings.append(Finding(
                 "links.anchor-format", Severity.ERROR, doc.path, line,
@@ -87,6 +125,29 @@ def check_links(doc: Document, topo: Topology) -> List[Finding]:
                 f"参照先にアンカーが無い: {target_path}#{link.target_anchor}",
             ))
             continue
+
+        # 項目アンカー参照の適用範囲（定理の証明スケッチ限定）
+        if (
+            link.target_anchor
+            and target_path in topo.documents
+            and _ANCHOR_ID.match(link.target_anchor)
+            and topo.heading_at(target_path, link.target_anchor) is None
+            and topo.has_anchor(target_path, link.target_anchor)
+        ):
+            if section_labels is None:
+                section_labels = _section_labels_by_line(doc)
+            entry = _nearest_id_heading(doc, link.line)
+            in_theorem_proof = (
+                section_labels.get(link.line) == _PROOF_SECTION
+                and entry is not None
+                and entry.id_code.startswith("T")
+            )
+            if not in_theorem_proof:
+                findings.append(Finding(
+                    "links.item-anchor-scope", Severity.ERROR, doc.path, link.line,
+                    f"項目アンカー参照（{target_path}#{link.target_anchor}）は"
+                    f"定理の証明スケッチ内でのみ使う。用語のポインタは群単位リンクで書く",
+                ))
 
         # ID 整合（リンクテキスト先頭の ID と参照先見出しの ID）
         m = _LEADING_ID.match(link.text)
