@@ -8,7 +8,7 @@ from __future__ import annotations
 import re
 from typing import List, Set
 
-from ..model import Document, mask_inline_code, mask_links
+from ..model import Document, mask_inline_code, mask_links, _REF_DEF
 from ..report import Finding, Severity
 from ..config import Config, classify
 from .sections import DEFINITION_H2, h2_context
@@ -108,7 +108,10 @@ def check_volume(doc: Document, config: Config) -> List[Finding]:
                          f"{label_name}が {len(sentences)} 文（上限 {th['proposition_max_sentences']} 文）")
                 break
 
-        text = mask_links(mask_inline_code("\n".join(body)), doc.ref_defs)
+        # 参照定義行（[label]: url）は本文ではないため字数に数えない
+        # （最終エントリの範囲はファイル末尾まで伸び、参照定義ブロックを含むため）
+        prose = [raw for raw in body if not _REF_DEF.match(raw)]
+        text = mask_links(mask_inline_code("\n".join(prose)), doc.ref_defs)
         # 名前付きアンカー等の HTML タグは読者に見えないため字数に数えない
         text = re.sub(r"<[^>]+>", "", text)
         chars = len(re.sub(r"\s", "", text))

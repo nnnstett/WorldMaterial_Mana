@@ -76,6 +76,20 @@ class TestSections(unittest.TestCase):
 
 
 class TestVolume(unittest.TestCase):
+    def test_entry_length_excludes_reference_definitions(self):
+        # 最終エントリの範囲はファイル末尾の参照定義ブロックを含むが、
+        # 参照定義行（[label]: url）は本文ではないため字数に数えない
+        refdefs = "\n".join(
+            f"[ラベル{i} 見出し語{i}]: core/axioms.md#anchor-{i}" for i in range(120)
+        )
+        doc = parse_document(
+            "world/core/theorems.md",
+            "### [T9] 超能力\n\n**命題**: 短い。\n\n本文一行。\n\n" + refdefs + "\n",
+        )
+        findings = check_volume(doc, Config())
+        self.assertFalse(
+            any(f.rule_id == "volume.entry-length" for f in findings))
+
     def setUp(self):
         self.cfg = Config()
 
