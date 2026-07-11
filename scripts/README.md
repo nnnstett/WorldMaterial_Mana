@@ -1,4 +1,4 @@
-# scripts/ — ドキュメント整合性チェッカー
+# scripts/ — ドキュメント検証ツール
 
 World Material "Mana" のドキュメント群を機械的に検証する CLI とライブラリ。
 
@@ -6,6 +6,7 @@ World Material "Mana" のドキュメント群を機械的に検証する CLI �
 - **テスト**: `unittest`（stdlib）で TDD
 - **対象スコープ**: `docs/architecture.md`（§4 記述規約）と `docs/writing-rules.md` が定める規約のうち、機械判定可能な条項（対応は [architecture.md §5.5 保証マップ](../docs/architecture.md#55-保証マップ)）
 - **設計**: 全ドキュメントを 1 つのトポロジーグラフとして扱い、その上でリンク・参照・分量を検証
+- **意味検証**: `semantic_eval.py` で LLM 用の盲検ケースパックを生成・封印・集計し、ケースから `FAQ.md` を生成
 
 ## 使い方
 
@@ -19,6 +20,11 @@ make topology
 
 # 特定ファイルだけ報告
 python3 scripts/check.py world/core/axioms.md world/core/theorems.md
+
+# LLM セマンティック検証の操作一覧
+python3 scripts/semantic_eval.py --help
+# セマンティック検証ケースから FAQ.md を再生成
+make faq
 ```
 
 終了コード:
@@ -30,6 +36,7 @@ python3 scripts/check.py world/core/axioms.md world/core/theorems.md
 ```
 scripts/
 ├── check.py                       # CLI エントリ
+├── semantic_eval.py               # 盲検 LLM セマンティック検証
 ├── README.md                      # 本ファイル
 ├── doc_check/
 │   ├── model.py                   # Markdown パース + GitHub 互換 slugify
@@ -40,6 +47,11 @@ scripts/
 │   └── checks/                    # 個別チェック
 └── tests/                         # unittest（ゼロ依存）
 ```
+
+セマンティック検証の脅威モデル、ケース形式（1ファイル `ask`/`key`）、候補／採点パックの実行手順、
+`FAQ.md` 生成は [LLM セマンティック検証](../docs/semantic-validation.md)を参照。`semantic-tests/public/`
+は候補実行時にリポジトリとWebを遮断する運用で回帰判定にも使え、`make faq` で読者向け `FAQ.md`
+（リポジトリ直下）を生成する。
 
 ## ファイルスコープ別ルール
 

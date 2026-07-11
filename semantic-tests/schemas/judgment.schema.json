@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol_version", "run_id", "answer_sha256", "judgments"],
+  "properties": {
+    "protocol_version": {"const": 2},
+    "run_id": {"type": "string"},
+    "answer_sha256": {"type": "string"},
+    "judgments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["case_id", "criterion_results"],
+        "properties": {
+          "case_id": {"type": "string"},
+          "criterion_results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["criterion_id", "passed", "evidence"],
+              "properties": {
+                "criterion_id": {"type": "string"},
+                "passed": {"type": "boolean"},
+                "evidence": {"type": "string"}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

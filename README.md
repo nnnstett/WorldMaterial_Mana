@@ -57,8 +57,10 @@
   - [種族](world/races.md)
   - [年表](world/timeline.md) / [魔法・魔術の歴史](world/magic-history.md)
 - [概念索引（glossary）](glossary.md)
+- [FAQ](FAQ.md) — 具体状況での世界法則の帰結（一意 / 空白 / 矛盾。自動生成）
 
 ### 設計ドキュメント
 
 - [設計書（architecture）](docs/architecture.md) — ドキュメント群の構造・分類・記述規約
 - [著者の選択（design-notes）](docs/design-notes.md) — 公準的事項・派生作品での改変ポイント
+- [LLM セマンティック検証](docs/semantic-validation.md) — 具体ケースによる盲検の意味整合性検証
