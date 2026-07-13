@@ -53,7 +53,7 @@
   - [未解明領域](world/core/open-questions.md)
 - 具体的な中身
   - [魔法](world/magic.md) / [魔術](world/spellcraft.md) / [超能力](world/psionics.md)
-  - [遺物・アーティファクト](world/artifacts.md) / [ダンジョン](world/dungeons.md)
+  - [アーティファクト](world/artifacts.md) / [ダンジョン](world/dungeons.md)
   - [種族](world/races.md)
   - [年表](world/timeline.md) / [魔法・魔術の歴史](world/magic-history.md)
 - [概念索引（glossary）](glossary.md)
