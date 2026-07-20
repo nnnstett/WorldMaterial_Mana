@@ -13,6 +13,8 @@ run_id: `{{RUN_ID}}`
 
 推測で空白を埋めず、「本文にあること」「導出できること」「仮定」「未決」を分けてください。
 引用はファイル名、見出しまたはアンカー、その引用が何を支えるかを記録します。
+citation の `source` は、`sources/` ディレクトリからの相対パスで書きます
+（例: `world/core/axioms.md`。先頭に `sources/` を付けません）。
 
 出力は `candidate-answer.schema.json` に従う JSON のみとしてください。説明文や Markdown
 コードフェンスを付けてはいけません。`run_id` は上記の値をそのまま使用します。
