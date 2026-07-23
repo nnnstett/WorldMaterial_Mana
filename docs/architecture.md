@@ -461,7 +461,7 @@ WorldMaterial_Mana/
 | 禁止語・廃止コード（writing-rules §7） | 機械 | `forbidden.term` `forbidden.code` |
 | 旧パス（writing-rules §8） | 機械 | `paths.old-path` |
 | 分量上限（writing-rules §9） | 機械 | `volume.proposition` `volume.heading-depth` `volume.list-items` `volume.file-length` `volume.entry-length` `volume.axiom-entry-heavy` |
-| ToDo の集約（writing-rules §10） | 機械 | `todos.scattered` |
+| ToDo を本文に置かない（writing-rules §10） | 機械（warning） | `todos.in-body` |
 | メタ・制作情報の不混入（§4.9） | 機械 | `meta-info.doc` `meta-info.ops` |
 | 証明スケッチの項目アンカー参照が導出元の群に含まれる（§4.1。定義参照の例外は機械判定不可） | 機械（warning） | `links.item-anchor-derivation` |
 | glossary の見出し語が出典リンク先の本文に現れる（writing-rules §6。分解した断片も許す緩い近似） | 機械（warning） | `glossary.source-term-missing` |
