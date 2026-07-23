@@ -1,7 +1,7 @@
-"""TODO 散在チェック。
+"""ToDo を本文に置かないチェック。
 
-TODO マーカー（- [ ], TODO:, FIXME:）はファイル末尾の `## ToDo` 節以外に
-現れないこと。
+書きかけ・課題は GitHub Issue で管理する。本文に TODO マーカー
+（- [ ], TODO:, FIXME:）や `## ToDo` 節を置かない。
 """
 from __future__ import annotations
 
@@ -14,26 +14,21 @@ from ..report import Finding, Severity
 _TODO_MARK = re.compile(r"(- \[ \]|TODO:|FIXME:)")
 
 
-def _todo_section_line(doc: Document) -> int:
-    for h in doc.headings:
-        if "todo" in h.text.lower():
-            return h.line
-    return -1
-
-
 def check_todos(doc: Document) -> List[Finding]:
     findings: List[Finding] = []
-    todo_line = _todo_section_line(doc)
+    for h in doc.headings:
+        if "todo" in h.text.lower():
+            findings.append(Finding(
+                "todos.in-body", Severity.WARNING, doc.path, h.line,
+                "`## ToDo` 節は置かず、課題は GitHub Issue で管理すること",
+            ))
     for idx, raw in enumerate(doc.lines):
         if doc.line_is_code[idx]:
             continue
-        line_no = idx + 1
         if not _TODO_MARK.search(raw):
             continue
-        if todo_line != -1 and line_no > todo_line:
-            continue  # ToDo 節以降は許容
         findings.append(Finding(
-            "todos.scattered", Severity.WARNING, doc.path, line_no,
-            "TODO/FIXME は末尾の `## ToDo` 節にまとめること",
+            "todos.in-body", Severity.WARNING, doc.path, idx + 1,
+            "TODO/FIXME・チェックボックスは本文に置かず、課題は GitHub Issue で管理すること",
         ))
     return findings

@@ -1,4 +1,4 @@
-"""必須セクション・分量上限・TODO 散在チェックのテスト（TDD）。"""
+"""必須セクション・分量上限・ToDo 本文禁止チェックのテスト（TDD）。"""
 import unittest
 
 from doc_check.model import parse_document
@@ -273,15 +273,25 @@ class TestRoles(unittest.TestCase):
 
 
 class TestTodos(unittest.TestCase):
-    def test_todo_in_body_flagged(self):
+    def test_todo_marker_in_body_flagged(self):
         md = "# 魔法\n\n- [ ] 本文中の TODO\n\n## 本編\n"
         doc = parse_document("world/magic.md", md)
-        self.assertIn("todos.scattered", rule_ids(check_todos(doc)))
+        self.assertIn("todos.in-body", rule_ids(check_todos(doc)))
 
-    def test_todo_under_todo_section_ok(self):
+    def test_todo_section_flagged(self):
+        # 課題は GitHub Issue で管理する。本文に `## ToDo` 節は置けない
         md = "# 魔法\n\n本文。\n\n## ToDo\n\n- [ ] あとで書く\n"
         doc = parse_document("world/magic.md", md)
+        self.assertIn("todos.in-body", rule_ids(check_todos(doc)))
+
+    def test_no_todo_ok(self):
+        md = "# 魔法\n\n本文のみ。課題は Issue で管理する。\n"
+        doc = parse_document("world/magic.md", md)
         self.assertEqual(check_todos(doc), [])
+
+    def test_glossary_in_todos_scope(self):
+        # glossary.md も読者向け本文。ToDo は機械チェックの対象に含める
+        self.assertIn("todos", Config().rules_for("glossary.md"))
 
 
 if __name__ == "__main__":

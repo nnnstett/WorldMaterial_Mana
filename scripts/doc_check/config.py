@@ -47,7 +47,7 @@ RULES_BY_SCOPE: Dict[str, List[str]] = {
         "links", "references", "sections",
         "forbidden", "paths", "volume", "todos", "meta_info",
     ],
-    "glossary": ["links", "forbidden", "paths", "meta_info"],
+    "glossary": ["links", "forbidden", "paths", "todos", "meta_info"],
     # メタ文書（docs/）は設計上、禁止語・旧パス・コードのみ参照の NG 例を意図的に
     # 含むため、内容系ルールは対象外とする。リンクの実在だけは検査する
     # （規約文書間の相互参照が主な対象。例示リンクはコードスパンに入れる規約）
