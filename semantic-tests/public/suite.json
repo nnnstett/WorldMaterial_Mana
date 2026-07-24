@@ -1,0 +1,11 @@
+{
+  "protocol_version": 2,
+  "suite_id": "public-calibration-v1",
+  "minimum_judges": 3,
+  "source_paths": [
+    "world/core/axioms.md",
+    "world/core/theorems.md",
+    "world/magic.md",
+    "world/dungeons.md"
+  ]
+}

@@ -17,6 +17,8 @@ _INLINE_LINK = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
 _REF_DEF = re.compile(r"^\s*\[([^\]]+)\]:\s*(.+?)\s*$")
 _SHORTCUT_REF = re.compile(r"\[([^\]]+)\]")
 _INLINE_CODE = re.compile(r"`[^`]*`")
+# 本文中の名前付きアンカー（公理項目アンカー。例: <a id="e5-大きさ"></a>）
+_HTML_ANCHOR = re.compile(r'<a\s+id="([^"]+)"\s*>\s*</a>')
 
 
 def slugify(text: str) -> str:
@@ -62,6 +64,10 @@ class Document:
     headings: List[Heading] = field(default_factory=list)
     links: List[Link] = field(default_factory=list)
     ref_defs: Dict[str, str] = field(default_factory=dict)
+    # 名前付きアンカー（アンカー名 → 初出行番号）
+    html_anchors: Dict[str, int] = field(default_factory=dict)
+    # 名前付きアンカーの全出現（重複・所属検査用）
+    html_anchor_occurrences: List[tuple] = field(default_factory=list)
 
 
 def mask_inline_code(text: str) -> str:
@@ -162,6 +168,11 @@ def parse_document(path: str, content: str) -> Document:
 
         # インラインコードをマスク（中のリンク・括弧を無効化）
         masked = _INLINE_CODE.sub(lambda mo: " " * len(mo.group(0)), raw)
+
+        # 名前付きアンカー
+        for am in _HTML_ANCHOR.finditer(masked):
+            doc.html_anchors.setdefault(am.group(1), line_no)
+            doc.html_anchor_occurrences.append((am.group(1), line_no))
 
         # インラインリンク [text](target)
         consumed_spans = []

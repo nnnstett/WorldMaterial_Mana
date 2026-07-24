@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol_version", "run_id", "answers"],
+  "properties": {
+    "protocol_version": {"const": 2},
+    "run_id": {"type": "string"},
+    "answers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "case_id", "classification", "conclusion", "reasoning_summary",
+          "citations", "assumptions", "unresolved", "confidence"
+        ],
+        "properties": {
+          "case_id": {"type": "string"},
+          "classification": {
+            "enum": ["determinate", "underdetermined", "inconsistent"]
+          },
+          "conclusion": {"type": "string", "minLength": 1},
+          "reasoning_summary": {"type": "array", "items": {"type": "string"}},
+          "citations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["source", "locator", "supports"],
+              "properties": {
+                "source": {"type": "string"},
+                "locator": {"type": "string"},
+                "supports": {"type": "string"}
+              }
+            }
+          },
+          "assumptions": {"type": "array", "items": {"type": "string"}},
+          "unresolved": {"type": "array", "items": {"type": "string"}},
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+        }
+      }
+    }
+  }
+}

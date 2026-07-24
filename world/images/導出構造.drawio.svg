@@ -18,12 +18,12 @@
 
     <!-- Title -->
     <text x="530" y="32" fill="#333333" font-family="sans-serif" font-size="18" font-weight="bold" text-anchor="middle">公理 → 定理 の導出構造</text>
-    <text x="530" y="52" fill="#888888" font-family="sans-serif" font-size="11" text-anchor="middle">E 存在公理 ／ I 相互作用公理 ／ T 定理 ／ Q 未解明領域</text>
+    <text x="530" y="52" fill="#888888" font-family="sans-serif" font-size="11" text-anchor="middle">E 存在公理 ／ I 相互作用公理 ／ T 定理・行使形態の定義 ／ Q 未解明領域</text>
 
     <!-- Column headers -->
     <text x="105" y="80" fill="#1565c0" font-family="sans-serif" font-size="13" font-weight="bold" text-anchor="middle">存在公理（E）</text>
     <text x="315" y="80" fill="#4527a0" font-family="sans-serif" font-size="13" font-weight="bold" text-anchor="middle">相互作用公理（I）</text>
-    <text x="565" y="80" fill="#2e7d32" font-family="sans-serif" font-size="13" font-weight="bold" text-anchor="middle">定理（T）</text>
+    <text x="565" y="80" fill="#2e7d32" font-family="sans-serif" font-size="13" font-weight="bold" text-anchor="middle">定理（T）／行使形態の定義</text>
     <text x="875" y="80" fill="#558b2f" font-family="sans-serif" font-size="13" font-weight="bold" text-anchor="middle">重要な帰結（節）</text>
 
     <!-- Vertical dividers -->
@@ -39,20 +39,24 @@
     <path d="M 390 140 L 460 180" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
     <path d="M 390 230 L 460 190" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
     <path d="M 390 140 L 460 265" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
+    <path d="M 180 225 L 460 272" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
+    <path d="M 390 240 L 460 258" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
     <path d="M 390 320 L 460 335" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
     <path d="M 390 230 L 460 345" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
-    <path d="M 180 390 L 460 408" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
+    <path d="M 390 245 L 460 410" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
     <path d="M 390 320 L 460 418" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
+    <path d="M 180 400 L 460 348" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
     <path d="M 180 335 L 460 483" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
     <path d="M 180 390 L 460 490" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
     <path d="M 390 230 L 460 497" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
     <path d="M 390 410 L 460 503" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
-    <path d="M 390 410 L 460 695" fill="none" stroke="#aaaaaa" stroke-width="1" marker-end="url(#arrow-gray)"/>
+    <path d="M 390 410 L 460 695" fill="none" stroke="#aaaaaa" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arrow-gray)"/>
 
-    <!-- === Arrows: Theorem -> Theorem (T2 feeds T5, T7, T8) === -->
-    <path d="M 460 195 L 450 195 L 450 415 L 460 415" fill="none" stroke="#777777" stroke-width="1.3" marker-end="url(#arrow-dark)"/>
-    <path d="M 460 200 L 442 200 L 442 565 L 460 565" fill="none" stroke="#777777" stroke-width="1.3" marker-end="url(#arrow-dark)"/>
-    <path d="M 460 205 L 434 205 L 434 630 L 460 630" fill="none" stroke="#777777" stroke-width="1.3" marker-end="url(#arrow-dark)"/>
+    <!-- === Arrows: 定義対象（T2・T4 の行使を T7/T8 が命名。破線） === -->
+    <path d="M 460 200 L 442 200 L 442 565 L 460 565" fill="none" stroke="#777777" stroke-width="1.3" stroke-dasharray="4 3" marker-end="url(#arrow-dark)"/>
+    <path d="M 460 205 L 434 205 L 434 630 L 460 630" fill="none" stroke="#777777" stroke-width="1.3" stroke-dasharray="4 3" marker-end="url(#arrow-dark)"/>
+    <path d="M 460 350 L 426 350 L 426 572 L 460 572" fill="none" stroke="#777777" stroke-width="1.3" stroke-dasharray="4 3" marker-end="url(#arrow-dark)"/>
+    <path d="M 460 355 L 418 355 L 418 637 L 460 637" fill="none" stroke="#777777" stroke-width="1.3" stroke-dasharray="4 3" marker-end="url(#arrow-dark)"/>
 
     <!-- === Arrows: Theorem -> 重要な帰結 (green, highlighted) === -->
     <path d="M 670 180 L 730 180" fill="none" stroke="#7cb342" stroke-width="1.4" marker-end="url(#arrow-green)"/>
@@ -97,12 +101,12 @@
     <text x="565" y="419" fill="#2e7d32" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">[T5] 存在強度</text>
     <rect x="460" y="470" width="210" height="40" rx="6" fill="#e8f5e9" stroke="#388e3c" stroke-width="1.5"/>
     <text x="565" y="494" fill="#2e7d32" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">[T6] 同調</text>
-    <rect x="460" y="545" width="210" height="40" rx="6" fill="#e8f5e9" stroke="#388e3c" stroke-width="1.5"/>
-    <text x="565" y="569" fill="#2e7d32" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">[T7] 魔法</text>
-    <rect x="460" y="610" width="210" height="40" rx="6" fill="#e8f5e9" stroke="#388e3c" stroke-width="1.5"/>
-    <text x="565" y="634" fill="#2e7d32" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">[T8] 魔術</text>
-    <rect x="460" y="675" width="210" height="40" rx="6" fill="#e8f5e9" stroke="#388e3c" stroke-width="1.5"/>
-    <text x="565" y="699" fill="#2e7d32" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">[T9] 超能力</text>
+    <rect x="460" y="545" width="210" height="40" rx="6" fill="#e0f2f1" stroke="#00897b" stroke-width="1.5"/>
+    <text x="565" y="569" fill="#00695c" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">[T7] 魔法</text>
+    <rect x="460" y="610" width="210" height="40" rx="6" fill="#e0f2f1" stroke="#00897b" stroke-width="1.5"/>
+    <text x="565" y="634" fill="#00695c" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">[T8] 魔術</text>
+    <rect x="460" y="675" width="210" height="40" rx="6" fill="#e0f2f1" stroke="#00897b" stroke-width="1.5"/>
+    <text x="565" y="699" fill="#00695c" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">[T9] 超能力</text>
 
     <!-- === Key-consequence nodes (節, light green, dashed) === -->
     <rect x="730" y="163" width="290" height="34" rx="6" fill="#f1f8e9" stroke="#7cb342" stroke-width="1.3" stroke-dasharray="4 3"/>
@@ -110,14 +114,13 @@
     <rect x="730" y="248" width="290" height="34" rx="6" fill="#f1f8e9" stroke="#7cb342" stroke-width="1.3" stroke-dasharray="4 3"/>
     <text x="875" y="269" fill="#558b2f" font-family="sans-serif" font-size="11" text-anchor="middle">危険性</text>
     <rect x="730" y="323" width="290" height="34" rx="6" fill="#f1f8e9" stroke="#7cb342" stroke-width="1.3" stroke-dasharray="4 3"/>
-    <text x="875" y="344" fill="#558b2f" font-family="sans-serif" font-size="11" text-anchor="middle">優先結合則</text>
+    <text x="875" y="344" fill="#558b2f" font-family="sans-serif" font-size="11" text-anchor="middle">還元判定・優先結合則</text>
     <rect x="730" y="398" width="290" height="34" rx="6" fill="#f1f8e9" stroke="#7cb342" stroke-width="1.3" stroke-dasharray="4 3"/>
     <text x="875" y="419" fill="#558b2f" font-family="sans-serif" font-size="11" text-anchor="middle">ビッグバン由来物質の還元不可能性</text>
 
-    <!-- T7/T8 derivation label -->
-    <text x="455" y="552" fill="#999999" font-family="sans-serif" font-size="9" text-anchor="end">T2</text>
-    <text x="455" y="617" fill="#999999" font-family="sans-serif" font-size="9" text-anchor="end">T2</text>
-    <text x="455" y="422" fill="#999999" font-family="sans-serif" font-size="9" text-anchor="end">T2</text>
+    <!-- T7/T8 定義対象 label -->
+    <text x="455" y="552" fill="#999999" font-family="sans-serif" font-size="9" text-anchor="end">T2・T4</text>
+    <text x="455" y="617" fill="#999999" font-family="sans-serif" font-size="9" text-anchor="end">T2・T4</text>
 
     <!-- Note line -->
     <text x="530" y="745" fill="#777777" font-family="sans-serif" font-size="11" text-anchor="middle">未解明領域（Q）は各公理・定理の「関連」として体系全体に結びつく、意図的に確保された空白である。</text>
@@ -164,5 +167,7 @@
     <text x="452" y="865" fill="#333333" font-family="sans-serif" font-size="11">重要な帰結（節）</text>
     <rect x="580" y="852" width="16" height="16" rx="3" fill="#fff8e1" stroke="#f9a825" stroke-width="1"/>
     <text x="602" y="865" fill="#333333" font-family="sans-serif" font-size="11">未解明領域 Q</text>
+    <rect x="700" y="852" width="16" height="16" rx="3" fill="#e0f2f1" stroke="#00897b" stroke-width="1"/>
+    <text x="722" y="865" fill="#333333" font-family="sans-serif" font-size="11">行使形態の定義（破線＝定義対象）</text>
   </g>
 </svg>

@@ -122,3 +122,283 @@ class TestLinkChecks(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestItemAnchors(unittest.TestCase):
+    """公理項目の名前付きアンカー（<a id="..."></a>）のサポート。"""
+
+    def test_html_anchor_collected(self):
+        _, parsed = build({
+            "world/core/axioms.md": '4. 魂は固有の大きさを持つ <a id="e5-大きさ"></a>\n',
+        })
+        self.assertIn("e5-大きさ", parsed[0].html_anchors)
+        self.assertEqual(parsed[0].html_anchors["e5-大きさ"], 1)
+
+    def test_link_to_item_anchor_resolves(self):
+        topo, parsed = build({
+            "world/core/axioms.md": '## [E5] 魂\n\n4. 魂は固有の大きさを持つ <a id="e5-大きさ"></a>\n',
+            "world/core/theorems.md": "## [T2] 共鳴現化\n\n**導出元**: [E5 魂](axioms.md#e5-魂)\n\n**証明スケッチ**:\n- [E5 魂#大きさ](axioms.md#e5-大きさ) により上限が決まる\n",
+        })
+        findings = check_links(parsed[1], topo)
+        self.assertEqual(findings, [])
+
+    def test_link_to_missing_item_anchor_errors(self):
+        topo, parsed = build({
+            "world/core/axioms.md": "## [E5] 魂\n",
+            "world/core/theorems.md": "[E5 魂#大きさ](axioms.md#e5-大きさ)\n",
+        })
+        findings = check_links(parsed[1], topo)
+        self.assertTrue(any(f.rule_id == "links.missing-anchor" for f in findings))
+
+    def test_item_anchor_id_mismatch(self):
+        topo, parsed = build({
+            "world/core/axioms.md": '## [E6] 精神エネルギー\n\n1. <a id="e6-発生"></a>発生する\n',
+            "world/core/theorems.md": "[E5 魂#発生](axioms.md#e6-発生)\n",
+        })
+        findings = check_links(parsed[1], topo)
+        self.assertTrue(any(f.rule_id == "links.id-mismatch" for f in findings))
+
+    def test_anchor_in_code_fence_ignored(self):
+        _, parsed = build({
+            "a.md": '```\n<a id="e1-例"></a>\n```\n',
+        })
+        self.assertNotIn("e1-例", parsed[0].html_anchors)
+
+
+class TestAnchorRobustness(unittest.TestCase):
+    """アンカーの一意性・命名規則・所属群の検査。"""
+
+    def test_duplicate_anchor_detected(self):
+        topo, parsed = build({
+            "world/core/axioms.md": '## [E5] 魂\n\n1. 一つ目 <a id="e5-孔"></a>\n2. 二つ目 <a id="e5-孔"></a>\n',
+        })
+        findings = check_links(parsed[0], topo)
+        self.assertTrue(any(f.rule_id == "links.duplicate-anchor" for f in findings))
+
+    def test_anchor_heading_collision_detected(self):
+        topo, parsed = build({
+            "world/core/axioms.md": '## [E5] 魂\n\n1. 項目 <a id="e5-魂"></a>\n',
+        })
+        findings = check_links(parsed[0], topo)
+        self.assertTrue(any(f.rule_id == "links.duplicate-anchor" for f in findings))
+
+    def test_anchor_owner_mismatch(self):
+        topo, parsed = build({
+            "world/core/axioms.md": '## [E6] 精神エネルギー\n\n1. 項目 <a id="e5-大きさ"></a>\n',
+        })
+        findings = check_links(parsed[0], topo)
+        self.assertTrue(any(f.rule_id == "links.anchor-owner-mismatch" for f in findings))
+
+    def test_anchor_owner_match_ok(self):
+        topo, parsed = build({
+            "world/core/axioms.md": '## [E5] 魂\n\n1. 項目 <a id="e5-大きさ"></a>\n',
+        })
+        findings = check_links(parsed[0], topo)
+        self.assertEqual(findings, [])
+
+    def test_non_item_anchor_in_core_flagged(self):
+        topo, parsed = build({
+            "world/core/axioms.md": '## [E5] 魂\n\n1. 項目 <a id="foo"></a>\n',
+        })
+        findings = check_links(parsed[0], topo)
+        self.assertTrue(any(f.rule_id == "links.anchor-format" for f in findings))
+
+    def test_non_item_anchor_outside_core_ok(self):
+        topo, parsed = build({
+            "world/magic.md": '## 魔法\n\n本文 <a id="foo"></a>\n',
+        })
+        findings = check_links(parsed[0], topo)
+        self.assertEqual(findings, [])
+
+    def test_headingless_section_link_no_false_fire(self):
+        # [T4#還元判定] のような ID 無し見出しへのリンクは項目アンカー照合を発火させない
+        topo, parsed = build({
+            "world/core/theorems.md": '## [T4] マナ還元\n\n#### 還元判定\n\n[T4#還元判定](#還元判定)\n',
+        })
+        findings = check_links(parsed[0], topo)
+        self.assertEqual(findings, [])
+
+
+_AXIOMS_E5 = '## [E5] 魂\n\n**公理**:\n1. 魂は固有の大きさを持つ <a id="e5-大きさ"></a>\n'
+
+
+class TestItemAnchorScope(unittest.TestCase):
+    """項目アンカー参照は証明スケッチ内に限る（links.item-anchor-scope）。"""
+
+    def test_reference_inside_proof_sketch_ok(self):
+        topo, parsed = build({
+            "world/core/axioms.md": _AXIOMS_E5,
+            "world/core/theorems.md":
+                "## [T2] 共鳴現化\n\n**導出元**: [E5 魂](axioms.md#e5-魂)\n\n"
+                "**証明スケッチ**:\n"
+                "- [E5 魂#大きさ](axioms.md#e5-大きさ) により上限が決まる\n",
+        })
+        self.assertEqual(check_links(parsed[1], topo), [])
+
+    def test_reference_in_detail_section_flagged(self):
+        topo, parsed = build({
+            "world/core/axioms.md": _AXIOMS_E5,
+            "world/core/theorems.md":
+                "## [T2] 共鳴現化\n\n**証明スケッチ**:\n- ステップ\n\n"
+                "**詳細**:\n- [E5 魂#大きさ](axioms.md#e5-大きさ) を参照\n",
+        })
+        findings = check_links(parsed[1], topo)
+        self.assertTrue(any(f.rule_id == "links.item-anchor-scope" for f in findings))
+
+    def test_reference_from_applied_file_flagged(self):
+        topo, parsed = build({
+            "world/core/axioms.md": _AXIOMS_E5,
+            "world/magic.md": "[E5 魂#大きさ](core/axioms.md#e5-大きさ)\n",
+        })
+        findings = check_links(parsed[1], topo)
+        self.assertTrue(any(f.rule_id == "links.item-anchor-scope" for f in findings))
+
+    def test_group_link_outside_proof_ok(self):
+        # 見出しアンカー（群単位リンク）は e5- で始まっても対象外
+        topo, parsed = build({
+            "world/core/axioms.md": _AXIOMS_E5,
+            "world/core/theorems.md":
+                "## [T2] 共鳴現化\n\n**詳細**:\n- [E5 魂](axioms.md#e5-魂) を参照\n",
+        })
+        self.assertEqual(check_links(parsed[1], topo), [])
+
+    def test_shortcut_reference_in_proof_ok(self):
+        # shortcut reference の定義行はリンク使用ではないため検査対象にならない
+        topo, parsed = build({
+            "world/core/axioms.md": _AXIOMS_E5,
+            "world/core/theorems.md":
+                "## [T2] 共鳴現化\n\n**導出元**: [E5 魂](axioms.md#e5-魂)\n\n"
+                "**証明スケッチ**:\n"
+                "- [E5 魂#大きさ] により上限が決まる\n\n"
+                "[E5 魂#大きさ]: axioms.md#e5-大きさ\n",
+        })
+        self.assertEqual(check_links(parsed[1], topo), [])
+
+    def test_subheading_resets_proof_section(self):
+        # 証明スケッチの後に下位見出し（節）が入ると、そこはもう証明スケッチではない
+        topo, parsed = build({
+            "world/core/axioms.md": _AXIOMS_E5,
+            "world/core/theorems.md":
+                "## [T2] 共鳴現化\n\n**証明スケッチ**:\n- ステップ\n\n"
+                "#### 特殊事例\n\n[E5 魂#大きさ](axioms.md#e5-大きさ) を参照\n",
+        })
+        findings = check_links(parsed[1], topo)
+        self.assertTrue(any(f.rule_id == "links.item-anchor-scope" for f in findings))
+
+    def test_fake_proof_section_outside_theorem_flagged(self):
+        # 定理（T エントリ）外に置かれた「証明スケッチ」ラベルでは項目アンカー参照不可
+        topo, parsed = build({
+            "world/core/axioms.md": _AXIOMS_E5,
+            "world/magic.md":
+                "## 魔法\n\n**証明スケッチ**:\n"
+                "- [E5 魂#大きさ](core/axioms.md#e5-大きさ) により上限が決まる\n",
+        })
+        findings = check_links(parsed[1], topo)
+        self.assertTrue(any(f.rule_id == "links.item-anchor-scope" for f in findings))
+
+    def test_proof_section_in_axiom_group_flagged(self):
+        # E/I エントリ内の「証明スケッチ」ラベルも対象外（定理限定）
+        topo, parsed = build({
+            "world/core/axioms.md": _AXIOMS_E5 +
+                '\n### [E6] 精神エネルギー\n\n**証明スケッチ**:\n'
+                "- [E5 魂#大きさ](#e5-大きさ) を参照\n",
+        })
+        findings = check_links(parsed[0], topo)
+        self.assertTrue(any(f.rule_id == "links.item-anchor-scope" for f in findings))
+
+
+class TestAnchorPlacement(unittest.TestCase):
+    """項目アンカーは公理項目（番号付きリスト）の行末に置く（links.anchor-placement）。"""
+
+    def test_anchor_at_line_end_ok(self):
+        topo, parsed = build({"world/core/axioms.md": _AXIOMS_E5})
+        self.assertEqual(check_links(parsed[0], topo), [])
+
+    def test_anchor_at_item_start_flagged(self):
+        topo, parsed = build({
+            "world/core/axioms.md":
+                '## [E5] 魂\n\n1. <a id="e5-大きさ"></a> 魂は固有の大きさを持つ\n',
+        })
+        findings = check_links(parsed[0], topo)
+        self.assertTrue(any(f.rule_id == "links.anchor-placement" for f in findings))
+
+    def test_anchor_on_non_numbered_line_flagged(self):
+        topo, parsed = build({
+            "world/core/axioms.md":
+                '## [E5] 魂\n\n魂は固有の大きさを持つ <a id="e5-大きさ"></a>\n',
+        })
+        findings = check_links(parsed[0], topo)
+        self.assertTrue(any(f.rule_id == "links.anchor-placement" for f in findings))
+
+    def test_anchor_outside_core_not_checked(self):
+        topo, parsed = build({
+            "world/magic.md": '## 魔法\n\n1. <a id="e5-大きさ"></a> 本文\n',
+        })
+        self.assertEqual(check_links(parsed[0], topo), [])
+
+
+_AXIOMS_E5_I1 = (
+    _AXIOMS_E5 +
+    "\n## [I1] 変換則\n\n**公理**:\n1. 変換は量を保つ\n"
+)
+
+
+class TestItemAnchorDerivation(unittest.TestCase):
+    """証明スケッチの項目アンカー参照は導出元の群に含まれる（links.item-anchor-derivation）。"""
+
+    def test_referenced_group_in_derivation_ok(self):
+        topo, parsed = build({
+            "world/core/axioms.md": _AXIOMS_E5_I1,
+            "world/core/theorems.md":
+                "## [T2] 共鳴現化\n\n**導出元**: [E5 魂](axioms.md#e5-魂)\n\n"
+                "**証明スケッチ**:\n- [E5 魂#大きさ](axioms.md#e5-大きさ) により上限が決まる\n",
+        })
+        self.assertEqual(check_links(parsed[1], topo), [])
+
+    def test_referenced_group_missing_from_derivation_warns(self):
+        topo, parsed = build({
+            "world/core/axioms.md": _AXIOMS_E5_I1,
+            "world/core/theorems.md":
+                "## [T2] 共鳴現化\n\n**導出元**: [I1 変換則](axioms.md#i1-変換則)\n\n"
+                "**証明スケッチ**:\n- [E5 魂#大きさ](axioms.md#e5-大きさ) により上限が決まる\n",
+        })
+        findings = check_links(parsed[1], topo)
+        hits = [f for f in findings if f.rule_id == "links.item-anchor-derivation"]
+        self.assertEqual(len(hits), 1)
+        self.assertEqual(hits[0].severity, Severity.WARNING)
+
+    def test_group_link_not_counted(self):
+        # 群単位リンク（見出しアンカー）は導出元包含の検査対象にしない
+        topo, parsed = build({
+            "world/core/axioms.md": _AXIOMS_E5_I1,
+            "world/core/theorems.md":
+                "## [T2] 共鳴現化\n\n**導出元**: [I1 変換則](axioms.md#i1-変換則)\n\n"
+                "**証明スケッチ**:\n- [E5 魂](axioms.md#e5-魂) を参照\n",
+        })
+        findings = check_links(parsed[1], topo)
+        self.assertFalse(
+            any(f.rule_id == "links.item-anchor-derivation" for f in findings))
+
+    def test_shortcut_derivation_ok(self):
+        # 本番形式: 導出元が shortcut reference（末尾に参照定義）でも群を認識する
+        topo, parsed = build({
+            "world/core/axioms.md": _AXIOMS_E5_I1,
+            "world/core/theorems.md":
+                "## [T2] 共鳴現化\n\n**導出元**: [E5 魂] + [I1 変換則]\n\n"
+                "**証明スケッチ**:\n- [E5 魂#大きさ] により上限が決まる\n\n"
+                "[E5 魂]: axioms.md#e5-魂\n"
+                "[I1 変換則]: axioms.md#i1-変換則\n"
+                "[E5 魂#大きさ]: axioms.md#e5-大きさ\n",
+        })
+        self.assertEqual(check_links(parsed[1], topo), [])
+
+    def test_multiline_derivation_ok(self):
+        # 導出元セクションが複数行に折り返しても群を認識する
+        topo, parsed = build({
+            "world/core/axioms.md": _AXIOMS_E5_I1,
+            "world/core/theorems.md":
+                "## [T2] 共鳴現化\n\n**導出元**: [I1 変換則](axioms.md#i1-変換則) +\n"
+                "[E5 魂](axioms.md#e5-魂)\n\n"
+                "**証明スケッチ**:\n- [E5 魂#大きさ](axioms.md#e5-大きさ) により上限が決まる\n",
+        })
+        self.assertEqual(check_links(parsed[1], topo), [])

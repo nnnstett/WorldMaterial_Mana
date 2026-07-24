@@ -15,11 +15,12 @@ from .checks.links import check_links
 from .checks.references import check_references
 from .checks.ids import check_ids
 from .checks.sections import check_sections
+from .checks.roles import check_roles
 from .checks.forbidden import check_forbidden
 from .checks.paths import check_paths
 from .checks.volume import check_volume
 from .checks.todos import check_todos
-from .checks.glossary import check_glossary_coverage
+from .checks.glossary import check_glossary_coverage, check_glossary_sources
 from .checks.meta_info import check_meta_info
 
 
@@ -46,6 +47,8 @@ def run(documents: List[Document], config: Config, existing_files=None) -> List[
             findings += check_ids(doc)
         if "sections" in rules:
             findings += check_sections(doc)
+        if "roles" in rules:
+            findings += check_roles(doc)
         if "forbidden" in rules:
             findings += check_forbidden(doc)
         if "paths" in rules:
@@ -62,6 +65,7 @@ def run(documents: List[Document], config: Config, existing_files=None) -> List[
     if glossary is not None:
         core = [d for d in documents if classify(d.path) == "core"]
         findings += check_glossary_coverage(core, glossary)
+        findings += check_glossary_sources(glossary, topo)
 
     findings.sort(key=lambda f: (f.path, f.line, f.rule_id))
     return findings, topo

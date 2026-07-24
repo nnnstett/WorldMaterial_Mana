@@ -40,17 +40,18 @@ def classify(path: str) -> str:
 # 各スコープで有効なルール ID
 RULES_BY_SCOPE: Dict[str, List[str]] = {
     "core": [
-        "links", "references", "ids", "sections",
+        "links", "references", "ids", "sections", "roles",
         "forbidden", "paths", "volume", "todos", "meta_info",
     ],
     "applied": [
         "links", "references", "sections",
         "forbidden", "paths", "volume", "todos", "meta_info",
     ],
-    "glossary": ["links", "forbidden", "paths", "meta_info"],
-    # メタ文書（docs/）は設計上、禁止語・旧パス・コードのみ参照・将来ファイルへの
-    # 例示リンクを意図的に含むため、チェック対象外とする
-    "meta": [],
+    "glossary": ["links", "forbidden", "paths", "todos", "meta_info"],
+    # メタ文書（docs/）は設計上、禁止語・旧パス・コードのみ参照の NG 例を意図的に
+    # 含むため、内容系ルールは対象外とする。リンクの実在だけは検査する
+    # （規約文書間の相互参照が主な対象。例示リンクはコードスパンに入れる規約）
+    "meta": ["links"],
     "other": ["links"],
 }
 
