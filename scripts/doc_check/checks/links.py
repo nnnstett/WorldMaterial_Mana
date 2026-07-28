@@ -148,13 +148,15 @@ def check_links(doc: Document, topo: Topology) -> List[Finding]:
             ))
             continue
 
-        # 項目アンカー参照の適用範囲（定理の証明スケッチ限定）
+        # 項目アンカー参照の適用範囲（world/core/ 内は定理の証明スケッチ限定。
+        # world/core/ 外の world/ 配下では項目粒度の参照を許可する）
         if (
             link.target_anchor
             and target_path in topo.documents
             and _ANCHOR_ID.match(link.target_anchor)
             and topo.heading_at(target_path, link.target_anchor) is None
             and topo.has_anchor(target_path, link.target_anchor)
+            and doc.path.startswith("world/core/")
         ):
             if section_labels is None:
                 section_labels = _section_labels_by_line(doc)
@@ -168,7 +170,8 @@ def check_links(doc: Document, topo: Topology) -> List[Finding]:
                 findings.append(Finding(
                     "links.item-anchor-scope", Severity.ERROR, doc.path, link.line,
                     f"項目アンカー参照（{target_path}#{link.target_anchor}）は"
-                    f"定理の証明スケッチ内でのみ使う。用語のポインタは群単位リンクで書く",
+                    f"world/core/ 内では定理の証明スケッチでのみ使う。"
+                    f"用語のポインタは群単位リンクで書く",
                 ))
             else:
                 # 引用した公理群が導出元に列挙されているか（隠れた前提の近似検出）
