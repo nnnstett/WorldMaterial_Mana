@@ -6,8 +6,7 @@
 - duplicate-anchor: 名前付きアンカーの重複・見出しアンカーとの衝突
 - anchor-format / anchor-owner-mismatch: 項目アンカーの命名規則・所属群一致
 - anchor-placement: 項目アンカーが公理項目（番号付きリスト）の行末にあるか
-- item-anchor-scope: world/core/ 内の項目アンカー参照が定理（T）の証明スケッチ内に
-  限られているか（world/core/ 外は検査対象外。適否はレビューで判断する）
+- item-anchor-scope: 項目アンカーへの参照が定理（T）の証明スケッチ内に限られているか
 - item-anchor-derivation (warning): 証明スケッチが項目アンカーで引用する公理群が、
   その定理の導出元に列挙されているか（群単位リンクは数えない近似。隠れた前提の示唆。
   §4.1 の「用語の定義参照は前提使用に数えない」例外は機械では判別できないため、
@@ -149,15 +148,13 @@ def check_links(doc: Document, topo: Topology) -> List[Finding]:
             ))
             continue
 
-        # 項目アンカー参照の適用範囲（world/core/ 内は定理の証明スケッチ限定。
-        # world/core/ 外は本チェックの対象外で、適否はレビューで判断する）
+        # 項目アンカー参照の適用範囲（定理の証明スケッチ限定）
         if (
             link.target_anchor
             and target_path in topo.documents
             and _ANCHOR_ID.match(link.target_anchor)
             and topo.heading_at(target_path, link.target_anchor) is None
             and topo.has_anchor(target_path, link.target_anchor)
-            and doc.path.startswith("world/core/")
         ):
             if section_labels is None:
                 section_labels = _section_labels_by_line(doc)
@@ -171,8 +168,7 @@ def check_links(doc: Document, topo: Topology) -> List[Finding]:
                 findings.append(Finding(
                     "links.item-anchor-scope", Severity.ERROR, doc.path, link.line,
                     f"項目アンカー参照（{target_path}#{link.target_anchor}）は"
-                    f"world/core/ 内では定理の証明スケッチでのみ使う。"
-                    f"用語のポインタは群単位リンクで書く",
+                    f"定理の証明スケッチ内でのみ使う。用語のポインタは群単位リンクで書く",
                 ))
             else:
                 # 引用した公理群が導出元に列挙されているか（隠れた前提の近似検出）

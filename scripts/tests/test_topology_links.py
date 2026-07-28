@@ -223,8 +223,7 @@ _AXIOMS_E5 = '## [E5] 魂\n\n**公理**:\n1. 魂は固有の大きさを持つ <
 
 
 class TestItemAnchorScope(unittest.TestCase):
-    """項目アンカー参照は world/core/ 内では証明スケッチに限る（links.item-anchor-scope）。
-    world/core/ 外は本チェックの対象外（適否はレビューで判断する）。"""
+    """項目アンカー参照は証明スケッチ内に限る（links.item-anchor-scope）。"""
 
     def test_reference_inside_proof_sketch_ok(self):
         topo, parsed = build({
@@ -246,13 +245,13 @@ class TestItemAnchorScope(unittest.TestCase):
         findings = check_links(parsed[1], topo)
         self.assertTrue(any(f.rule_id == "links.item-anchor-scope" for f in findings))
 
-    def test_reference_from_applied_file_ok(self):
-        # world/core/ 外の項目アンカー参照は本チェックの対象外（エラーにしない）
+    def test_reference_from_applied_file_flagged(self):
         topo, parsed = build({
             "world/core/axioms.md": _AXIOMS_E5,
             "world/magic.md": "[E5 魂#大きさ](core/axioms.md#e5-大きさ)\n",
         })
-        self.assertEqual(check_links(parsed[1], topo), [])
+        findings = check_links(parsed[1], topo)
+        self.assertTrue(any(f.rule_id == "links.item-anchor-scope" for f in findings))
 
     def test_group_link_outside_proof_ok(self):
         # 見出しアンカー（群単位リンク）は e5- で始まっても対象外
@@ -286,13 +285,16 @@ class TestItemAnchorScope(unittest.TestCase):
         findings = check_links(parsed[1], topo)
         self.assertTrue(any(f.rule_id == "links.item-anchor-scope" for f in findings))
 
-    def test_reference_from_readme_ok(self):
-        # world/README.md（導出構造マップ）でも項目アンカー参照を許可する
+    def test_fake_proof_section_outside_theorem_flagged(self):
+        # 定理（T エントリ）外に置かれた「証明スケッチ」ラベルでは項目アンカー参照不可
         topo, parsed = build({
             "world/core/axioms.md": _AXIOMS_E5,
-            "world/README.md": "[E5 魂#大きさ](core/axioms.md#e5-大きさ)\n",
+            "world/magic.md":
+                "## 魔法\n\n**証明スケッチ**:\n"
+                "- [E5 魂#大きさ](core/axioms.md#e5-大きさ) により上限が決まる\n",
         })
-        self.assertEqual(check_links(parsed[1], topo), [])
+        findings = check_links(parsed[1], topo)
+        self.assertTrue(any(f.rule_id == "links.item-anchor-scope" for f in findings))
 
     def test_proof_section_in_axiom_group_flagged(self):
         # E/I エントリ内の「証明スケッチ」ラベルも対象外（定理限定）
