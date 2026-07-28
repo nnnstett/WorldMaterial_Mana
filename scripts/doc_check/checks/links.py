@@ -6,8 +6,8 @@
 - duplicate-anchor: 名前付きアンカーの重複・見出しアンカーとの衝突
 - anchor-format / anchor-owner-mismatch: 項目アンカーの命名規則・所属群一致
 - anchor-placement: 項目アンカーが公理項目（番号付きリスト）の行末にあるか
-- item-anchor-scope: world/core/ 内の項目アンカー参照が定理（T）の証明スケッチ内に
-  限られているか（world/core/ 外は検査対象外。適否はレビューで判断する）
+- item-anchor-scope: 項目アンカーへの参照が world/ 配下に限られているか
+  （world/ 内での使い分け——依存の引用か純粋なポインタか——はレビューで判断する）
 - item-anchor-derivation (warning): 証明スケッチが項目アンカーで引用する公理群が、
   その定理の導出元に列挙されているか（群単位リンクは数えない近似。隠れた前提の示唆。
   §4.1 の「用語の定義参照は前提使用に数えない」例外は機械では判別できないため、
@@ -149,45 +149,44 @@ def check_links(doc: Document, topo: Topology) -> List[Finding]:
             ))
             continue
 
-        # 項目アンカー参照の適用範囲（world/core/ 内は定理の証明スケッチ限定。
-        # world/core/ 外は本チェックの対象外で、適否はレビューで判断する）
+        # 項目アンカー参照の適用範囲（world/ 配下でのみ使える。world/ 内での
+        # 使い分け——項目への依存の引用か純粋なポインタか——はレビューで判断する）
         if (
             link.target_anchor
             and target_path in topo.documents
             and _ANCHOR_ID.match(link.target_anchor)
             and topo.heading_at(target_path, link.target_anchor) is None
             and topo.has_anchor(target_path, link.target_anchor)
-            and doc.path.startswith("world/core/")
         ):
-            if section_labels is None:
-                section_labels = _section_labels_by_line(doc)
-            entry = _nearest_id_heading(doc, link.line)
-            in_theorem_proof = (
-                section_labels.get(link.line) == _PROOF_SECTION
-                and entry is not None
-                and entry.id_code.startswith("T")
-            )
-            if not in_theorem_proof:
+            if not doc.path.startswith("world/"):
                 findings.append(Finding(
                     "links.item-anchor-scope", Severity.ERROR, doc.path, link.line,
                     f"項目アンカー参照（{target_path}#{link.target_anchor}）は"
-                    f"world/core/ 内では定理の証明スケッチでのみ使う。"
-                    f"用語のポインタは群単位リンクで書く",
+                    f"world/ 配下でのみ使う。ほかのファイルでは群単位リンクで書く",
                 ))
             else:
-                # 引用した公理群が導出元に列挙されているか（隠れた前提の近似検出）
-                if derivation_ids is None:
-                    derivation_ids = _derivation_ids_by_entry(doc, section_labels)
-                group = _ANCHOR_ID.match(link.target_anchor).group(1).upper()
-                if group not in derivation_ids.get(entry.line, set()):
-                    findings.append(Finding(
-                        "links.item-anchor-derivation", Severity.WARNING,
-                        doc.path, link.line,
-                        f"証明スケッチが {group} の項目（#{link.target_anchor}）を"
-                        f"引用しているが、導出元に {group} が列挙されていない"
-                        f"（前提として使っているなら導出元へ追加、用語の指し先なら"
-                        f"群単位リンクへ変更 → architecture.md §4.1）",
-                    ))
+                if section_labels is None:
+                    section_labels = _section_labels_by_line(doc)
+                entry = _nearest_id_heading(doc, link.line)
+                in_theorem_proof = (
+                    section_labels.get(link.line) == _PROOF_SECTION
+                    and entry is not None
+                    and entry.id_code.startswith("T")
+                )
+                if in_theorem_proof:
+                    # 引用した公理群が導出元に列挙されているか（隠れた前提の近似検出）
+                    if derivation_ids is None:
+                        derivation_ids = _derivation_ids_by_entry(doc, section_labels)
+                    group = _ANCHOR_ID.match(link.target_anchor).group(1).upper()
+                    if group not in derivation_ids.get(entry.line, set()):
+                        findings.append(Finding(
+                            "links.item-anchor-derivation", Severity.WARNING,
+                            doc.path, link.line,
+                            f"証明スケッチが {group} の項目（#{link.target_anchor}）を"
+                            f"引用しているが、導出元に {group} が列挙されていない"
+                            f"（前提として使っているなら導出元へ追加、用語の指し先なら"
+                            f"群単位リンクへ変更 → architecture.md §4.1）",
+                        ))
 
         # ID 整合（リンクテキスト先頭の ID と参照先見出しの ID）
         m = _LEADING_ID.match(link.text)

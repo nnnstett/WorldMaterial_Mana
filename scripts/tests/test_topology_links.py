@@ -223,8 +223,8 @@ _AXIOMS_E5 = '## [E5] 魂\n\n**公理**:\n1. 魂は固有の大きさを持つ <
 
 
 class TestItemAnchorScope(unittest.TestCase):
-    """項目アンカー参照は world/core/ 内では証明スケッチに限る（links.item-anchor-scope）。
-    world/core/ 外は本チェックの対象外（適否はレビューで判断する）。"""
+    """項目アンカー参照は world/ 配下でのみ使う（links.item-anchor-scope）。
+    world/ 内での使い分け（依存の引用か純粋なポインタか）はレビューで判断する。"""
 
     def test_reference_inside_proof_sketch_ok(self):
         topo, parsed = build({
@@ -236,18 +236,28 @@ class TestItemAnchorScope(unittest.TestCase):
         })
         self.assertEqual(check_links(parsed[1], topo), [])
 
-    def test_reference_in_detail_section_flagged(self):
+    def test_reference_in_detail_section_ok(self):
+        # 証明スケッチ外（詳細・補足など）でも world/ 配下なら使える。
+        # 依存の引用かポインタかの使い分けはレビューで判断する
         topo, parsed = build({
             "world/core/axioms.md": _AXIOMS_E5,
             "world/core/theorems.md":
                 "## [T2] 共鳴現化\n\n**証明スケッチ**:\n- ステップ\n\n"
                 "**詳細**:\n- [E5 魂#大きさ](axioms.md#e5-大きさ) を参照\n",
         })
+        self.assertEqual(check_links(parsed[1], topo), [])
+
+    def test_reference_outside_world_flagged(self):
+        # world/ 配下以外（glossary.md・docs/ 等）では項目アンカー参照を使わない
+        topo, parsed = build({
+            "world/core/axioms.md": _AXIOMS_E5,
+            "glossary.md": "[E5 魂#大きさ](world/core/axioms.md#e5-大きさ)\n",
+        })
         findings = check_links(parsed[1], topo)
         self.assertTrue(any(f.rule_id == "links.item-anchor-scope" for f in findings))
 
     def test_reference_from_applied_file_ok(self):
-        # world/core/ 外の項目アンカー参照は本チェックの対象外（エラーにしない）
+        # 応用ファイル（world/ 配下）では項目アンカー参照を使える
         topo, parsed = build({
             "world/core/axioms.md": _AXIOMS_E5,
             "world/magic.md": "[E5 魂#大きさ](core/axioms.md#e5-大きさ)\n",
@@ -275,16 +285,16 @@ class TestItemAnchorScope(unittest.TestCase):
         })
         self.assertEqual(check_links(parsed[1], topo), [])
 
-    def test_subheading_resets_proof_section(self):
-        # 証明スケッチの後に下位見出し（節）が入ると、そこはもう証明スケッチではない
+    def test_subheading_after_proof_ok(self):
+        # 証明スケッチの後の下位見出し（節）は証明スケッチではないため
+        # 導出元 warning の対象にならず、参照自体は許可される
         topo, parsed = build({
             "world/core/axioms.md": _AXIOMS_E5,
             "world/core/theorems.md":
                 "## [T2] 共鳴現化\n\n**証明スケッチ**:\n- ステップ\n\n"
                 "#### 特殊事例\n\n[E5 魂#大きさ](axioms.md#e5-大きさ) を参照\n",
         })
-        findings = check_links(parsed[1], topo)
-        self.assertTrue(any(f.rule_id == "links.item-anchor-scope" for f in findings))
+        self.assertEqual(check_links(parsed[1], topo), [])
 
     def test_reference_from_readme_ok(self):
         # world/README.md（導出構造マップ）でも項目アンカー参照を許可する
@@ -294,15 +304,15 @@ class TestItemAnchorScope(unittest.TestCase):
         })
         self.assertEqual(check_links(parsed[1], topo), [])
 
-    def test_proof_section_in_axiom_group_flagged(self):
-        # E/I エントリ内の「証明スケッチ」ラベルも対象外（定理限定）
+    def test_proof_section_in_axiom_group_ok(self):
+        # E/I エントリ内の「証明スケッチ」ラベルは導出元 warning の対象外（定理限定）で、
+        # 参照自体は world/ 配下なので許可される
         topo, parsed = build({
             "world/core/axioms.md": _AXIOMS_E5 +
                 '\n### [E6] 精神エネルギー\n\n**証明スケッチ**:\n'
                 "- [E5 魂#大きさ](#e5-大きさ) を参照\n",
         })
-        findings = check_links(parsed[0], topo)
-        self.assertTrue(any(f.rule_id == "links.item-anchor-scope" for f in findings))
+        self.assertEqual(check_links(parsed[0], topo), [])
 
 
 class TestAnchorPlacement(unittest.TestCase):
