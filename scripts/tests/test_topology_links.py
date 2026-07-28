@@ -224,7 +224,7 @@ _AXIOMS_E5 = '## [E5] 魂\n\n**公理**:\n1. 魂は固有の大きさを持つ <
 
 class TestItemAnchorScope(unittest.TestCase):
     """項目アンカー参照は world/core/ 内では証明スケッチに限る（links.item-anchor-scope）。
-    world/core/ 外の world/ 配下では許可される。"""
+    world/core/ 外は本チェックの対象外（適否はレビューで判断する）。"""
 
     def test_reference_inside_proof_sketch_ok(self):
         topo, parsed = build({
@@ -247,7 +247,7 @@ class TestItemAnchorScope(unittest.TestCase):
         self.assertTrue(any(f.rule_id == "links.item-anchor-scope" for f in findings))
 
     def test_reference_from_applied_file_ok(self):
-        # world/core/ 外の world/ 配下では項目アンカー参照を許可する
+        # world/core/ 外の項目アンカー参照は本チェックの対象外（エラーにしない）
         topo, parsed = build({
             "world/core/axioms.md": _AXIOMS_E5,
             "world/magic.md": "[E5 魂#大きさ](core/axioms.md#e5-大きさ)\n",

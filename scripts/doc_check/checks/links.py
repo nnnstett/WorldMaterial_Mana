@@ -6,7 +6,8 @@
 - duplicate-anchor: 名前付きアンカーの重複・見出しアンカーとの衝突
 - anchor-format / anchor-owner-mismatch: 項目アンカーの命名規則・所属群一致
 - anchor-placement: 項目アンカーが公理項目（番号付きリスト）の行末にあるか
-- item-anchor-scope: 項目アンカーへの参照が定理（T）の証明スケッチ内に限られているか
+- item-anchor-scope: world/core/ 内の項目アンカー参照が定理（T）の証明スケッチ内に
+  限られているか（world/core/ 外は検査対象外。適否はレビューで判断する）
 - item-anchor-derivation (warning): 証明スケッチが項目アンカーで引用する公理群が、
   その定理の導出元に列挙されているか（群単位リンクは数えない近似。隠れた前提の示唆。
   §4.1 の「用語の定義参照は前提使用に数えない」例外は機械では判別できないため、
@@ -149,7 +150,7 @@ def check_links(doc: Document, topo: Topology) -> List[Finding]:
             continue
 
         # 項目アンカー参照の適用範囲（world/core/ 内は定理の証明スケッチ限定。
-        # world/core/ 外の world/ 配下では項目粒度の参照を許可する）
+        # world/core/ 外は本チェックの対象外で、適否はレビューで判断する）
         if (
             link.target_anchor
             and target_path in topo.documents
