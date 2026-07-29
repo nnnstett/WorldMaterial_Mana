@@ -30,7 +30,7 @@ Copyright (c) 2022-2026, nnnstett
 
 ## 画像について
 
-`world/images/imageboard-world.jpg`（README のイメージボード）は ChatGPT で生成した画像です。生成AIの出力に著作権が生じるかは法域によって扱いが分かれるため、この画像の再利用は利用者の判断によります。ドキュメント本文と構造図（`world/images/` の SVG）は、上記のとおり CC BY 4.0 で提供します。
+`images/imageboard-world.jpg`（README のイメージボード）は、ChatGPT で生成した素材をもとに、著作者が修正・合成して作成したものです。他の収録物と同じく CC BY 4.0 で提供します。
 
 ## 免責
 
