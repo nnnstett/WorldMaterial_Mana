@@ -28,6 +28,10 @@ Copyright (c) 2022-2026, nnnstett
 
 > 「World Material "Mana" version X.X（© 2022-2026 nnnstett / CC BY 4.0）」を改変して使用しています。
 
+## 画像について
+
+`world/images/imageboard-world.jpg`（README のイメージボード）は ChatGPT で生成した画像です。生成AIの出力に著作権が生じるかは法域によって扱いが分かれるため、この画像の再利用は利用者の判断によります。ドキュメント本文と構造図（`world/images/` の SVG）は、上記のとおり CC BY 4.0 で提供します。
+
 ## 免責
 
 本ドキュメントは「現状のまま」提供され、明示・黙示を問わずいかなる保証もありません。詳細はライセンス全文 第5条（Section 5）を参照してください。
