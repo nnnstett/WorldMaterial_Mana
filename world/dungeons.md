@@ -1,4 +1,4 @@
-*前提: [E2 真界](core/axioms.md#e2-真界), [E3 マナ](core/axioms.md#e3-マナ), [E4 個体](core/axioms.md#e4-個体), [E5 魂](core/axioms.md#e5-魂), [E6 精神エネルギー](core/axioms.md#e6-精神エネルギー), [I2 共鳴則](core/axioms.md#i2-共鳴則), [I3 副産則](core/axioms.md#i3-副産則), [I5 継承則](core/axioms.md#i5-継承則), [T2 共鳴現化](core/theorems.md#t2-共鳴現化), [T4 真化](core/theorems.md#t4-真化), [T5 存在強度](core/theorems.md#t5-存在強度), [T10 集合無意識](core/theorems.md#t10-集合無意識), [T11 瘴気動態](core/theorems.md#t11-瘴気動態)*
+*前提: [E2 真界](core/axioms.md#e2-真界), [E3 マナ](core/axioms.md#e3-マナ), [E4 個体](core/axioms.md#e4-個体), [E5 魂](core/axioms.md#e5-魂), [E6 精神エネルギー](core/axioms.md#e6-精神エネルギー), [E7 物質・物理エネルギー](core/axioms.md#e7-物質物理エネルギー), [I2 共鳴則](core/axioms.md#i2-共鳴則), [I3 副産則](core/axioms.md#i3-副産則), [I5 継承則](core/axioms.md#i5-継承則), [T2 共鳴現化](core/theorems.md#t2-共鳴現化), [T4 真化](core/theorems.md#t4-真化), [T5 存在強度](core/theorems.md#t5-存在強度), [T10 集合無意識](core/theorems.md#t10-集合無意識), [T11 瘴気動態](core/theorems.md#t11-瘴気動態)*
 *関連: [artifacts.md](artifacts.md), [races.md](races.md), [magic.md](magic.md), [spellcraft.md](spellcraft.md), [timeline.md](timeline.md), [magic-history.md](magic-history.md), [導出構造マップ](README.md)*
 
 # ダンジョン
@@ -36,7 +36,7 @@
 
 ### アイテム
 
-ダンジョン内の物が持ち出した後も残るかは、品目ではなく物質の由来で決まり、身体や地形も含めて部分ごとに判定される（→ [I5 継承則](core/axioms.md#i5-継承則)）。由来は 2 系統である。
+ダンジョン内の物が持ち出した後も残るかは、品目ではなく物質の由来で決まり、身体や地形も含めて部分ごとに判定される（→ [E7 物質・物理エネルギー](core/axioms.md#e7-物質物理エネルギー), [I5 継承則](core/axioms.md#i5-継承則)）。由来は 2 系統である。
 
 - **ビッグバン由来の物質**: 通常の生物の身体や持ち込まれた品をなす、世界にもとからある物質。「現界」の精神エネルギーに保持されて還元の的にならず（→ [T5 存在強度#ビッグバン由来物質の還元不可能性](core/theorems.md#重要な帰結-ビッグバン由来物質の還元不可能性)）、持ち出しに制約はない。
 - **現化の生成物**: 核（または住み着いた個体）の駆動でマナから現出した物質。術式が生んだ守護個体や、核の現化から生じた個体の身体も、由来はこちらである。裏付け（駆動した精神エネルギーの影響。→ [I2 共鳴則](core/axioms.md#i2-共鳴則)）の供給が続く間は存在強度が保たれ、絶えたのちは、活性瘴気に出会ったところで還元されて消える（→ [T11 瘴気動態#生成物の存続と移動](core/theorems.md#生成物の存続と移動)）。術式を刻まれた道具のような混成の品は、本体と付与部分が系統ごとに分かれる（→ [artifacts.md](artifacts.md)）。
