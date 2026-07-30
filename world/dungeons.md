@@ -1,4 +1,4 @@
-*前提: [E2 真界](core/axioms.md#e2-真界), [E3 マナ](core/axioms.md#e3-マナ), [E4 個体](core/axioms.md#e4-個体), [E5 魂](core/axioms.md#e5-魂), [E6 精神エネルギー](core/axioms.md#e6-精神エネルギー), [E7 物質・物理エネルギー](core/axioms.md#e7-物質物理エネルギー), [I2 共鳴則](core/axioms.md#i2-共鳴則), [I3 副産則](core/axioms.md#i3-副産則), [I5 継承則](core/axioms.md#i5-継承則), [T2 共鳴現化](core/theorems.md#t2-共鳴現化), [T4 真化](core/theorems.md#t4-真化), [T5 存在強度](core/theorems.md#t5-存在強度), [T10 集合無意識](core/theorems.md#t10-集合無意識), [T11 瘴気動態](core/theorems.md#t11-瘴気動態)*
+*前提: [E2 真界](core/axioms.md#e2-真界), [E3 マナ](core/axioms.md#e3-マナ), [E4 個体](core/axioms.md#e4-個体), [E5 魂](core/axioms.md#e5-魂), [E6 精神エネルギー](core/axioms.md#e6-精神エネルギー), [E7 物質・物理エネルギー](core/axioms.md#e7-物質物理エネルギー), [E8 瘴気](core/axioms.md#e8-瘴気), [I2 共鳴則](core/axioms.md#i2-共鳴則), [I3 副産則](core/axioms.md#i3-副産則), [I5 継承則](core/axioms.md#i5-継承則), [T2 共鳴現化](core/theorems.md#t2-共鳴現化), [T4 真化](core/theorems.md#t4-真化), [T5 存在強度](core/theorems.md#t5-存在強度), [T10 集合無意識](core/theorems.md#t10-集合無意識), [T11 瘴気動態](core/theorems.md#t11-瘴気動態)*
 *関連: [artifacts.md](artifacts.md), [races.md](races.md), [magic.md](magic.md), [spellcraft.md](spellcraft.md), [timeline.md](timeline.md), [magic-history.md](magic-history.md), [導出構造マップ](README.md)*
 
 # ダンジョン
@@ -13,7 +13,7 @@
 
 ### 用語
 
-- **魔法環境**: その場所での魔法・魔術の行使をとりまく条件の総体。対応する真界領域のマナ濃度（そこで引き出せるマナの量と効率を制約する。→ [E3 マナ](core/axioms.md#e3-マナ)）と、活性瘴気（まだ結合相手と反応しうる瘴気。→ [T11 瘴気動態](core/theorems.md#t11-瘴気動態)）の量・分布からなる。
+- **魔法環境**: その場所での魔法・魔術の行使をとりまく条件の総体。対応する真界領域のマナ濃度（そこで引き出せるマナの量と効率を制約する。→ [E3 マナ](core/axioms.md#e3-マナ)）と、活性瘴気（まだ結合相手と反応しうる瘴気。→ [E8 瘴気](core/axioms.md#e8-瘴気)）の量・分布からなる。
 - **核**: ダンジョンの魔法環境を保っている駆動源。術式型では術式を刻まれた道具とその使用者の組、暴走型では暴走から生まれた個体がこれにあたる（集落型は核を持たない）。
 
 ### 魔法環境の変質
