@@ -1,4 +1,4 @@
-*前提: [T8 魔術](core/theorems.md#t8-魔術), [T2 共鳴現化](core/theorems.md#t2-共鳴現化), [T4 共鳴真化](core/theorems.md#t4-共鳴真化), [E6 精神エネルギー](core/axioms.md#e6-精神エネルギー)*
+*前提: [T8 魔術](core/theorems.md#t8-魔術), [T2 共鳴現化](core/theorems.md#t2-共鳴現化), [T4 共鳴真化](core/theorems.md#t4-共鳴真化), [E6 精神エネルギー](core/axioms.md#e6-精神エネルギー), [I5 保持則](core/axioms.md#i5-保持則)*
 *関連: [T7 魔法](core/theorems.md#t7-魔法), [T10 集合無意識](core/theorems.md#t10-集合無意識), [magic.md](magic.md), [artifacts.md](artifacts.md), [magic-history.md](magic-history.md), [導出構造マップ](README.md)*
 
 # 魔術
