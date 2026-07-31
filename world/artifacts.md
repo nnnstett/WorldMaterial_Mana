@@ -1,4 +1,4 @@
-*前提: [T5 存在強度](core/theorems.md#t5-存在強度), [T10 集合無意識](core/theorems.md#t10-集合無意識), [T2 共鳴現化](core/theorems.md#t2-共鳴現化), [T4 共鳴真化](core/theorems.md#t4-共鳴真化), [T6 同調](core/theorems.md#t6-同調), [T8 魔術](core/theorems.md#t8-魔術), [E4 個体](core/axioms.md#e4-個体), [E5 魂](core/axioms.md#e5-魂), [E6 精神エネルギー](core/axioms.md#e6-精神エネルギー), [E7 物質・物理エネルギー](core/axioms.md#e7-物質物理エネルギー), [I2 共鳴則](core/axioms.md#i2-共鳴則), [I5 継承則](core/axioms.md#i5-継承則)*
+*前提: [T5 存在強度](core/theorems.md#t5-存在強度), [T10 集合無意識](core/theorems.md#t10-集合無意識), [T2 共鳴現化](core/theorems.md#t2-共鳴現化), [T4 共鳴真化](core/theorems.md#t4-共鳴真化), [T6 同調](core/theorems.md#t6-同調), [T8 魔術](core/theorems.md#t8-魔術), [E4 個体](core/axioms.md#e4-個体), [E5 魂](core/axioms.md#e5-魂), [E6 精神エネルギー](core/axioms.md#e6-精神エネルギー), [E7 物質・物理エネルギー](core/axioms.md#e7-物質物理エネルギー), [I2 共鳴則](core/axioms.md#i2-共鳴則), [I5 保持則](core/axioms.md#i5-保持則)*
 *関連: [Q2 意思を持つ道具・生成物](core/open-questions.md#q2-意思を持つ道具生成物の発生原理), [Q8 集合無意識の宛先機構](core/open-questions.md#q8-集合無意識の宛先機構), [Q11 太古の出来事が後代の神話に滲む機構](core/open-questions.md#q11-太古の出来事が後代の神話に滲む機構), [Q16 本質部品の判定](core/open-questions.md#q16-人工物の本質部品の判定), [magic.md](magic.md), [spellcraft.md](spellcraft.md), [dungeons.md](dungeons.md), [導出構造マップ](README.md)*
 
 # アーティファクト
@@ -33,7 +33,7 @@
 
 「保つ」には二つの意味がある。
 
-- **存在強度を保つ**: 現化で作られた部分や術式など、道具に加わった魔法・魔術的な部分（付与部分）は、裏付けの供給が絶えると時とともに弱まる（→ [I2 共鳴則](core/axioms.md#i2-共鳴則)）。作り手が去った後も、道具自身が供給源であり続ける必要がある（→ [T5 存在強度](core/theorems.md#t5-存在強度)）。
+- **存在強度を保つ**: 現化で作られた部分や術式など、道具に加わった魔法・魔術的な部分（付与部分）は、裏付けの供給が絶えると時とともに弱まる（→ [I5 保持則](core/axioms.md#i5-保持則)）。作り手が去った後も、道具自身が供給源であり続ける必要がある（→ [T5 存在強度](core/theorems.md#t5-存在強度)）。
 - **機能を保つ**: 通常の物質は億年のうちに物理的に風化する。存在強度が抗するのは瘴気との結合＝真化であって、風化までは止めない（→ [T5 存在強度](core/theorems.md#t5-存在強度)）。
 
 風化に抗して機能を保つ手段は、原理の上では二つある。
@@ -78,7 +78,7 @@
 
 時間との関わり方は遺物と対照的である。
 
-- 広く認知されているその時代にのみ成立する。認知が衰えれば集合無意識の供給が絶え、支えられていた性能は失われる（→ [I2 共鳴則](core/axioms.md#i2-共鳴則)）。ただし通常の物質でできた道具本体はそのまま残る（→ [T5 存在強度](core/theorems.md#t5-存在強度)）。
+- 広く認知されているその時代にのみ成立する。認知が衰えれば集合無意識の供給が絶え、支えられていた性能は失われる（→ [I5 保持則](core/axioms.md#i5-保持則)）。ただし通常の物質でできた道具本体はそのまま残る（→ [T5 存在強度](core/theorems.md#t5-存在強度)）。
 - 力の源は文化圏の規模の認知・想念そのものであり、その時代の最上位の個人でも、単独では賄えない。
 
 ## 規模と時代差
