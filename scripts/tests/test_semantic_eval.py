@@ -36,6 +36,35 @@ def load_cases():
     return cases
 
 
+def build_case(case_id, **overrides):
+    """最小の妥当なケース。faq フラグの検査で使う。"""
+    case = {
+        "id": case_id,
+        "title": f"{case_id} の題",
+        "ask": {"facts": [f"{case_id} の状況。"], "question": f"{case_id} の問いか？"},
+        "key": {
+            "expect": "determinate",
+            "answer": f"{case_id} の答え。",
+            "must": [{"point": f"{case_id} の要点。", "from": ["I6"]}],
+        },
+    }
+    case.update(overrides)
+    return case
+
+
+def build_suite(tmp, cases):
+    """一時ディレクトリに、渡したケースだけを持つスイートを作る。"""
+    suite = Path(tmp) / "suite"
+    (suite / "cases").mkdir(parents=True)
+    write_json(suite / "suite.json", {
+        "protocol_version": 2, "suite_id": "faq-flag",
+        "source_paths": ["world/core/axioms.md"],
+    })
+    for case in cases:
+        write_json(suite / "cases" / f"{case['id']}.json", case)
+    return suite
+
+
 def build_answer(control, cases, classification_of=None):
     """全ケースに妥当な回答を作る。classification_of(expect)->str で分類を差し替え可能。"""
     primary_source = sorted(control["source_hashes"])[0]
@@ -281,6 +310,65 @@ class TestSemanticEval(unittest.TestCase):
             })
             with self.assertRaisesRegex(SemanticEvalError, "検証用ファイル"):
                 load_suite(suite, ROOT)
+
+    def test_faq_false_case_is_excluded_from_faq_only(self):
+        """case.faq=false は FAQ から落ちるだけで、検査対象からは外れない。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            shown, hidden = build_case("shown"), build_case("hidden", faq=False)
+            suite = build_suite(tmp, [shown, hidden])
+            config, cases = load_suite(suite, ROOT)
+
+            faq = render_faq(config, cases)
+            self.assertIn(shown["title"], faq)
+            self.assertNotIn(hidden["title"], faq)
+
+            control = prepare_solver(
+                suite, ROOT, Path(tmp) / "solver", Path(tmp) / "private" / "control.json",
+                seed="faq-case",
+            )
+            self.assertEqual(set(control["case_mapping"].values()), {"shown", "hidden"})
+
+    def test_faq_false_must_is_excluded_from_faq_but_still_scored(self):
+        """must.faq=false は FAQ の要点から落ちるが、採点基準としては残る。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            case = build_case("mixed")
+            case["key"]["must"] = [
+                {"point": "読者向けの要点。", "from": ["I6"]},
+                {"point": "採点だけに要る基準。", "from": [], "faq": False},
+            ]
+            suite = build_suite(tmp, [case])
+            config, cases = load_suite(suite, ROOT)
+
+            faq = render_faq(config, cases)
+            self.assertIn("読者向けの要点。", faq)
+            self.assertNotIn("採点だけに要る基準。", faq)
+
+            control_path = base / "private" / "control.json"
+            control = prepare_solver(suite, ROOT, base / "solver", control_path, seed="faq-must")
+            answer_path, sealed_path = base / "answer.json", base / "private" / "sealed.json"
+            write_json(answer_path, build_answer(control, cases))
+            validate_answer(suite, control_path, answer_path, sealed_path, ROOT)
+            prepare_judge(suite, control_path, sealed_path, base / "judge", ROOT)
+
+            rubrics = json.loads(
+                (base / "judge" / "rubrics.json").read_text(encoding="utf-8")
+            )["rubrics"]
+            descriptions = [c["description"] for c in rubrics[0]["criteria"]]
+            self.assertEqual(descriptions, ["読者向けの要点。", "採点だけに要る基準。"])
+
+    def test_faq_case_without_any_faq_must_rejected(self):
+        """要点が一つも出ない FAQ 項目は作らせない。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            case = build_case("empty")
+            case["key"]["must"] = [{"point": "採点専用。", "from": [], "faq": False}]
+            with self.assertRaisesRegex(SemanticEvalError, "FAQ に出す must"):
+                load_suite(build_suite(tmp, [case]), ROOT)
+
+    def test_non_boolean_faq_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            with self.assertRaisesRegex(SemanticEvalError, "faq は真偽値"):
+                load_suite(build_suite(tmp, [build_case("bad", faq="no")]), ROOT)
 
     def test_faq_in_sync_with_cases(self):
         """コミット済み FAQ.md がケースから再生成した内容と一致すること（ドリフト防止）。"""

@@ -8,6 +8,7 @@ bundle と、回答確定後に採点者へ渡す judge bundle を分離して�
 ケースは 1 ファイルに集約する（`ask`＝候補に見せる／`key`＝見せない）。分類は 1 語の
 `expect`、採点対象は `key.must[].point` のみ。漏洩対策はアクセス制御と候補環境の隔離で行う。
 `gen-faq` は同じケースから読者向け FAQ.md を生成する（`key` を出すので候補には渡さない）。
+ケースと `must` の `faq`（省略時 true）が FAQ への掲載だけを制御し、採点対象は変えない。
 """
 from __future__ import annotations
 
@@ -103,6 +104,15 @@ def _must_id(index: int) -> str:
     return f"must-{index}"
 
 
+def _in_faq(item) -> bool:
+    """FAQ.md へ出すか。`faq` の省略時は出す。
+
+    採点だけに要る基準（候補の振る舞いへの要求など）や、読者の疑問ではない検査用のケースを
+    FAQ から外すために使う。採点対象はこのフラグに影響されない。
+    """
+    return item.get("faq", True)
+
+
 def load_suite(suite_dir: Path, repo_root: Path):
     config = _read_json(suite_dir / "suite.json")
     _require(isinstance(config, dict), "suite.json はオブジェクトである必要があります")
@@ -135,6 +145,7 @@ def load_suite(suite_dir: Path, repo_root: Path):
 def _validate_case(case) -> None:
     case_id = case["id"]
     _require(isinstance(case.get("title"), str) and case["title"], f"title が必要です: {case_id}")
+    _require(isinstance(case.get("faq", True), bool), f"faq は真偽値です: {case_id}")
     ask = case.get("ask")
     _require(isinstance(ask, dict), f"ask が必要です: {case_id}")
     facts = ask.get("facts")
@@ -154,6 +165,12 @@ def _validate_case(case) -> None:
         origin = item.get("from", [])
         _require(isinstance(origin, list), f"must.from は配列です: {case_id}")
         _require(all(isinstance(x, str) and x for x in origin), f"must.from は文字列配列です: {case_id}")
+        _require(isinstance(item.get("faq", True), bool), f"must.faq は真偽値です: {case_id}")
+    # 要点が一つも出ない FAQ の項目を作らない（ケースごと外すなら case.faq を false にする）
+    _require(
+        not _in_faq(case) or any(_in_faq(item) for item in must),
+        f"FAQ に載せるケースには、FAQ に出す must が 1 つ以上必要です: {case_id}",
+    )
     # ask に答えや根拠を書かない（候補へ漏れる）
     _require("must" not in ask and "answer" not in ask and "expect" not in ask,
              f"ask に key の項目を含めないでください: {case_id}")
@@ -492,6 +509,8 @@ def render_faq(config, cases) -> str:
     ]
     for case_id in sorted(cases):
         case = cases[case_id]
+        if not _in_faq(case):
+            continue
         key = case["key"]
         label = CLASSIFICATION_LABELS[key["expect"]]
         lines.append(f"## {case['title']}")
@@ -508,6 +527,8 @@ def render_faq(config, cases) -> str:
         lines.append("**要点**")
         lines.append("")
         for item in key["must"]:
+            if not _in_faq(item):
+                continue
             origin = item.get("from") or []
             suffix = f" — 導出: {', '.join(origin)}" if origin else ""
             lines.append(f"- {item['point']}{suffix}")
