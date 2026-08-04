@@ -69,7 +69,7 @@ def main(argv=None) -> int:
 
     documents = load_documents(repo_root, rels)
     existing = _all_files(repo_root)
-    findings, topo = run(documents, Config(), existing_files=existing)
+    findings, topo = run(documents, Config(), existing_files=existing, repo_root=repo_root)
 
     if args.emit_topology:
         _write(args.emit_topology, json.dumps(topo.to_dict(), ensure_ascii=False, indent=2))

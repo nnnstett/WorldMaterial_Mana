@@ -22,6 +22,7 @@ from .checks.volume import check_volume
 from .checks.todos import check_todos
 from .checks.glossary import check_glossary_coverage, check_glossary_sources
 from .checks.meta_info import check_meta_info
+from .checks.semantic_coverage import check_semantic_coverage
 
 
 def load_documents(repo_root: str, rel_paths: List[str]) -> List[Document]:
@@ -33,7 +34,8 @@ def load_documents(repo_root: str, rel_paths: List[str]) -> List[Document]:
     return docs
 
 
-def run(documents: List[Document], config: Config, existing_files=None) -> List[Finding]:
+def run(documents: List[Document], config: Config, existing_files=None,
+        repo_root: str = None) -> List[Finding]:
     topo = Topology(documents, existing_files=existing_files)
     findings: List[Finding] = []
 
@@ -59,6 +61,8 @@ def run(documents: List[Document], config: Config, existing_files=None) -> List[
             findings += check_todos(doc)
         if "meta_info" in rules:
             findings += check_meta_info(doc)
+        if repo_root is not None:
+            findings += check_semantic_coverage(doc, repo_root)
 
     # glossary カバレッジ（cross-document）
     glossary = next((d for d in documents if classify(d.path) == "glossary"), None)

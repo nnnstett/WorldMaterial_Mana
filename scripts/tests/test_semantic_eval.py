@@ -16,6 +16,7 @@ from semantic_eval import (
     load_suite,
     prepare_judge,
     prepare_solver,
+    render_coverage,
     render_faq,
     score,
     validate_answer,
@@ -369,6 +370,32 @@ class TestSemanticEval(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             with self.assertRaisesRegex(SemanticEvalError, "faq は真偽値"):
                 load_suite(build_suite(tmp, [build_case("bad", faq="no")]), ROOT)
+
+    def test_item_ref_must_exist_in_axioms(self):
+        """存在しない項目アンカーを from に書いたら拒否する（本文からアンカーが消えたときの追随漏れ）。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            case = build_case("badref")
+            case["key"]["must"][0]["from"] = ["I6#実在しない項目"]
+            with self.assertRaisesRegex(SemanticEvalError, "項目参照"):
+                load_suite(build_suite(tmp, [case]), ROOT)
+
+    def test_item_ref_accepts_non_item_forms(self):
+        """定理・応用ファイルは項目アンカーを持たないため、群レベル・ファイル名のままでも通る。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            case = build_case("mixedref")
+            case["key"]["must"][0]["from"] = ["T5", "magic.md", "I6#状態指定"]
+            _config, cases = load_suite(build_suite(tmp, [case]), ROOT)
+            self.assertEqual(cases["mixedref"]["key"]["must"][0]["from"][0], "T5")
+
+    def test_coverage_in_sync_with_cases(self):
+        """コミット済み coverage.md がケースと axioms.md から再生成した内容と一致すること。"""
+        _config, cases = load_suite(SUITE, ROOT)
+        expected = render_coverage(ROOT, cases)
+        committed = (ROOT / "semantic-tests" / "coverage.md").read_text(encoding="utf-8")
+        self.assertEqual(
+            committed, expected,
+            "coverage.md がケースと同期していません。`make coverage` で再生成してください。",
+        )
 
     def test_faq_in_sync_with_cases(self):
         """コミット済み FAQ.md がケースから再生成した内容と一致すること（ドリフト防止）。"""
