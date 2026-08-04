@@ -1,11 +1,11 @@
 <!-- 自動生成ファイル。直接編集しないこと。`make coverage` で再生成する。ソース: world/core/axioms.md, semantic-tests/public/cases/ -->
 # 公理項目の検査被覆
 
-`world/core/axioms.md` の項目 73 件のうち、意味検証ケースが根拠に挙げているものは 24 件。全項目の被覆は目標ではない（ケース化に適さない定義・補足を含むため）。この表は、改訂で被覆が失われたことを差分で見つけるために置く。
+`world/core/axioms.md` の項目 73 件のうち、意味検証ケースが根拠に挙げているものは 23 件。全項目の被覆は目標ではない（ケース化に適さない定義・補足を含むため）。この表は、改訂で被覆が失われたことを差分で見つけるために置く。
 
 | 項目 | 検査しているケース |
 |---|---|
-| `e1-三次元時空` | wedge-demolition |
+| `e1-三次元時空` | （なし） |
 | `e1-個体の場` | （なし） |
 | `e1-特有の法則` | （なし） |
 | `e2-独立次元` | （なし） |
@@ -39,7 +39,7 @@
 | `e6-強さの由来` | （なし） |
 | `e6-方向の由来` | （なし） |
 | `e7-存在` | （なし） |
-| `e7-物理法則` | internal-heating・state-specified-genesis |
+| `e7-物理法則` | internal-heating・state-specified-genesis・wedge-demolition |
 | `e7-現在値` | alloy-priority・mixed-heat |
 | `e8-存在` | （なし） |
 | `e8-物理法則非適用` | （なし） |
