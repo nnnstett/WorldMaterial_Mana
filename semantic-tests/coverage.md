@@ -64,7 +64,7 @@
 | `i3-到達範囲内結合` | alloy-priority・clean-zone |
 | `i3-引き寄せ` | （なし） |
 | `i3-優先結合` | alloy-priority・dungeon-loot-removal・mixed-heat |
-| `i3-釣り合い` | bigbang-cooling |
+| `i3-釣り合い` | alloy-priority・bigbang-cooling |
 | `i3-経路限定` | （なし） |
 | `i4-接続作用` | （なし） |
 | `i4-使用限定` | （なし） |
