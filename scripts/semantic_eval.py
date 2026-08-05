@@ -8,6 +8,7 @@ bundle と、回答確定後に採点者へ渡す judge bundle を分離して�
 ケースは 1 ファイルに集約する（`ask`＝候補に見せる／`key`＝見せない）。分類は 1 語の
 `expect`、採点対象は `key.must[].point` のみ。漏洩対策はアクセス制御と候補環境の隔離で行う。
 `gen-faq` は同じケースから読者向け FAQ.md を生成する（`key` を出すので候補には渡さない）。
+ケースと `must` の `faq`（省略時 true）が FAQ への掲載だけを制御し、採点対象は変えない。
 """
 from __future__ import annotations
 
@@ -16,6 +17,7 @@ import hashlib
 import json
 import os
 import random
+import re
 import secrets
 import shutil
 import sys
@@ -103,6 +105,44 @@ def _must_id(index: int) -> str:
     return f"must-{index}"
 
 
+# `must.from` の項目参照（`I6#状態指定` → axioms.md の `<a id="i6-状態指定">`）。
+# 公理（E/I）だけが項目アンカーを持つため、項目参照はこの形に限る。定理・応用ファイルは
+# 群レベル（`T5`）・ファイル名（`magic.md`）のまま書く。
+ITEM_REF = re.compile(r"^([EI]\d+)#(.+)$")
+AXIOMS_REL = "world/core/axioms.md"
+
+
+def item_anchor(ref: str) -> str | None:
+    """`I6#状態指定` を axioms.md のアンカー名 `i6-状態指定` へ変換する。項目参照でなければ None。"""
+    m = ITEM_REF.match(ref)
+    return f"{m.group(1).lower()}-{m.group(2)}" if m else None
+
+
+def axiom_anchors(repo_root: Path) -> set[str]:
+    """axioms.md が定義する項目アンカーの集合。"""
+    text = (repo_root / AXIOMS_REL).read_text(encoding="utf-8")
+    return set(re.findall(r'<a id="([^"]+)"', text))
+
+
+# 候補・採点者への指示テンプレート。judge.md は採点の判定規則を含むため、
+# 書き換えると同じケース・同じ正典でも結果が変わる。実行条件として固定する。
+TEMPLATE_NAMES = ("solver.md", "judge.md")
+
+
+def template_hashes(repo_root: Path) -> dict:
+    base = repo_root / "semantic-tests" / "templates"
+    return {name: _digest_file(base / name) for name in TEMPLATE_NAMES}
+
+
+def _in_faq(item) -> bool:
+    """FAQ.md へ出すか。`faq` の省略時は出す。
+
+    採点だけに要る基準（候補の振る舞いへの要求など）や、読者の疑問ではない検査用のケースを
+    FAQ から外すために使う。採点対象はこのフラグに影響されない。
+    """
+    return item.get("faq", True)
+
+
 def load_suite(suite_dir: Path, repo_root: Path):
     config = _read_json(suite_dir / "suite.json")
     _require(isinstance(config, dict), "suite.json はオブジェクトである必要があります")
@@ -126,15 +166,16 @@ def load_suite(suite_dir: Path, repo_root: Path):
         case_id = case.get("id")
         _require(isinstance(case_id, str) and case_id, f"case id が不正です: {path}")
         _require(case_id not in cases, f"case id が重複しています: {case_id}")
-        _validate_case(case)
+        _validate_case(case, axiom_anchors(repo_root))
         cases[case_id] = case
     _require(bool(cases), "cases/*.json がありません")
     return config, cases
 
 
-def _validate_case(case) -> None:
+def _validate_case(case, anchors: set[str] | None = None) -> None:
     case_id = case["id"]
     _require(isinstance(case.get("title"), str) and case["title"], f"title が必要です: {case_id}")
+    _require(isinstance(case.get("faq", True), bool), f"faq は真偽値です: {case_id}")
     ask = case.get("ask")
     _require(isinstance(ask, dict), f"ask が必要です: {case_id}")
     facts = ask.get("facts")
@@ -154,6 +195,20 @@ def _validate_case(case) -> None:
         origin = item.get("from", [])
         _require(isinstance(origin, list), f"must.from は配列です: {case_id}")
         _require(all(isinstance(x, str) and x for x in origin), f"must.from は文字列配列です: {case_id}")
+        # 項目参照は実在するアンカーを指すこと（本文からアンカーが消えたときの追随漏れを止める）
+        for ref in origin:
+            anchor = item_anchor(ref)
+            if anchor is not None and anchors is not None:
+                _require(
+                    anchor in anchors,
+                    f"must.from の項目参照が {AXIOMS_REL} に存在しません: {case_id}: {ref}",
+                )
+        _require(isinstance(item.get("faq", True), bool), f"must.faq は真偽値です: {case_id}")
+    # 要点が一つも出ない FAQ の項目を作らない（ケースごと外すなら case.faq を false にする）
+    _require(
+        not _in_faq(case) or any(_in_faq(item) for item in must),
+        f"FAQ に載せるケースには、FAQ に出す must が 1 つ以上必要です: {case_id}",
+    )
     # ask に答えや根拠を書かない（候補へ漏れる）
     _require("must" not in ask and "answer" not in ask and "expect" not in ask,
              f"ask に key の項目を含めないでください: {case_id}")
@@ -235,6 +290,7 @@ def prepare_solver(
         "suite_config_sha256": _digest_json(config),
         "case_hashes": {case_id: _digest_json(case) for case_id, case in cases.items()},
         "source_hashes": source_hashes,
+        "template_hashes": template_hashes(repo_root),
         "solver_bundle": str(out_dir.resolve()),
     }
     _write_json(control_path, control)
@@ -475,6 +531,12 @@ def _verify_control_inputs(control, config, cases, repo_root: Path) -> None:
         rel: _digest_file(_safe_source(repo_root, rel)) for rel in config["source_paths"]
     }
     _require(control.get("source_hashes") == current_sources, "source が開始後に変更されています")
+    # template_hashes を持たない旧 control は、この検査の対象外とする（後方互換）
+    if "template_hashes" in control:
+        _require(
+            control["template_hashes"] == template_hashes(repo_root),
+            "templates（solver.md / judge.md）が開始後に変更されています",
+        )
 
 
 def render_faq(config, cases) -> str:
@@ -492,6 +554,8 @@ def render_faq(config, cases) -> str:
     ]
     for case_id in sorted(cases):
         case = cases[case_id]
+        if not _in_faq(case):
+            continue
         key = case["key"]
         label = CLASSIFICATION_LABELS[key["expect"]]
         lines.append(f"## {case['title']}")
@@ -508,11 +572,55 @@ def render_faq(config, cases) -> str:
         lines.append("**要点**")
         lines.append("")
         for item in key["must"]:
+            if not _in_faq(item):
+                continue
             origin = item.get("from") or []
             suffix = f" — 導出: {', '.join(origin)}" if origin else ""
             lines.append(f"- {item['point']}{suffix}")
         lines.append("")
     return "\n".join(lines).rstrip("\n") + "\n"
+
+
+def coverage_map(repo_root: Path, cases) -> list[tuple[str, list[str]]]:
+    """axioms.md の項目アンカーごとに、それを `from` に持つケース ID を集める（宣言順）。"""
+    text = (repo_root / AXIOMS_REL).read_text(encoding="utf-8")
+    by_anchor: dict[str, list[str]] = {a: [] for a in re.findall(r'<a id="([^"]+)"', text)}
+    for case_id in sorted(cases):
+        for item in cases[case_id]["key"]["must"]:
+            for ref in item.get("from", []):
+                anchor = item_anchor(ref)
+                if anchor in by_anchor and case_id not in by_anchor[anchor]:
+                    by_anchor[anchor].append(case_id)
+    return list(by_anchor.items())
+
+
+def render_coverage(repo_root: Path, cases) -> str:
+    """被覆マップを生成する（決定的）。差分で被覆の増減を追うための成果物。"""
+    rows = coverage_map(repo_root, cases)
+    covered = sum(1 for _, ids in rows if ids)
+    lines = [
+        "<!-- 自動生成ファイル。直接編集しないこと。`make coverage` で再生成する。"
+        "ソース: world/core/axioms.md, semantic-tests/public/cases/ -->",
+        "# 公理項目の検査被覆",
+        "",
+        f"`world/core/axioms.md` の項目 {len(rows)} 件のうち、意味検証ケースが根拠に挙げているものは "
+        f"{covered} 件。全項目の被覆は目標ではない（ケース化に適さない定義・補足を含むため）。"
+        "この表は、改訂で被覆が失われたことを差分で見つけるために置く。",
+        "",
+        "| 項目 | 検査しているケース |",
+        "|---|---|",
+    ]
+    for anchor, ids in rows:
+        lines.append(f"| `{anchor}` | {'・'.join(ids) if ids else '（なし）'} |")
+    return "\n".join(lines) + "\n"
+
+
+def gen_coverage(suite_dir: Path, repo_root: Path, out_path: Path) -> str:
+    _config, cases = load_suite(suite_dir, repo_root)
+    text = render_coverage(repo_root, cases)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(text, encoding="utf-8")
+    return text
 
 
 def gen_faq(suite_dir: Path, repo_root: Path, out_path: Path) -> str:
@@ -560,6 +668,10 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("gen-faq", help="ケースから読者向け FAQ.md を生成")
     p.add_argument("--suite", required=True)
     p.add_argument("--out", required=True)
+
+    p = sub.add_parser("gen-coverage", help="公理項目ごとの検査被覆マップを生成")
+    p.add_argument("--suite", required=True)
+    p.add_argument("--out", required=True)
     return parser
 
 
@@ -599,6 +711,9 @@ def main(argv=None) -> int:
         elif args.command == "gen-faq":
             gen_faq(Path(args.suite), repo_root, Path(args.out))
             print(f"faq: {Path(args.out).resolve()}")
+        elif args.command == "gen-coverage":
+            gen_coverage(Path(args.suite), repo_root, Path(args.out))
+            print(f"coverage: {Path(args.out).resolve()}")
         return 0
     except SemanticEvalError as exc:
         print(f"error: {exc}", file=sys.stderr)

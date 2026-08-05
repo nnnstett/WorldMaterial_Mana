@@ -6,6 +6,10 @@
 
 ## どんな世界か
 
+![マナが物質等に変換される様子](images/imageboard-world.jpg)
+
+*イメージボード*
+
 私たちの世界（**現界**）の裏側には、**真界**という別の次元があります。真界には、あらゆる物質・エネルギーのもとになる力 **マナ** が満ちています。心の力（**精神エネルギー**）がマナと共鳴すると、マナが物質やエネルギーに変わり、炎や氷となって現実に現れます。これがこの世界の「魔法」です。
 
 この世界では、たとえば次のことが起こります。
@@ -61,6 +65,12 @@
 - [設計書（architecture）](docs/architecture.md) — ドキュメント群の構造・分類・記述規約
 - [著者の選択（design-notes）](docs/design-notes.md) — 公準的事項・派生作品での改変ポイント
 - [LLM セマンティック検証](docs/semantic-validation.md) — 具体ケースによる盲検の意味整合性検証（試行中）
+
+## 作品の報告と設定への質問
+
+この世界を使って作品を作ったら、GitHub Discussions の [Show and tell](https://github.com/nnnstett/WorldMaterial_Mana/discussions/categories/show-and-tell) で教えてください。ジャンルや規模は問いません。作品の報告はライセンスの条件ではありません。
+
+設定の解釈で迷ったときは、[Q&A](https://github.com/nnnstett/WorldMaterial_Mana/discussions/categories/q-a) で質問できます。
 
 ## ライセンス
 
