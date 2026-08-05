@@ -74,7 +74,7 @@
 | `i5-裏付け` | （なし） |
 | `i5-裏付けの度合い` | unfit-soul-durability |
 | `i5-裏付けの維持` | clean-zone・dungeon-ancient-survival・dungeon-loot-removal |
-| `i5-物理過程不変` | dungeon-loot-removal・dungeon-trace-persistence・mixed-heat |
+| `i5-物理過程不変` | dungeon-trace-persistence・mixed-heat |
 | `i6-出現位置` | anatomy-knowledge・distant-visible-point・internal-heating・transport-momentum |
 | `i6-状態指定` | state-specified-genesis・transport-momentum |
 | `i6-形成過程` | sealed-container・wedge-demolition |
