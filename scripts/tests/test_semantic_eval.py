@@ -397,6 +397,32 @@ class TestSemanticEval(unittest.TestCase):
             "coverage.md がケースと同期していません。`make coverage` で再生成してください。",
         )
 
+    def test_template_change_is_rejected(self):
+        """judge.md は採点の判定規則を含むため、開始後に変えたら停止する。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            control_path = base / "private" / "control.json"
+            control = prepare_solver(SUITE, ROOT, base / "solver", control_path, seed="tmpl")
+            self.assertIn("template_hashes", control)
+
+            control["template_hashes"]["judge.md"] = "0" * 64
+            write_json(control_path, control)
+            answer = build_answer(control, load_cases())
+            with self.assertRaisesRegex(SemanticEvalError, "templates"):
+                self._seal(base, control_path, answer)
+
+    def test_control_without_template_hashes_is_accepted(self):
+        """template_hashes を持たない旧 control は、この検査の対象外（後方互換）。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            control_path = base / "private" / "control.json"
+            control = prepare_solver(SUITE, ROOT, base / "solver", control_path, seed="legacy")
+            del control["template_hashes"]
+            write_json(control_path, control)
+            answer = build_answer(control, load_cases())
+            sealed, _ = self._seal(base, control_path, answer)
+            self.assertEqual(sealed["run_id"], control["run_id"])
+
     def test_faq_in_sync_with_cases(self):
         """コミット済み FAQ.md がケースから再生成した内容と一致すること（ドリフト防止）。"""
         config, cases = load_suite(SUITE, ROOT)
