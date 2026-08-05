@@ -124,6 +124,16 @@ def axiom_anchors(repo_root: Path) -> set[str]:
     return set(re.findall(r'<a id="([^"]+)"', text))
 
 
+# 候補・採点者への指示テンプレート。judge.md は採点の判定規則を含むため、
+# 書き換えると同じケース・同じ正典でも結果が変わる。実行条件として固定する。
+TEMPLATE_NAMES = ("solver.md", "judge.md")
+
+
+def template_hashes(repo_root: Path) -> dict:
+    base = repo_root / "semantic-tests" / "templates"
+    return {name: _digest_file(base / name) for name in TEMPLATE_NAMES}
+
+
 def _in_faq(item) -> bool:
     """FAQ.md へ出すか。`faq` の省略時は出す。
 
@@ -280,6 +290,7 @@ def prepare_solver(
         "suite_config_sha256": _digest_json(config),
         "case_hashes": {case_id: _digest_json(case) for case_id, case in cases.items()},
         "source_hashes": source_hashes,
+        "template_hashes": template_hashes(repo_root),
         "solver_bundle": str(out_dir.resolve()),
     }
     _write_json(control_path, control)
@@ -520,6 +531,12 @@ def _verify_control_inputs(control, config, cases, repo_root: Path) -> None:
         rel: _digest_file(_safe_source(repo_root, rel)) for rel in config["source_paths"]
     }
     _require(control.get("source_hashes") == current_sources, "source が開始後に変更されています")
+    # template_hashes を持たない旧 control は、この検査の対象外とする（後方互換）
+    if "template_hashes" in control:
+        _require(
+            control["template_hashes"] == template_hashes(repo_root),
+            "templates（solver.md / judge.md）が開始後に変更されています",
+        )
 
 
 def render_faq(config, cases) -> str:
