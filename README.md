@@ -66,6 +66,12 @@
 - [著者の選択（design-notes）](docs/design-notes.md) — 公準的事項・派生作品での改変ポイント
 - [LLM セマンティック検証](docs/semantic-validation.md) — 具体ケースによる盲検の意味整合性検証（試行中）
 
+## 作品の報告と設定への質問
+
+この世界を使って作品を作ったら、GitHub Discussions の [Show and tell](https://github.com/nnnstett/WorldMaterial_Mana/discussions/categories/show-and-tell) で教えてください。ジャンルや規模は問いません。作品の報告はライセンスの条件ではありません。
+
+設定の解釈で迷ったときは、[Q&A](https://github.com/nnnstett/WorldMaterial_Mana/discussions/categories/q-a) で質問できます。
+
 ## ライセンス
 
 **クリエイティブ・コモンズ 表示 4.0 国際（CC BY 4.0）** で公開しています（[LICENSE.md](LICENSE.md)）。帰属表示を守れば、再利用・改変・商用利用・再頒布を自由に行えます。使用する場合は以下を記載してください。
