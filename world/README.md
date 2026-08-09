@@ -193,8 +193,8 @@ flowchart LR
 | [アーティファクト](artifacts.md) | [T5 存在強度]、[T10 集合無意識]、[T2 共鳴現化]、[T4 共鳴真化] |
 | [ダンジョン](dungeons.md) | [T2 共鳴現化]、[T5 存在強度]、[I3 副産則]、[T4 共鳴真化]、[T11 瘴気動態]、[E6 精神エネルギー] |
 | [種族](races.md) | [E5 魂]、[E6 精神エネルギー]、[T6 同調] |
-| [年表](timeline.md) | 世界の法則全般 |
-| [魔法・魔術の歴史](magic-history.md) | [T7 魔法]、[T8 魔術] |
+| [年表](timeline.md) | [T2 共鳴現化]、[E4 個体]、[E6 精神エネルギー]、[I4 作用則] |
+| [魔法・魔術の歴史](magic-history.md) | [T7 魔法]、[T8 魔術]、[E6 精神エネルギー] |
 
 ## 推奨読み順
 
@@ -254,6 +254,4 @@ flowchart LR
 [T8 魔術]: core/theorems.md#t8-魔術
 [T9 超能力]: core/theorems.md#t9-超能力
 
-[Q1 真度操作]: core/open-questions.md#q1-真度を人為的に深くする方法
-[Q2 意思を持つ道具・生成物]: core/open-questions.md#q2-意思を持つ道具生成物の発生原理
 
