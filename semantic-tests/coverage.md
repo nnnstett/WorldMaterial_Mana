@@ -61,7 +61,7 @@
 | `i2-属性シフト` | （なし） |
 | `i3-等量発生` | sealed-container・wedge-demolition |
 | `i3-発生位置` | （なし） |
-| `i3-結合還元` | reduction-return-location |
+| `i3-結合還元` | affinity-scoped-reduction・reduction-return-location |
 | `i3-到達範囲内結合` | alloy-priority・clean-zone |
 | `i3-引き寄せ` | （なし） |
 | `i3-釣り合い` | affinity-scoped-reduction・alloy-priority・bigbang-cooling・direction-priority-binding・small-soul-reduction-cap |
