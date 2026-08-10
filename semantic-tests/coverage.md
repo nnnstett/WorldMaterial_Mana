@@ -1,7 +1,7 @@
 <!-- 自動生成ファイル。直接編集しないこと。`make coverage` で再生成する。ソース: world/core/axioms.md, semantic-tests/public/cases/ -->
 # 公理項目の検査被覆
 
-`world/core/axioms.md` の項目 74 件のうち、意味検証ケースが根拠に挙げているものは 28 件。全項目の被覆は目標ではない（ケース化に適さない定義・補足を含むため）。この表は、改訂で被覆が失われたことを差分で見つけるために置く。
+`world/core/axioms.md` の項目 74 件のうち、意味検証ケースが根拠に挙げているものは 29 件。全項目の被覆は目標ではない（ケース化に適さない定義・補足を含むため）。この表は、改訂で被覆が失われたことを差分で見つけるために置く。
 
 | 項目 | 検査しているケース |
 |---|---|
@@ -61,7 +61,7 @@
 | `i2-属性シフト` | （なし） |
 | `i3-等量発生` | sealed-container・wedge-demolition |
 | `i3-発生位置` | （なし） |
-| `i3-結合還元` | （なし） |
+| `i3-結合還元` | reduction-return-location |
 | `i3-到達範囲内結合` | alloy-priority・clean-zone |
 | `i3-引き寄せ` | （なし） |
 | `i3-優先結合` | affinity-scoped-reduction・alloy-priority・direction-priority-binding・dungeon-loot-removal・mixed-heat |
