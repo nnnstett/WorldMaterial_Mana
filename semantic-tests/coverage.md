@@ -64,8 +64,8 @@
 | `i3-結合還元` | reduction-return-location |
 | `i3-到達範囲内結合` | alloy-priority・clean-zone |
 | `i3-引き寄せ` | （なし） |
-| `i3-優先結合` | affinity-scoped-reduction・alloy-priority・direction-priority-binding・dungeon-loot-removal・mixed-heat |
 | `i3-釣り合い` | affinity-scoped-reduction・alloy-priority・bigbang-cooling・direction-priority-binding・small-soul-reduction-cap |
+| `i3-優先結合` | affinity-scoped-reduction・alloy-priority・direction-priority-binding・dungeon-loot-removal・mixed-heat |
 | `i3-経路限定` | （なし） |
 | `i4-接続作用` | （なし） |
 | `i4-使用限定` | （なし） |
