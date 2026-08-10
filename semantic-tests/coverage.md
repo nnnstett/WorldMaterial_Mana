@@ -1,7 +1,7 @@
 <!-- 自動生成ファイル。直接編集しないこと。`make coverage` で再生成する。ソース: world/core/axioms.md, semantic-tests/public/cases/ -->
 # 公理項目の検査被覆
 
-`world/core/axioms.md` の項目 74 件のうち、意味検証ケースが根拠に挙げているものは 26 件。全項目の被覆は目標ではない（ケース化に適さない定義・補足を含むため）。この表は、改訂で被覆が失われたことを差分で見つけるために置く。
+`world/core/axioms.md` の項目 74 件のうち、意味検証ケースが根拠に挙げているものは 28 件。全項目の被覆は目標ではない（ケース化に適さない定義・補足を含むため）。この表は、改訂で被覆が失われたことを差分で見つけるために置く。
 
 | 項目 | 検査しているケース |
 |---|---|
@@ -10,7 +10,7 @@
 | `e1-特有の法則` | （なし） |
 | `e2-独立次元` | （なし） |
 | `e2-マナの場` | （なし） |
-| `e2-座標対応` | （なし） |
+| `e2-座標対応` | reduction-return-location |
 | `e2-濃淡変動` | （なし） |
 | `e2-総量膨大` | （なし） |
 | `e3-純粋ポテンシャル` | （なし） |
@@ -51,11 +51,11 @@
 | `i1-量の保存` | （なし） |
 | `i1-無方向現出` | （なし） |
 | `i2-駆動` | dungeon-trace-persistence |
-| `i2-孔経由` | small-soul-reduction-cap |
+| `i2-孔経由` | reduction-return-location・small-soul-reduction-cap |
 | `i2-変換先と効率` | deep-fire-adept-reduction・unfit-soul-durability |
 | `i2-強さと働き` | （なし） |
 | `i2-向きと相手` | （なし） |
-| `i2-真化の結合力` | （なし） |
+| `i2-真化の結合力` | affinity-scoped-reduction・direction-priority-binding |
 | `i2-真度と相手` | deep-fire-adept-reduction |
 | `i2-使用限定` | dungeon-ancient-survival・dungeon-trace-persistence |
 | `i2-属性シフト` | （なし） |
@@ -64,8 +64,8 @@
 | `i3-結合還元` | （なし） |
 | `i3-到達範囲内結合` | alloy-priority・clean-zone |
 | `i3-引き寄せ` | （なし） |
-| `i3-優先結合` | alloy-priority・direction-priority-binding・dungeon-loot-removal・mixed-heat |
-| `i3-釣り合い` | alloy-priority・bigbang-cooling・direction-priority-binding・small-soul-reduction-cap |
+| `i3-優先結合` | affinity-scoped-reduction・alloy-priority・direction-priority-binding・dungeon-loot-removal・mixed-heat |
+| `i3-釣り合い` | affinity-scoped-reduction・alloy-priority・bigbang-cooling・direction-priority-binding・small-soul-reduction-cap |
 | `i3-経路限定` | （なし） |
 | `i4-接続作用` | （なし） |
 | `i4-使用限定` | （なし） |
@@ -74,7 +74,7 @@
 | `i4-強さと働き` | （なし） |
 | `i5-裏付け` | （なし） |
 | `i5-裏付けの度合い` | unfit-soul-durability |
-| `i5-裏付けの維持` | clean-zone・dungeon-ancient-survival・dungeon-loot-removal |
+| `i5-裏付けの維持` | affinity-scoped-reduction・clean-zone・dungeon-ancient-survival・dungeon-loot-removal |
 | `i5-物理過程不変` | dungeon-trace-persistence・mixed-heat |
 | `i6-出現位置` | anatomy-knowledge・distant-visible-point・internal-heating・transport-momentum |
 | `i6-状態指定` | state-specified-genesis・transport-momentum |
