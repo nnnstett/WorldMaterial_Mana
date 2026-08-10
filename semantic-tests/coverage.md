@@ -1,7 +1,7 @@
 <!-- 自動生成ファイル。直接編集しないこと。`make coverage` で再生成する。ソース: world/core/axioms.md, semantic-tests/public/cases/ -->
 # 公理項目の検査被覆
 
-`world/core/axioms.md` の項目 73 件のうち、意味検証ケースが根拠に挙げているものは 23 件。全項目の被覆は目標ではない（ケース化に適さない定義・補足を含むため）。この表は、改訂で被覆が失われたことを差分で見つけるために置く。
+`world/core/axioms.md` の項目 73 件のうち、意味検証ケースが根拠に挙げているものは 25 件。全項目の被覆は目標ではない（ケース化に適さない定義・補足を含むため）。この表は、改訂で被覆が失われたことを差分で見つけるために置く。
 
 | 項目 | 検査しているケース |
 |---|---|
@@ -24,7 +24,7 @@
 | `e5-孔` | （なし） |
 | `e5-形` | unfit-soul-durability |
 | `e5-形の系譜` | （なし） |
-| `e5-大きさ` | （なし） |
+| `e5-大きさ` | small-soul-reduction-cap |
 | `e5-大きさ固定` | （なし） |
 | `e5-人工の魂` | （なし） |
 | `e5-他魂アクセス` | （なし） |
@@ -33,7 +33,7 @@
 | `e6-未使用の保持` | （なし） |
 | `e6-消費` | dungeon-trace-persistence |
 | `e6-容量の限界` | （なし） |
-| `e6-四属性` | state-specified-genesis |
+| `e6-四属性` | deep-fire-adept-reduction・state-specified-genesis |
 | `e6-ルーツと真度` | （なし） |
 | `e6-位相の系譜` | （なし） |
 | `e6-強さの由来` | （なし） |
@@ -51,11 +51,11 @@
 | `i1-量の保存` | （なし） |
 | `i1-無方向現出` | （なし） |
 | `i2-駆動` | dungeon-trace-persistence |
-| `i2-変換先と効率` | unfit-soul-durability |
+| `i2-変換先と効率` | deep-fire-adept-reduction・unfit-soul-durability |
 | `i2-強さと働き` | （なし） |
 | `i2-向きと相手` | （なし） |
 | `i2-真化の結合力` | （なし） |
-| `i2-真度と相手` | （なし） |
+| `i2-真度と相手` | deep-fire-adept-reduction |
 | `i2-使用限定` | dungeon-ancient-survival・dungeon-trace-persistence |
 | `i2-属性シフト` | （なし） |
 | `i3-等量発生` | sealed-container・wedge-demolition |
@@ -63,8 +63,8 @@
 | `i3-結合還元` | （なし） |
 | `i3-到達範囲内結合` | alloy-priority・clean-zone |
 | `i3-引き寄せ` | （なし） |
-| `i3-優先結合` | alloy-priority・dungeon-loot-removal・mixed-heat |
-| `i3-釣り合い` | alloy-priority・bigbang-cooling |
+| `i3-優先結合` | alloy-priority・direction-priority-binding・dungeon-loot-removal・mixed-heat |
+| `i3-釣り合い` | alloy-priority・bigbang-cooling・small-soul-reduction-cap |
 | `i3-経路限定` | （なし） |
 | `i4-接続作用` | （なし） |
 | `i4-使用限定` | （なし） |
