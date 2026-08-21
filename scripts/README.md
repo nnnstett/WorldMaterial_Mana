@@ -120,7 +120,7 @@ make topology
 ## 統合
 
 - **Makefile**: `make test` / `make check` / `make topology`
-- **lefthook**: `lefthook.yml`（プロジェクトルート）。`lefthook install` でフック有効化
+- **lefthook**: `lefthook.yml`（プロジェクトルート）。`lefthook install` でフック有効化。pre-commit はユニットテスト、pre-push はユニットテスト＋doc-check（error で push を止める）
 - **GitHub Actions**: `.github/workflows/check.yml`。doc-check は CI ゲート（error で PR を失敗させる）
 
 ## チェッカー自体の開発
