@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1360" height="940" viewBox="0 0 1360 940">
+  
+  <defs>
+    <linearGradient id="gate-grad" gradientUnits="userSpaceOnUse" x1="608" y1="0" x2="700" y2="0">
+      <stop offset="0" stop-color="#b68235"></stop>
+      <stop offset="1" stop-color="#3e4565"></stop>
+    </linearGradient>
+    <marker id="ah-accent" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M2 1 L10 6 L2 11" fill="none" stroke="#b68235" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+    </marker>
+    <marker id="ah-blue" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M2 1 L10 6 L2 11" fill="none" stroke="#3e4565" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+    </marker>
+    <marker id="ah-bronze" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M2 1 L10 6 L2 11" fill="none" stroke="#5a3b0a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+    </marker>
+  </defs>
+  <rect width="1360" height="940" fill="#ffffff"></rect>
+  <line x1="56" y1="120" x2="1304" y2="120" stroke="rgba(32,31,29,0.16)" stroke-width="1"></line>
+  <line x1="56" y1="600" x2="1304" y2="600" stroke="#9b9797" stroke-width="1.5" stroke-dasharray="2 8" stroke-linecap="round"></line>
+  <path d="M180 822 L654 822 L654 600 L1300 307" fill="none" stroke="#444141" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+  <path fill-rule="evenodd" d="M608 600 L608 500 A46 46 0 0 1 700 500 L700 600 Z M622 600 L622 528 A32 32 0 0 1 686 528 L686 600 Z" fill="#ffffff" stroke="url(#gate-grad)" stroke-width="2" stroke-linejoin="round"></path>
+  <line x1="395" y1="662" x2="940" y2="415" stroke="#b68235" stroke-width="2.5" marker-end="url(#ah-accent)"></line>
+  <line x1="1040" y1="395" x2="455" y2="660" stroke="#3e4565" stroke-width="2.5" marker-end="url(#ah-blue)"></line>
+  <line x1="1210" y1="318" x2="1298" y2="278" stroke="#5a3b0a" stroke-width="2" stroke-dasharray="7 6" marker-end="url(#ah-bronze)"></line>
+  <path d="M608 600 L608 500 A46 46 0 0 1 654 454 L654 496 A32 32 0 0 0 622 528 L622 600 Z" fill="#ffffff" stroke="none"></path>
+  <path d="M654 454 A46 46 0 0 0 608 500 L608 600 L622 600 L622 528 A32 32 0 0 1 654 496" fill="none" stroke="url(#gate-grad)" stroke-width="2" stroke-linejoin="round"></path>
+  <circle cx="310" cy="745" r="54" fill="none" stroke="#facb8d" stroke-width="1"></circle>
+  <circle cx="310" cy="745" r="42" fill="none" stroke="#c28d41" stroke-width="2" stroke-dasharray="0.5 6.5" stroke-linecap="round"></circle>
+  <path d="M310 713 C314 733 322 741 342 745 C322 749 314 757 310 777 C306 757 298 749 278 745 C298 741 306 733 310 713 Z" fill="#fff3e4" stroke="#a06f24" stroke-width="1.5" stroke-linejoin="round"></path>
+  <circle cx="245" cy="690" r="2" fill="#c28d41"></circle>
+  <circle cx="372" cy="706" r="2.5" fill="#e1ad66"></circle>
+  <circle cx="358" cy="798" r="2" fill="#c28d41"></circle>
+  <path d="M262 792 l4 6 l-4 6 l-4 -6 Z" fill="#e1ad66"></path>
+  <path d="M1010 400 C995 398 985 410 990 422 C978 426 978 442 992 446 C996 458 1014 462 1024 454 C1038 462 1056 456 1058 444 C1072 440 1072 424 1060 418 C1062 406 1048 398 1036 402 C1030 394 1018 394 1010 400 Z" transform="translate(14 -34)" fill="#e9ebf4" stroke="#7d84a0" stroke-width="1.5" stroke-dasharray="4 4" stroke-linecap="round"></path>
+  <path d="M985 412 C962 416 958 432 975 436" fill="none" stroke="#7d84a0" stroke-width="1.5" stroke-dasharray="3 4" stroke-linecap="round"></path>
+  <path d="M1002 440 C986 448 990 460 1004 458" fill="none" stroke="#7d84a0" stroke-width="1.5" stroke-dasharray="3 4" stroke-linecap="round"></path>
+  <circle cx="985" cy="370" r="2.5" fill="#7d84a0"></circle>
+  <circle cx="1003" cy="350" r="2" fill="#7d84a0"></circle>
+  <circle cx="1021" cy="336" r="1.5" fill="#7d84a0"></circle>
+  <path d="M1130 300 L1168 322 L1168 362 L1130 384 L1092 362 L1092 322 Z" fill="#ffffff" stroke="#3e4565" stroke-width="1.5" stroke-linejoin="round"></path>
+  <path d="M1092 322 L1130 344 L1168 322 M1130 344 L1130 384" fill="none" stroke="#3e4565" stroke-width="1.5" stroke-linejoin="round"></path>
+  <path d="M1196 292 L1176 324 L1191 326 L1169 360" fill="none" stroke="#525b82" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
+  <text x="832" y="438" transform="rotate(-24.4 832 438)" text-anchor="middle" class="h" font-size="23" fill="#7d5411">現化</text>
+  <text x="580" y="630" transform="rotate(-24.4 580 630)" text-anchor="middle" class="h" font-size="23" fill="#3e4565">真化</text>
+  <text x="310" y="668" text-anchor="middle" class="h" font-size="21" fill="#5a3b0a">マナ</text>
+  <text x="654" y="440" text-anchor="middle" class="h" font-size="21" fill="#201f1d">魂</text>
+  <text x="1130" y="280" text-anchor="middle" class="b" font-size="14" fill="#2f3450">物質・物理エネルギー</text>
+  <text x="1038" y="398" text-anchor="middle" class="b" font-size="14" fill="#2f3450">瘴気</text>
+  <text x="56" y="80" class="h1" font-size="46" letter-spacing="0.9" fill="#201f1d">真化と現化</text>
+  <g class="b" font-size="12.5" fill="#605d5d">
+    <text x="56" y="166">いずれも精神エネルギーが魂方向に引き寄せる力</text>
+    <text x="56" y="188.5">で駆動するイメージ</text>
+    <text x="56" y="221">※一人の行使者からの視点</text>
+    <text x="56" y="253.5">※縦/横軸・傾きは視覚的なイメージとしての記</text>
+    <text x="56" y="276">載であり、その大きさに意味は持たない</text>
+  </g>
+  <g>
+    <rect x="56" y="340" width="320" height="252" fill="#f8f4f4" stroke="rgba(32,31,29,0.16)"></rect>
+    <text x="76" y="375" class="h" font-size="21" fill="#201f1d">現化</text>
+    <line x1="130" y1="368" x2="150" y2="368" stroke="#b68235" stroke-width="2.2"></line>
+    <path d="M148 363 L156 368 L148 373" fill="none" stroke="#b68235" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+    <rect x="76" y="391" width="26" height="2" fill="#b68235"></rect>
+    <g class="b" font-size="13" fill="#201f1d">
+      <text x="76" y="420">自然現化はあふれ出るイメージ（魂があ</text>
+      <text x="76" y="443.4">る必要はない）</text>
+      <text x="76" y="475">共鳴現化は「精神エネルギーが、魂を起</text>
+      <text x="76" y="498.4">点に引き上げる（現化）＋押し上げる</text>
+      <text x="76" y="521.8">（存在強度）」イメージ。魂の形・精神</text>
+      <text x="76" y="545.2">エネルギーの方向性によって現化しやす</text>
+      <text x="76" y="568.6">い物質・物理エネルギーが変わる</text>
+    </g>
+  </g>
+  <g>
+    <rect x="880" y="628" width="420" height="256" fill="#f8f4f4" stroke="rgba(32,31,29,0.16)"></rect>
+    <text x="900" y="663" class="h" font-size="21" fill="#201f1d">真化</text>
+    <path d="M962 651 L954 656 L962 661" fill="none" stroke="#3e4565" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+    <line x1="960" y1="656" x2="984" y2="656" stroke="#3e4565" stroke-width="2.2"></line>
+    <rect x="900" y="679" width="26" height="2" fill="#3e4565"></rect>
+    <g class="b" font-size="13" fill="#201f1d">
+      <text x="900" y="708">現在の裏付けを瘴気の結合力が上回ればマナに戻る</text>
+      <text x="900" y="739">自然真化は裏付けがごく小さい物質・物理エネルギーが瘴気と</text>
+      <text x="900" y="762.4">くっついて転がり落ちるイメージ（魂がある必要はない）</text>
+      <text x="900" y="793">共鳴真化は「精神エネルギーが、魂を起点に引き下げる」</text>
+      <text x="900" y="816.4">イメージ（瘴気と物質・物理エネルギーが結びつく力（＝</text>
+      <text x="900" y="839.8">還元力）を強化する）。魂の形・精神エネルギーの方向性</text>
+      <text x="900" y="863.2">によって結びつきやすい対象が変わる</text>
+    </g>
+  </g>
+  <g>
+    <rect x="1000" y="130" width="304" height="132" fill="#f8f4f4" stroke="rgba(32,31,29,0.16)"></rect>
+    <text x="1020" y="165" class="h" font-size="21" fill="#201f1d">裏付け</text>
+    <line x1="1096" y1="158" x2="1116" y2="158" stroke="#5a3b0a" stroke-width="2.2" stroke-dasharray="5 4"></line>
+    <path d="M1114 153 L1122 158 L1114 163" fill="none" stroke="#5a3b0a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+    <rect x="1020" y="181" width="26" height="2" fill="#5a3b0a"></rect>
+    <g class="b" font-size="13" fill="#201f1d">
+      <text x="1020" y="210">個体の精神エネルギーが存在強度（還元に</text>
+      <text x="1020" y="233.4">抵抗する度合い）を支える力</text>
+    </g>
+  </g>
+  <g class="h" font-size="16" fill="#201f1d" text-anchor="middle">
+    <rect x="780" y="548" width="88" height="33" fill="#ffffff" stroke="rgba(32,31,29,0.16)"></rect>
+    <text x="825.5" y="570" letter-spacing="3.2">現界</text>
+    <rect x="780" y="612" width="88" height="33" fill="#ffffff" stroke="rgba(32,31,29,0.16)"></rect>
+    <text x="825.5" y="634" letter-spacing="3.2">真界</text>
+  </g>
+</svg>
